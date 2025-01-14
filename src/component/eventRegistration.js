@@ -85,7 +85,7 @@ const EventRegistration = () => {
       };
 
       console.log(data);
-      const response = await axios.post("https://quiz-t7o5.onrender.com/events/eventRegistration", { data }, { withCredentials: true });
+      const response = await axios.post("https://inquizitive-web.onrender.com/events/eventRegistration", { data }, { withCredentials: true });
       console.log(response);
 
       if (response.data.ok) {
