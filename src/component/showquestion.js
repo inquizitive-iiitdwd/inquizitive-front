@@ -187,7 +187,7 @@ const QuizBank = () => {
                       onClick={(e) => questionOptClicked(`options2_${questions[currentQuestion].id}`, questions[currentQuestion].options2, `optionsB_${questions[currentQuestion].id}`)}
                       style={{
                         border: options[currentQuestion] === `optionsB_${questions[currentQuestion].id}` ? '7px solid green' : '2px solid white',
-                      }}>A</span>
+                      }}>B</span>
                     <li id={`options2_${questions[currentQuestion].id}`}
                       onClick={(e) => questionOptClicked(e.target.id, questions[currentQuestion].options2, `optionsB_${questions[currentQuestion].id}`)}
                       className='option'
@@ -206,7 +206,7 @@ const QuizBank = () => {
                       onClick={(e) => questionOptClicked(`options3_${questions[currentQuestion].id}`, questions[currentQuestion].options3, `optionsC_${questions[currentQuestion].id}`)}
                       style={{
                         border: options[currentQuestion] === `optionsC_${questions[currentQuestion].id}` ? '7px solid green' : '2px solid white',
-                      }}>A</span>
+                      }}>C</span>
                     <li id={`options3_${questions[currentQuestion].id}`}
                       onClick={(e) => questionOptClicked(e.target.id, questions[currentQuestion].options3, `optionsC_${questions[currentQuestion].id}`)}
                       className='option'
@@ -224,7 +224,7 @@ const QuizBank = () => {
                       onClick={(e) => questionOptClicked(`options4_${questions[currentQuestion].id}`, questions[currentQuestion].options4, `optionsD_${questions[currentQuestion].id}`)}
                       style={{
                         border: options[currentQuestion] === `optionsD_${questions[currentQuestion].id}` ? '7px solid green' : '2px solid white',
-                      }}>A</span>
+                      }}>D</span>
                     <li id={`options4_${questions[currentQuestion].id}`}
                       onClick={(e) => questionOptClicked(e.target.id, questions[currentQuestion].options4, `optionsD_${questions[currentQuestion].id}`)}
                       className='option'
