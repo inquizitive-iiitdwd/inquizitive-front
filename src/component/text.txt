@@ -1,0 +1,581 @@
+ 
+ <div className="header-showQuestion">
+      <img src="/images/quiz-bulb.png" className="h-40 -mr-20"/>
+      <img src="/images/quiz-bulb.png" className="h-40"/>
+        <h2 className="text-8xl font-extrabold text-center bg-clip-text text-transparent pt-10" 
+         style={{ backgroundImage: "url('/images/Trivia NIGHTS (1).png')" }}>Trivia Nights</h2>
+          <img src="/images/quiz-bulb.png" className="h-40 -mr-20"/>
+          <img src="/images/quiz-bulb.png" className="h-40"/>
+        </div>
+ <div>
+      {isSwitchVisible && (
+        <label className="switch">
+          <input type="checkbox" onChange={handleSwitchToggle} />
+          <span className="slider"></span>
+        </label>
+      )}
+    </div>
+      //{just for fun
+  const SwitchComponent = () => {
+    const [variable, setVariable] = useState(0); // State to hold the variable value
+    const [isSwitchVisible, setIsSwitchVisible] = useState(false); // State to control switch visibility
+  
+    useEffect(() => {
+      // Listen for 'newData' event from the server
+      socket.on('permission', (data) => {
+        setVariable(data);
+      });
+  
+      // Clean up the socket connection when the component unmounts
+      return () => {
+        socket.off('newData');
+      };
+    }, []);
+  
+    useEffect(() => {
+      // Toggle switch visibility based on the variable value
+      if (variable === 1) {
+        setIsSwitchVisible(true);
+      } else {
+        setIsSwitchVisible(false);
+      }
+    }, [variable]);
+  
+    // Handler for the switch toggle
+    const handleSwitchToggle = () => {
+      // Handle switch toggle logic here
+      console.log('Switch toggled');
+    };
+    //just for fun}
+
+isme api generate karna shikhaya hai
+
+
+    import express from "express";
+import bodyParser from "body-parser";
+import cors from "cors"
+import pg from "pg"
+
+const app = express();
+const port = 1000;
+
+app.use(cors({
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST","PUT","PATCH","DELETE"]
+  }));
+
+  const dbConfig = {
+    user: "postgres",
+    host: "localhost",
+    database: "world",
+    password: "Mahesh@1802",
+    port: 4000, // Corrected port number for PostgreSQL
+  };
+  
+  const db = new pg.Client(dbConfig);//one of the difference from my code
+  db.connect()
+    .then(() => console.log("Connected to the database"))
+    .catch(err => console.error("Error connecting to database:", err));
+
+// In-memory data store
+let posts = [
+  {
+    id: 1,
+    title: "The Rise of Decentralized Finance",
+    content:
+      "Decentralized Finance (DeFi) is an emerging and rapidly evolving field in the blockchain industry. It refers to the shift from traditional, centralized financial systems to peer-to-peer finance enabled by decentralized technologies built on Ethereum and other blockchains. With the promise of reduced dependency on the traditional banking sector, DeFi platforms offer a wide range of services, from lending and borrowing to insurance and trading.",
+    author: "Alex Thompson",
+    date: "2023-08-01T10:00:00Z",
+  },
+  {
+    id: 2,
+    title: "The Impact of Artificial Intelligence on Modern Businesses",
+    content:
+      "Artificial Intelligence (AI) is no longer a concept of the future. It's very much a part of our present, reshaping industries and enhancing the capabilities of existing systems. From automating routine tasks to offering intelligent insights, AI is proving to be a boon for businesses. With advancements in machine learning and deep learning, businesses can now address previously insurmountable problems and tap into new opportunities.",
+    author: "Mia Williams",
+    date: "2023-08-05T14:30:00Z",
+  },
+  {
+    id: 3,
+    title: "Sustainable Living: Tips for an Eco-Friendly Lifestyle",
+    content:
+      "Sustainability is more than just a buzzword; it's a way of life. As the effects of climate change become more pronounced, there's a growing realization about the need to live sustainably. From reducing waste and conserving energy to supporting eco-friendly products, there are numerous ways we can make our daily lives more environmentally friendly. This post will explore practical tips and habits that can make a significant difference.",
+    author: "Samuel Green",
+    date: "2023-08-10T09:15:00Z",
+  },
+];
+
+let lastId = 3;
+
+// Middleware
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+//Write your code here//
+console.log("hello")
+//CHALLENGE 1: GET All posts
+app.get("/posts",async (req, res) => {
+  try {
+    const result = await db.query("SELECT * FROM post");
+    console.log(result.rows)
+    res.json(result.rows); // Sending array of questions as JSON response
+  } catch (err) {
+    console.error("Error getting post:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+ 
+});
+//CHALLENGE 2: GET a specific post by id
+app.get("/posts/:id",async(req,res)=>{
+  const ide=parseInt(req.params.id);
+  try {
+    const result = await db.query("SELECT * FROM post WHERE id=($1)",[ide]);
+    console.log(result.rows)
+    res.json(result.rows); // Sending array of questions as JSON response
+  } catch (err) {
+    console.error("Error getting post:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+})
+
+//CHALLENGE 3: POST a new post
+app.post("/posts",(req,res)=>{
+  console.log(req.body)
+  const newpost={
+    id: posts.length+1,
+    title: req.body.title,
+    content:req.body.content,
+    author: req.body.author,
+    date: req.body.date,
+  }
+  posts.push(newpost)
+  //console.log(newpost)
+  res.json(newpost)
+})
+//CHALLENGE 4: PATCH a post when you just want to update one parameter
+app.patch("/posts/:id",(req,res)=>{
+  const ide=parseInt(req.params.id);
+  const exitingpost=posts.find((m)=>m.id===ide)
+  const replacepost={
+    id:ide,
+    title: req.body.title || exitingpost.title,
+    content:req.body.content || exitingpost.content,
+    author: req.body.author || exitingpost.author,
+    date: req.body.date,
+  }
+  const foundpostindex=posts.findIndex((m)=>m.id===ide)
+   posts[foundpostindex]=replacepost
+   console.log(replacepost)
+   res.json(replacepost)
+})
+//CHALLENGE 5: DELETE a specific post by providing the post id.
+app.delete("/posts/:id",(req,res)=>{
+  const ide=parseInt(req.params.id);
+  const foundpostindex=posts.findIndex((m)=>m.id===ide)
+  if(foundpostindex>-1){
+posts.splice(ide-1,1)
+res.json(posts)
+  }else{
+res.status(404).send('id not found')
+  }
+})
+
+console.log(port)
+app.listen(port, () => {
+  console.log(`getpost.js API is running at http://localhost:${port}`);
+});
+
+
+
+
+//css chatgpt
+
+  /* admine page css */
+body, h3, h4, p, input, button {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f2f5;
+}
+
+.homepage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.formwapper {
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+.formwapper h3 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.formwapper h4 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.paste {
+  font-size: 16px;
+  color: #777;
+  margin-bottom: 20px;
+}
+
+.inputgroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputbox {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.inputbox:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.btn {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
+
+.span {
+  font-size: 14px;
+  color: #777;
+}
+
+.createnewbtn {
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.createnewbtn:hover {
+  text-decoration: underline;
+}
+
+footer {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #aaa;
+}
+
+footer a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+/*buzzer room css*/
+/* messagePage.css */
+.message-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #f0f0f0;
+  padding: 20px;
+}
+
+.message-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  max-width: 600px;
+  margin-bottom: 20px;
+}
+
+.message-list {
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.message {
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 5px;
+  font-size: 14px;
+  word-wrap: break-word;
+}
+
+.message-input-container {
+  width: 80%;
+  max-width: 600px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.message-input {
+  width: calc(100% - 60px);
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.send-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.send-button:hover {
+  background-color: #0056b3;
+}
+
+.time-button {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.time-button:hover {
+  background-color: #218838;
+}
+
+@media (max-width: 600px) {
+  .message-card, .message-input-container {
+    width: 100%;
+  }
+
+  .message-input {
+    width: calc(100% - 80px);
+  }
+
+  .send-button {
+    width: 60px;
+    padding: 10px;
+  }
+}
+
+//auth field
+import express from "express";
+import bodyParser from "body-parser";
+import cors from "cors";
+import pg from "pg";
+import validator from "validator";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import cookieParser from "cookie-parser";
+
+const app = express();
+const port = 1000;
+const secretKey = "mahesh"; // Using hardcoded secret key
+let tokenVar;
+
+app.use(cookieParser());
+app.use(express.static("public"));
+app.use(cors({
+  origin: "http://localhost:3000",
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+  credentials: true // Allow credentials to be sent
+}));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+const dbConfig = {
+  user: "postgres",
+  host: "localhost",
+  database: "world",
+  password: "Mahesh@1802",
+  port: 4000, // Corrected port number for PostgreSQL
+};
+
+const db = new pg.Client(dbConfig);
+db.connect()
+  .then(() => console.log("Connected to the database"))
+  .catch(err => console.error("Error connecting to database:", err));
+
+
+<<<<<<< HEAD
+app.post("/logout", (req, res) => {
+  res.cookie("token", "", { httpOnly: true, sameSite: 'Lax' });
+  res.send("logout successful postman");
+  console.log("logout successful");
+=======
+app.get("/",(req,res)=>{
+  res.cookie(
+"token",tokenVar)
+  res.send("hii")
+})
+
+app.post("/logout",(req,res)=>{
+  res.cookie("token","")
+  res.send("logout successful")
+  console.log("logout successful")
+})
+
+app.get("/read",(req,res)=>{
+  const t=req.cookies.token
+  console.log(t)
+  res.send(`your token is :done ${t}`)
+})
+
+//bcrypt
+var salt = bcrypt.genSaltSync(10);
+//adding password from singin page
+app.post("/addpassword", async (req, res) => {
+  const receivedData = req.body.data;
+  if((receivedData.email.slice(8,32)==='@iiitdwd.ac.in') && validator.isEmail(receivedData.email)){
+  try {
+    var hash = await bcrypt.hash(receivedData.password,salt);
+    const result = await db.query("INSERT INTO auth(username,email,password_hash) VALUES ($1, $2, $3)", [
+      "mahesh",
+      receivedData.email,
+      hash,
+    ]);
+    res.status(200).send('Data received successfully');
+  } catch (err) {
+    console.error("Error adding question:", err);
+    res.status(500).json({ error: "Failed to add question" });
+  }
+    }else{
+      console.log("wrong gmail")
+    }
+   
+
+
+// app.post("/addpassword", async (req, res) => {
+//   const receivedData = req.body.data;
+//   if (validator.isEmail(receivedData.email) && receivedData.email.endsWith('@iiitdwd.ac.in')){
+//   try {
+//     var hash = await bcrypt.hash(receivedData.password,salt);
+//     const result = await db.query("INSERT INTO auth(username,email,password_hash) VALUES ($1, $2, $3)", [
+//       "mahesh765",
+//       receivedData.email,
+//       hash,
+//     ]);
+//     res.status(200).send('Data received successfully');
+//   } catch (err) {
+//     console.error("Error adding question:", err);
+//     res.status(500).json({ error: "Failed to add question" });
+//   }
+//     }else {
+//       console.log("Invalid email");
+//       res.status(400).json({ error: "Invalid email format or domain" });
+//     }
+   
+  // Add your password handling logic here
+>>>>>>> e607850a951ba25ef83320d5292df0edb00e5a62
+});
+
+app.get("/readtoken", (req, res) => {
+  const token1 = req.cookies.token;
+  console.log(token1);
+  res.json({ success: true, token: token1 });
+});
+
+// bcrypt salt generation
+const salt = bcrypt.genSaltSync(10);
+
+app.post("/addpassword", async (req, res) => {
+  const { email, password } = req.body.data;
+  if (validator.isEmail(email) && email.endsWith('@iiitdwd.ac.in')) {
+    try {
+      const hash = await bcrypt.hash(password, salt);
+      await db.query("INSERT INTO auth(username, email, password_hash) VALUES ($1, $2, $3)", [
+        "mahesh",
+        email,
+        hash,
+      ]);
+      res.status(200).json({ message: 'Data received successfully' });
+    } catch (err) {
+      console.error("Error adding password:", err);
+      res.status(500).json({ error: "Failed to add password" });
+    }
+  } else {
+    console.log("Invalid email");
+    res.status(400).json({ error: "Invalid email format or domain" });
+  }
+});
+
+app.post("/loginpassword", async (req, res) => {
+  const { email, password } = req.body.data;
+  console.log(email, password);
+  try {
+    const result = await db.query('SELECT password_hash FROM auth WHERE email = $1', [email]);
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const hash = result.rows[0].password_hash;
+    const matchingPassword = await bcrypt.compare(password, hash);
+
+    if (matchingPassword) {
+      const token = jwt.sign({ email }, secretKey, { expiresIn: '300s' });
+      tokenVar = token;
+      console.log(tokenVar);
+      res.cookie("token", tokenVar,{ httpOnly: true, sameSite: 'Lax' });
+      res.json({ success1: true, token });
+    } else {
+      res.status(401).json({ error: "Invalid password" });
+    }
+  } catch (err) {
+    console.error("Error logging in:", err);
+    res.status(500).json({ error: "Failed to log in" });
+  }
+  
+});
+
+app.listen(port, () => {
+  console.log(`auth.js API is running at http://localhost:${port}`);
+});
+
+//when I am sending cookies in this post request it is not working but it is working when I am making req from postman
+// create table auth(
+//   id serial primary key,
+//     username VARCHAR(255) UNIQUE NOT NULL,
+//     email VARCHAR(255) NOT NULL,
+//       password_hash BYTEA NOT NULL
+//   );

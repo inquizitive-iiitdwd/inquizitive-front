@@ -1,0 +1,436 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+body{
+  background-image: linear-gradient(to right,#2e1a47 ,#624a82);
+  font-family: "Rubik", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+.body{
+  background: radial-gradient(circle at 50% 50%, #624a82, #2e1a47);
+
+}
+
+.quiz{
+  display: flex;
+  flex-direction: row;
+  gap:2rem;
+  padding-bottom: 0;
+  margin-bottom:0;
+}
+h3{
+  font-size: larger;
+  font-weight: bold;
+}
+
+h2{
+  padding-top: 10px;
+  font-size: 60px;
+  font-weight:bold;
+  text-align: center;    
+}
+
+.question-text{
+  width:460px;
+  height:400px;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding-top:100px;
+  padding-bottom:100px;
+  border-radius: 10px;
+  margin-left:20px ;
+  text-align: center;
+  margin-right: 50px;
+  border:2px solid white;
+}
+
+.question-card{
+ 
+  width: 70%;
+  /* background-color: rgba(0, 0, 0, 0.5); */
+  color:white;
+  margin:40px 15rem 10px;
+  padding:50px;
+  display: flex;
+  gap:1.5rem;
+  flex-direction: row;
+  border-radius: 3rem;
+  /* box-shadow: 2px 4px 10px 5px rgba(245, 245, 245, 0.328); */
+}
+
+
+.list-container{
+  margin-top:100px;
+}
+
+.option-container{
+  display: flex;
+  flex-direction: row;
+  margin-bottom:20px;
+  gap:0.75rem;
+}
+
+.alphabet{
+  border-radius: 100%;
+  border:2px solid rgba(240, 248, 255, 0.27);
+  width:60px;
+  height:60px;
+  background-color:#282828;
+  padding-top:13px;
+  padding-bottom:7px;
+  text-align: center;
+  cursor:grab;
+  
+}
+
+#submit{
+  background-color: #282828;
+  
+  color:white;
+  padding:30px;
+  margin:30px 50rem 20px;
+  width:200px;
+  height:10px;
+  padding-top: 30px;
+  padding-bottom:40px;
+  border-radius:10px;
+
+}
+
+.option{
+ 
+  background-color: #282828;
+  color:white;
+  border:5px solid white;
+  border-radius:30px;
+  width:500px;
+  padding:10px;
+  /* padding-left: 20px; */
+}
+.buttons{
+  display:flex;
+  gap:15rem;
+  flex-direction: row;
+  font-size: 1.5em;
+  margin-top:0;
+}
+
+.options{
+  width:500px;
+  height:450px;
+  font-size: 1.5em;
+  display: flex;
+  margin-top:30px;
+  flex-direction: column;
+  cursor:grab;
+}
+
+#prev-question,#next-question{
+
+  /* position: relative; */
+  background: linear-gradient(90deg, #004f57, #00d6cf);
+  border-radius:10px;
+  margin-top:10px;
+  width:500px;
+  height:50px;
+}
+
+/* #prev-question{
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+} */
+.question-numbers{
+  
+  max-width:200px;
+  display: flex;
+  flex-direction: row;
+  gap:0.65rem;
+  height:100px;
+  margin:-40px 30rem 5px 5px;
+  /* margin-left:30rem; */
+}
+
+.qno{
+  background: #282828;
+  padding: 30px;
+  padding-right:35px;
+  height: 70px;
+  width:70px;
+  border-radius: 10%;
+  margin-top:0;
+  font-size: large;
+  margin-left: 3px;
+  margin-bottom:0;
+  
+}
+
+.particpant-details{
+  color:white;
+  width:1200px;
+  border: 1px solid rgba(0, 0, 0, 0.561);
+  background-color: rgba(0, 0, 0, 0.5);;
+  padding:20px;
+  margin:30px auto 0;
+  border-radius:20px;
+  box-shadow: 2px 4px 10px 5px rgba(245, 245, 245, 0.328);
+}
+
+.participants-names{
+  font-size: 1.5rem;
+}
+.question-text{
+  font-size: 2em;
+}
+
+
+.modal {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.5);
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: 1000;
+}
+
+.modal-content {
+/* background-color: #fff; */
+padding: 20px;
+border-radius: 8px;
+/* box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); */
+position: relative;
+width: 1000px;
+height: 500px;
+overflow: auto;
+}
+
+.close-button {
+position: absolute;
+top: 10px;
+right: 10px;
+background: none;
+border: none;
+font-size: 24px;
+cursor: pointer;
+}
+/*show question ended*/
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  .animate-fadeIn {
+    animation: fadeIn 1s ease-in-out;
+  }
+  @keyframes slideIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  
+  .animate-slideIn {
+    animation: slideIn 1s ease-in-out;
+  }
+  .back-video{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+  }
+    
+.block-property {
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+.translate-right {
+  transform: translateX(100%);
+}
+
+.translate-left {
+  transform: translateX(-100%);
+}
+
+.visible.translate-right,
+.visible.translate-left {
+  transform: translateX(0);
+}
+
+.visible {
+  opacity: 1 !important;
+}
+/* ImageSlider.css */
+
+.slider-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+.slide {
+  width: 100%;
+  height: 380px; /* Adjust height as needed */
+  background-size: cover;
+  background-position: center;
+  
+  border-radius: 20px;
+  transition: transform 1s ease-in-out;
+}
+
+.slide.right {
+  animation: slideRight 1s forwards;
+}
+
+@keyframes slideRight {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+/* showquestion */
+
+
+/* 
+infinite loop slides */
+@keyframes marquee {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee linear infinite;
+  animation-duration: var(--marquee-speed);
+}
+
+/*sarthak about us*/
+.body10 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.question-mark {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px; /* Adjust the gap between boxes */
+  width: 600px;
+  height: 800px;
+  transform: rotate(-45deg); /* Adjust this to get the desired question mark shape */
+}
+
+.box {
+  width: 120px;
+  height: 120px;
+  border: 2px solid #000000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.box:hover {
+  transform: rotate(45deg) scale(1.2);
+}
+
+.box-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.info {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #00ffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.box:hover .info {
+  opacity: 1;
+}
+
+a {
+  color: #00ffff;
+  text-decoration: none;
+  font-size: 12px;
+}
+
+.disp-none {
+  visibility: hidden;
+  opacity: 0;
+  height: 0;
+}
+
+/*flip card*/
+.flip-card {
+  background-color: transparent;
+  width: 200px;
+  height: 200px;
+  perspective: 1000px; /* Remove this if you don't want the 3D effect */
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1rem;
+}
+
+.flip-card-front {
+  background-color: #bbb;
+  color: black;
+}
+
+.flip-card-back {
+  background-color: #2980b9;
+  color: white;
+  transform: rotateY(180deg);
+}

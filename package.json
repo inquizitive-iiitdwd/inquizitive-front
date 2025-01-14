@@ -1,0 +1,58 @@
+{
+  "name": "frontend2",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@faker-js/faker": "^8.4.1",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.6.8",
+    "cors": "^2.8.5",
+    "dns-socket": "^4.2.2",
+    "express": "^4.19.2",
+    "gsap": "^3.12.5",
+    "nodemailer": "^6.9.13",
+    "pg": "^8.11.4",
+    "postgre": "^0.1.8",
+    "postgresql": "^0.0.1",
+    "react": "^18.2.0",
+    "react-audio-player": "^0.17.0",
+    "react-dom": "^18.2.0",
+    "react-hot-toast": "^2.4.1",
+    "react-icons": "^5.1.0",
+    "react-scripts": "5.0.1",
+    "socket.io-client": "^4.7.5",
+    "web-vitals": "^2.1.4"
+  },
+  "type": "module",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "dev": "nodemon index.js"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "react-router-dom": "^6.23.1",
+    "tailwindcss": "^3.4.3"
+  }
+}
