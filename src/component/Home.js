@@ -38,7 +38,7 @@ const Home = () => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await axios.get('https://quiz-t7o5.onrender.com/user/readtoken', { withCredentials: true });
+        const response = await axios.get('https://inquizitive-web.onrender.com/user/readtoken', { withCredentials: true });
         if (response.data.success) {
           setUser(response.data.user);
         }
