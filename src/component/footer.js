@@ -10,7 +10,7 @@ const Footer = () => {
         {/* Logo Section */}
         <div className="flex flex-col items-center justify-center">
           <img src='/images/Club_logo.JPG.png' alt="InQuizitive Logo" className="rounded-full border border-gray-300 w-40 h-40 mb-2" />
-          <p className="text-lg font-bold">Quizzing Club</p>
+          <p className="text-lg font-bold">Quiz Club</p>
           <p className="text-lg">Indian Institute of Information Technology Dharwad</p>
         </div>
 
