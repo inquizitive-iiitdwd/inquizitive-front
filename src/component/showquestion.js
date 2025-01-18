@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import Footer from './footer.js';
-const [quizName,setQuizName] = useState("");
+
 
 const QuizBank = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -14,7 +14,7 @@ const QuizBank = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
   const [questions, setQuestions] = useState([]); // Fixed question state handling
-
+  const [quizName,setQuizName] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
   const { roomKey } = location.state || {};
