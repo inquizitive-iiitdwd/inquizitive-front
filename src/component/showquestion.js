@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import Footer from './footer.js';
+const [quizName,setQuizName] = useState("");
 
 const QuizBank = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -22,7 +23,8 @@ const QuizBank = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get("https://inquizitive-web.onrender.com/quiz/getQuestion");
-        setQuestions(response.data); // Set questions directly
+        setQuestions(response.data.questions);
+        setQuizName(response.data.quizName); // Set questions directly
       } catch (err) {
         console.log("Error fetching questions", err);
       }
@@ -93,7 +95,7 @@ const QuizBank = () => {
     }
 
     try {
-      const data = { marks, roomKey };
+      const data = { marks, roomKey ,quizName };
       const response = await axios.post("https://inquizitive-web.onrender.com/quiz/addMarks", { data }, { withCredentials: true });
       toast.success(response.data.remarks);
       if (response.data.ok) {
