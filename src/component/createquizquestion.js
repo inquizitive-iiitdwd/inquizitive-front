@@ -22,6 +22,9 @@ const Createquizquestion = ({ onQuestionsChange }) => {
       try {
         const response = await axios.get("https://inquizitive-web.onrender.com/quizsetup/questionForonequiz");
         setQuestionList(response.data);
+        if(response.data.length>0){
+          setQuizName(response.data[0].quizname);
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
