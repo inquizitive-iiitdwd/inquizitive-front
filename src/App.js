@@ -63,6 +63,10 @@ function App() {
           </Route>
           <Route  path="/verifyemail" element={<VerifyEmail/>}>
           </Route>
+
+          <Route  path="/showmarks" element={<ShowMarks/>}>
+          </Route>
+          
           <Route 
          path="/notlogin" element={<Notlogin/>}
         ></Route>

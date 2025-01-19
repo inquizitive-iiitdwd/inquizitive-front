@@ -3,12 +3,17 @@ import { useGlobalcontext } from './contex.js';
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
+// import ShowMarks from './showMarks';
 
 const Createquizquestion = ({ onQuestionsChange }) => {
   const { questions } = useGlobalcontext();
   const [myArray, setMyArray] = useState([]);
   const [questionList, setQuestionList] = useState(questions);
   const [quiznameforconformation, setQuizNameForConformation]=useState('')
+  const [quizName, setQuizName] = useState(''); // Assuming you have a state for quizName
+  // const [showMarks, setShowMarks] = useState(false);
+
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,6 +27,14 @@ const Createquizquestion = ({ onQuestionsChange }) => {
 
     fetchData();
   }, [questions]);
+
+  // const handleViewMarks = () => {
+  //   setShowMarks(true);
+  // };
+  
+  const handleViewMarks = () => {
+    navigate('/show-marks', { state: { quizName } });
+  };
 
   const handleUpdate = (question_id) => {
     console.log("Update function not yet implemented.", question_id);
@@ -149,7 +162,16 @@ const Createquizquestion = ({ onQuestionsChange }) => {
       >
         Set Quiz for Exam
       </button>
+      <button
+     onClick={handleViewMarks}
+     className="mt-4 bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-700" >
+     View Marks
+   </button>
+   
+
     </div>
+  
+
   );
 };
 

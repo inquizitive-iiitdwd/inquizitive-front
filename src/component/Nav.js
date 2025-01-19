@@ -82,7 +82,7 @@ const NavBar = () => {
 
   return (
     <nav className="bg-transparent container mx-auto p-6 flex justify-between items-center">
-      <div className="flex items-center space-x-4 text-white">
+      <div onclick={()=>handleNavigation('/')} className="flex items-center space-x-4 text-white">
         <div className="relative w-16 h-16 rounded-full overflow-hidden">
           <img src='/images/Club_logo.JPG.png' alt="InQuizitive Logo" className="w-full h-full object-cover" />
         </div>
@@ -96,10 +96,10 @@ const NavBar = () => {
         <ul className="flex space-x-10">
           <button onClick={() => handleNavigation('/')} className="text-gray-200 hover:text-white">Home</button>
           <button onClick={handleQuizRoomClick} className="text-gray-200 hover:text-white">Quiz Room</button>
-          <button onClick={() => handleNavigation('/Adminlogin')} className="text-gray-200 hover:text-white">Admin</button>
+          {/* <button onClick={() => handleNavigation('/Adminlogin')} className="text-gray-200 hover:text-white">Admin</button> */}
           <button onClick={() => handleNavigation('/event')} className="text-gray-200 hover:text-white">Event</button>
           <button onClick={() => handleNavigation('/About_us')} className="text-gray-200 hover:text-white">About Us</button>
-          <button onClick={() => window.location.href = '#myprofile'} className="text-gray-200 hover:text-white">My Profile</button>
+          {/* <button onClick={() => window.location.href = '#myprofile'} className="text-gray-200 hover:text-white">My Profile</button> */}
         </ul>
       </div>
 
@@ -115,10 +115,10 @@ const NavBar = () => {
         <div className="md:hidden absolute top-16 left-0 right-0 bg-black bg-opacity-90 flex flex-col items-center space-y-4 py-4">
           <button onClick={() => handleNavigation('/')} className="text-gray-200 hover:text-white">Home</button>
           <button onClick={handleQuizRoomClick} className="text-gray-200 hover:text-white">Quiz Room</button>
-          <button onClick={() => handleNavigation('/Adminlogin')} className="text-gray-200 hover:text-white">Admin</button>
+          {/* <button onClick={() => handleNavigation('/Adminlogin')} className="text-gray-200 hover:text-white">Admin</button> */}
           <button onClick={() => handleNavigation('/event')} className="text-gray-200 hover:text-white">Event</button>
           <button onClick={() => handleNavigation('/About_us')} className="text-gray-200 hover:text-white">About Us</button>
-          <button className="text-gray-200 hover:text-white">My Profile</button>
+          {/* <button className="text-gray-200 hover:text-white">My Profile</button> */}
         </div>
       )}
 
