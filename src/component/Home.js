@@ -83,10 +83,8 @@ const Home = () => {
            */}
            <button
             className="bg-white text-black px-6 py-3 rounded-lg transition transform duration-300 hover:bg-gray-300 hover:scale-105"
-
-          >
-          <span className="mr-2 text-black" onClick={togglePopup}>Register</span>
-          <FaExternalLinkAlt />
+            onClick={togglePopup}
+          >Register
         </button>
         </div>
       </div>
