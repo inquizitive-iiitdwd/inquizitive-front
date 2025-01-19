@@ -74,12 +74,13 @@ const Home = () => {
           >
             Buzzer Room
           </button>
-          // <button
-          //   onClick={() => handleNavigation("/classroom")}
-          //   className="bg-white text-black px-6 py-3 rounded-lg transition transform duration-300 hover:bg-gray-300 hover:scale-105"
-          // >
-          //   Class Room
-          // </button>
+          {/* <button
+            onClick={() => handleNavigation("/classroom")}
+            className="bg-white text-black px-6 py-3 rounded-lg transition transform duration-300 hover:bg-gray-300 hover:scale-105"
+          >
+            Class Room
+          </button>
+           */}
            <button
             className="bg-white text-black px-6 py-3 rounded-lg flex items-center justify-center mx-auto hover:bg-gray-300"
             style={{ maxWidth: "200px" }}
