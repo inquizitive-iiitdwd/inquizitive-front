@@ -3,7 +3,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 
-const ShowMarks = ({ quizName }) => {
+const ShowMarks = () => {
 
     const location = useLocation();
     const { quizName } = location.state || ''; // Get quizName from navigation state
