@@ -14,6 +14,10 @@ const ShowMarks = () => {
             try{
                 const response = await axios.get(`https://inquizitive-web.onrender.com/quiz/getMarks?quizName=${quizName}`);
                 console.log(response.data);
+                     if(response.data.ok === false){
+                    toast.error("Failed to get marks");
+                    return;
+                }
                 setMarks(response.data.marks);
                
                 
