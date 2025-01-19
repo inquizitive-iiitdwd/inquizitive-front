@@ -18,7 +18,7 @@ import VerifyEmail from './component/verifymail.js'
 import Resetpassword from './component/Resetpassword.js'
 import Enternewpassword from "./component/enternewpassword.js";
 import Event from './component/event.js'
-
+import ShowMarks from "./component/showMarks.js";
 
 function App() {
   
@@ -64,7 +64,7 @@ function App() {
           <Route  path="/verifyemail" element={<VerifyEmail/>}>
           </Route>
 
-          <Route  path="/showmarks" element={<ShowMarks/>}>
+          <Route  path="/ShowMarks" element={<ShowMarks/>}>
           </Route>
           
           <Route 
