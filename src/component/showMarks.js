@@ -31,20 +31,20 @@ const ShowMarks = () => {
 
     }, [quizName]);
 
-    return (
-        <div>
-            <h1>Marks for {quizName}</h1>
-            {marks.map((mark, index) => (
-                <div key={index}>
-                    <p>Team Name: {mark.teamName}</p>
-                    <p>lead_mail_id: {mark.leadmailid}</p>
-                    <p>Marks: {mark.marks}</p>
-                </div>
-            ))}
-            <Toaster />
+    retu <div className="container mx-auto p-6">
+        <h1 className="text-2xl font-bold mb-4">Marks for {quizName}</h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {marks.map((mark, index) => (
+            <div key={index} className="bg-white shadow-md rounded-lg p-4">
+              <p className="font-semibold">Team Name: <span className="font-normal">{mark.teamName}</span></p>
+              <p className="font-semibold">Lead Mail ID: <span className="font-normal">{mark.leadmailid}</span></p>
+              <p className="font-semibold">Marks: <span className="font-normal">{mark.marks}</span></p>
+            </div>
+          ))}
         </div>
+        <Toaster />
+      </div>
     );
-
-}
+  };
 
 export default ShowMarks;
