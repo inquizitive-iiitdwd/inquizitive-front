@@ -12,6 +12,9 @@ const ShowMarks = () => {
     useEffect(()=>{
         const fetchData = async ()=>{
             try{
+                if(quizName==' '){
+                     toast.error("Failed to get marks");
+                }
                 const response = await axios.get(`https://inquizitive-web.onrender.com/quiz/getMarks?quizName=${quizName}`);
                 console.log(response.data);
                      if(response.data.ok === false){
@@ -31,7 +34,8 @@ const ShowMarks = () => {
 
     }, [quizName]);
 
-    retu <div className="container mx-auto p-6">
+    return( 
+        <div className="container mx-auto p-6">
         <h1 className="text-2xl font-bold mb-4">Marks for {quizName}</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {marks.map((mark, index) => (
