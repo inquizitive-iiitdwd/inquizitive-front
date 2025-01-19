@@ -3,6 +3,7 @@ import { useGlobalcontext } from './contex.js';
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 // import ShowMarks from './showMarks';
 
 const Createquizquestion = ({ onQuestionsChange }) => {
@@ -12,6 +13,7 @@ const Createquizquestion = ({ onQuestionsChange }) => {
   const [quiznameforconformation, setQuizNameForConformation]=useState('')
   const [quizName, setQuizName] = useState(''); // Assuming you have a state for quizName
   // const [showMarks, setShowMarks] = useState(false);
+  const navigate = useNavigate();
 
   
 
@@ -33,7 +35,7 @@ const Createquizquestion = ({ onQuestionsChange }) => {
   // };
   
   const handleViewMarks = () => {
-    navigate('/show-marks', { state: { quizName } });
+    navigate('/ShowMarks', { state: { quizName } });
   };
 
   const handleUpdate = (question_id) => {
