@@ -63,7 +63,7 @@ const Dashboard = () => {
       try {
         const response = await axios.post('https://inquizitive-web.onrender.com/quizsetup/Questionbankname', { data });
         if (response.status === 200) {
-          navigate('/Questiondemo');
+           navigate('/Questiondemo',{ state: { quizname:hello } });
         }
       } catch (error) {
         toast.error('Error saving quiz');
