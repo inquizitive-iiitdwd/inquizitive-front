@@ -5,6 +5,7 @@ import axios from "axios";
 import Nav from './Nav.js';
 import toast, { Toaster } from 'react-hot-toast';
 import CreateQuizQuestion from "./createquizquestion.js";
+import { useLocation } from 'react-router-dom';
 
 const QuestionDemo = () => {
   const [question, setQuestion] = useState('');
@@ -19,7 +20,10 @@ const QuestionDemo = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadSection, setUploadSection] = useState(true);
   const [questions, setQuestions] = useState([]);
+  const location = useLocation();
+  const { quizname } = location.state || '';
 
+    console.log(quizname);
   const handleChange = (setter) => (e) => setter(e.target.value);
   const handleOptionChange = (index) => (e) => {
     const newOptions = [...options];
@@ -35,7 +39,7 @@ const QuestionDemo = () => {
       return;
     }
 
-    const data = { questionId, question, options, description, imgSrc, answer };
+    const data = { questionId, question, options, description, imgSrc, answer,quizname };
     try {
       const response = await axios.post("https://inquizitive-web.onrender.com/quizsetup/addquestion_to_quiz", { data });
       if (response.status === 200) {
@@ -94,6 +98,7 @@ const QuestionDemo = () => {
     <>
       <Nav />
       <div className="bg-gradient-to-r from-[#2e1a47] to-[#624a82] card p-6 max-w-lg mx-auto bg-white rounded-xl shadow-md space-y-4 mt-8">
+         <h1 className="text-2xl font-semibold text-center text-white">{quizname}</h1>
         <div className="bg-white p-6 rounded-lg shadow-lg space-y-4">
           <div>
             <label className="block text-gray-700 font-semibold mb-2">Question ID</label>
