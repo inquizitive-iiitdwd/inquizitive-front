@@ -120,7 +120,7 @@ const QuizBank = () => {
           style={{ backgroundImage: "url('/images/Trivia NIGHTS (1).png')" }}>Orientation Special</h2>
         <div className="quiz">
           <div className="question-card">
-  {questions[currentQuestion].marks}
+
             <div className="question-text">
               {questions.length > 0 && <h3 className='quiz-question'>{questions[currentQuestion]?.question}</h3>}
 
