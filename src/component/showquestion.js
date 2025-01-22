@@ -90,7 +90,10 @@ const QuizBank = () => {
     let marks = 0;
     for (let i = 0; i < questions.length; i++) {
       if (answers[i] === questions[i].answer) {
-        marks += 1;
+       marks+=questions[i].marks
+      }
+      else{
+        marks-=questions[i].negativeMarks
       }
     }
 
