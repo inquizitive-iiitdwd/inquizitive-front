@@ -22,7 +22,9 @@ const QuestionDemo = () => {
   const [questions, setQuestions] = useState([]);
   const location = useLocation();
   const { quizname } = location.state || '';
-
+  const [marks, setMarks] = useState(1);
+  const [negativeMarks, setNegativeMarks] = useState(0);
+  
     console.log(quizname);
   const handleChange = (setter) => (e) => setter(e.target.value);
   const handleOptionChange = (index) => (e) => {
@@ -39,7 +41,7 @@ const QuestionDemo = () => {
       return;
     }
 
-    const data = { questionId, question, options, description, imgSrc, answer,quizname };
+    const data = { questionId, question, options, description, imgSrc, answer,quizname,marks, negativeMarks };
     try {
       const response = await axios.post("https://inquizitive-web.onrender.com/quizsetup/addquestion_to_quiz", { data });
       if (response.status === 200) {
@@ -62,8 +64,11 @@ const QuestionDemo = () => {
     setDescription('');
     setImgSrc('');
     setAnswer('');
+    setMarks(1);
+    setNegativeMarks(0);
     setShowImageInput(false);
     setShowDescriptionInput(false);
+    
   };
 
   const handleUpload = async (e) => {
@@ -228,6 +233,30 @@ const QuestionDemo = () => {
               Add Option <IoMdAddCircle className="ml-1" />
             </button>
           </div>
+
+          <div className="mt-4">
+  <label className="block text-gray-700">Marks</label>
+  <select 
+  value={marks}
+  onChange={handleChange(setMarks)}
+  className="block w-full mt-1 p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="5">5</option>
+  </select>
+</div>
+
+<div className="mt-4">
+  <label className="block text-gray-700">-ve Marks</label>
+  <select 
+  value={negativeMarks}
+  onChange={handleChange(setNegativeMarks)}
+  className="block w-full mt-1 p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+    <option value="0">0</option>
+    <option value="-1">-1</option>
+    <option value="-2">-2</option>
+  </select>
+</div>
 
           <button
             onClick={handleFinalQuestion}
