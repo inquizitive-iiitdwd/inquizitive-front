@@ -24,6 +24,7 @@ const QuizBank = () => {
       try {
         const response = await axios.get("https://inquizitive-web.onrender.com/quiz/getQuestion");
         setQuestions(response.data.questions);
+        console.log(question[0]);
         setQuizName(response.data.quizName); // Set questions directly
       } catch (err) {
         console.log("Error fetching questions", err);
@@ -90,11 +91,12 @@ const QuizBank = () => {
     let marks = 0;
     for (let i = 0; i < questions.length; i++) {
       if (answers[i] === questions[i].answer) {
-       marks+=questions[i].marks
+       marks+=questions[i].marks;
       }
       else{
-        marks-=questions[i].negativeMarks
+        marks-=questions[i].negativemarks;
       }
+      console.log(marks);
     }
 
     try {
