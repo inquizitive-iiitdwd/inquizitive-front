@@ -120,7 +120,7 @@ const QuizBank = () => {
       <div className="body-showQuestion">
         <h2 className="text-8xl font-extrabold text-center bg-clip-text text-transparent pt-10"
           style={{ backgroundImage: "url('/images/Trivia NIGHTS (1).png')" }}>Orientation Special</h2>
-        // <Timerforshowquestion />
+      
         <div className="quiz">
           <div className="question-card">
 
