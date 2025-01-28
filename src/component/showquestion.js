@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import Footer from './footer.js';
-// import Timerforshowquestion from './Timerforshowquestion.js';
 
 const QuizBank = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
