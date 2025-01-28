@@ -93,9 +93,9 @@ const QuizBank = () => {
       if (answers[i] === questions[i].answer) {
        marks+=questions[i].marks;
       }
-      // else{
-      //   marks-=questions[i].negativemarks;
-      // }
+      else{
+        marks-=questions[i].negativemarks;
+      }
       console.log(marks);
     }
 
