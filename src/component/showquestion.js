@@ -14,6 +14,7 @@ const QuizBank = () => {
   const [modalContent, setModalContent] = useState(null);
   const [questions, setQuestions] = useState([]); // Fixed question state handling
   const [quizName,setQuizName] = useState("");
+  const [counter,setCounter]=useState(0);
   const location = useLocation();
   const navigate = useNavigate();
   const { roomKey } = location.state || {};
@@ -36,6 +37,13 @@ const QuizBank = () => {
       if (document.hidden) {
         console.log('User switched to another tab or window.');
       } else {
+        setCounter(1);
+        if (counter > 0) {
+          toast.error("You have been disqualified for switching tabs");
+          
+          evaluate();
+          navigate('/');
+        }
         console.log('User switched back to this tab.');
       }
     };
