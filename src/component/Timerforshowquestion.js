@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 
-const Timerforshowquestion = () => {
+const Timerforshowquestion = ({ onTimerEnd }) => {
   const [time, setTime] = useState(100);
 
    useEffect(() => {
