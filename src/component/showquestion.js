@@ -17,7 +17,7 @@ const QuizBank = () => {
   const [counter,setCounter]=useState(0);
   const location = useLocation();
   const navigate = useNavigate();
-   const [counter,setCounter]=useState(0);
+   
   const { roomKey } = location.state || {};
 
   useEffect(() => {
