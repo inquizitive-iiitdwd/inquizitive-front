@@ -229,7 +229,7 @@ const QuestionDemo = () => {
             />
           </div>
 
-          {questionType === 'Multiple Choice' && (
+          {questionType === 'multiple-choice' && (
                 <div className="mt-4">
             <h3 className="text-lg font-semibold mb-2">Options</h3>
             {options.map((option, index) => (
