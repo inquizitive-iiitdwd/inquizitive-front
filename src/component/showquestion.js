@@ -231,7 +231,7 @@ const QuizBank = () => {
               />
             )}
 
-   { questions[currentQuestion]?.questiontype=='Multiple Choice' && ( 
+   { questions[currentQuestion]?.questiontype=='multiple-choice' && ( 
             <div className="options">
               <ul className="list-options">
                 {questions[currentQuestion]?.options1 && (
