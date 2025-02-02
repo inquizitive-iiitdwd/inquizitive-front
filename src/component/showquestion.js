@@ -17,6 +17,7 @@ const QuizBank = () => {
   const [counter,setCounter]=useState(0);
   const location = useLocation();
   const navigate = useNavigate();
+   const [counter,setCounter]=useState(0);
   const { roomKey } = location.state || {};
 
   useEffect(() => {
@@ -24,7 +25,7 @@ const QuizBank = () => {
       try {
         const response = await axios.get("https://inquizitive-web.onrender.com/quiz/getQuestion");
         setQuestions(response.data.questions);
-        console.log(questions[0]);
+        // console.log(questions[0]);
         setQuizName(response.data.quizName); // Set questions directly
       } catch (err) {
         console.log("Error fetching questions", err);
@@ -33,20 +34,22 @@ const QuizBank = () => {
 
     fetchData();
 
-    const handleVisibilityChange = () => {
+        const handleVisibilityChange = () => {
       if (document.hidden) {
-        console.log('User switched to another tab or window.');
+        console.log('User switched to another tab or window.', counter);
+       
+        
       } else {
-        setCounter(1);
-        if (counter > 0) {
+        console.log('Counter when user switched back:', counter);
+        
           toast.error("You have been disqualified for switching tabs");
-          
           evaluate();
           navigate('/');
-        }
+        
         console.log('User switched back to this tab.');
       }
     };
+
 
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
@@ -94,24 +97,67 @@ const QuizBank = () => {
     }));
   };
 
-  const evaluate = async () => {
+    const handleFillInTheBlankChange = (e) => {
+    const answer = e.target.value;
+    setAnswers((prev) => ({
+      ...prev,
+      [currentQuestion]: answer,
+    }));
+  };
+
+ const evaluate = async () => {
     let marks = 0;
+    const now = new Date();
+    const istTime = new Date(now.toLocaleString("en-GB", { timeZone: "Asia/Kolkata" }));
+
+    const timestamp = `${istTime.getHours().toString().padStart(2, "0")}:${istTime
+      .getMinutes()
+      .toString()
+      .padStart(2, "0")}:${istTime
+      .getSeconds()
+      .toString()
+      .padStart(2, "0")}`;
+
     for (let i = 0; i < questions.length; i++) {
-      if (answers[i] === questions[i].answer) {
+      if(questions[i].questiontype=='Multiple Choice'){
+        if(answers[i]===''){
+          marks-=0;
+          console.log("QUestion not answered",questions[i].question);
+        }
+     else if (answers[i] === questions[i].answer) {
        marks+=questions[i].marks;
+       console.log("QUestion  answered",questions[i].question);
       }
       else{
+        console.log("QUestion  answered wrong ",questions[i].question);
         marks-=questions[i].negativemarks;
+      }}
+      else{
+        if(answers[i]===''){
+          console.log("QUestion not answered",questions[i].question);
+          marks-=0;
+        }
+       else if (answers[i].toLowerCase() === questions[i].answer.toLowerCase()) {
+          marks+=questions[i].marks; console.log("QUestion  answered",questions[i].question);
+        }
+        
+        else{
+          marks-=questions[i].negativemarks;
+        }
       }
       console.log(marks);
     }
 
     try {
-      const data = { marks, roomKey ,quizName };
-      const response = await axios.post("https://inquizitive-web.onrender.com/quiz/addMarks", { data }, { withCredentials: true });
+      const data = { marks, roomKey ,quizName,timestamp };
+      console.log(data);
+      const response = await axios.post("http://localhost:5000/quiz/addMarks", { data }, { withCredentials: true });
       toast.success(response.data.remarks);
       if (response.data.ok) {
         navigate('/');
+      }
+      else{
+        toast.error(response.data.marks);
       }
     } catch (error) {
       toast.error("Invalid Submission");
@@ -175,6 +221,17 @@ const QuizBank = () => {
               )}
             </div>
 
+               {questions[currentQuestion]?.questiontype === "fill-in-the-blank" && (
+              <input
+                type="text"
+                value={answers[currentQuestion] || ''}
+                onChange={handleFillInTheBlankChange}
+                className="fill-in-the-blank"
+                placeholder="Type your answer here"
+              />
+            )}
+
+   { questions[currentQuestion]?.questiontype=='Multiple Choice' && ( 
             <div className="options">
               <ul className="list-options">
                 {questions[currentQuestion]?.options1 && (
@@ -255,7 +312,9 @@ const QuizBank = () => {
                 {/* Repeat similar blocks for other options */}
               </ul>
 
-              <div className="buttons">
+              
+            </div>)}
+                <div className="buttons">
                 <button id='prev-question' onClick={previousQuestion}>
                   {"<"}
                 </button>
@@ -263,11 +322,11 @@ const QuizBank = () => {
                   {">"}
                 </button>
               </div>
-            </div>
+                
           </div>
         </div>
 
-        <div className="question-numbers flex flex-row gap-2.5 h-20 w-24 mx-[30rem]">
+        <div className="question-numbers">
           {spans}
         </div>
 
