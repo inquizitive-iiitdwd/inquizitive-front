@@ -24,6 +24,8 @@ const QuestionDemo = () => {
   const { quizname } = location.state || '';
   const [marks, setMarks] = useState(1);
   const [negativeMarks, setNegativeMarks] = useState(0);
+  const [questionType, setQuestionType] = useState(''); // State to manage question type
+  const [fillInTheBlankAnswer, setFillInTheBlankAnswer] = useState(''); // State to manage fill-in-the-blank answer
   
     console.log(quizname);
   const handleChange = (setter) => (e) => setter(e.target.value);
@@ -41,7 +43,7 @@ const QuestionDemo = () => {
       return;
     }
 
-    const data = { questionId, question, options, description, imgSrc, answer,quizname,marks, negativeMarks };
+    const data = { questionId, question, options, description, imgSrc, answer,quizname,marks, negativeMarks,questionType};
     try {
       const response = await axios.post("https://inquizitive-web.onrender.com/quizsetup/addquestion_to_quiz", { data });
       if (response.status === 200) {
@@ -68,7 +70,7 @@ const QuestionDemo = () => {
     setNegativeMarks(0);
     setShowImageInput(false);
     setShowDescriptionInput(false);
-    
+    setQuestionType('');
   };
 
   const handleUpload = async (e) => {
@@ -125,6 +127,19 @@ const QuestionDemo = () => {
               onChange={handleChange(setQuestion)}
             />
           </div>
+
+     <div className="bg-gray-100 p-4 rounded-lg shadow-md mt-8 w-full">
+        <label className="block text-gray-700 font-semibold mb-2">Select Question Type</label>
+        <select
+          value={questionType}
+          onChange={handleChange(setQuestionType)}
+          className="border border-gray-300 p-2 rounded-md w-full"
+        >
+          <option value="">-- Select --</option>
+          <option value="multiple-choice">Multiple Choice</option>
+          <option value="fill-in-the-blank">Fill in the Blank</option>
+        </select>
+      </div>
 
           <div className="mt-4">
             <button onClick={() => setShowImageInput(true)} className="text-blue-500 hover:underline flex items-center">
@@ -214,7 +229,8 @@ const QuestionDemo = () => {
             />
           </div>
 
-          <div className="mt-4">
+          {questionType === 'multiple-choice' && (
+                <div className="mt-4">
             <h3 className="text-lg font-semibold mb-2">Options</h3>
             {options.map((option, index) => (
               <div key={index} className="flex items-center space-x-2 mb-2">
@@ -232,7 +248,7 @@ const QuestionDemo = () => {
             <button onClick={handleAddOption} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 flex items-center">
               Add Option <IoMdAddCircle className="ml-1" />
             </button>
-          </div>
+          </div>)}
 
           <div className="mt-4">
   <label className="block text-gray-700">Marks</label>
