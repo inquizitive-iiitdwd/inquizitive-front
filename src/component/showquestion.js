@@ -105,6 +105,20 @@ const QuizBank = () => {
     }));
   };
 
+  const handleFillInTheBlankChange = (e) => {
+    const answer = e.target.value;
+    setAnswers((prev) => ({
+      ...prev,
+      [currentQuestion]: answer,
+    }));
+
+    let n = document.getElementsByClassName('qno')[currentQuestion];
+    if (answer.trim() !== '') {
+      n.style.background = 'linear-gradient(180deg,#87ff00,#0b1e07)';
+    } else {
+      n.style.background = '';
+    }
+  };
  const evaluate = async () => {
     let marks = 0;
     const now = new Date();
