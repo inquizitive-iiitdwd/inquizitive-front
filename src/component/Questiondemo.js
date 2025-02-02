@@ -258,6 +258,7 @@ const QuestionDemo = () => {
   className="block w-full mt-1 p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
     <option value="1">1</option>
     <option value="2">2</option>
+    <option value="3">3</option>
     <option value="5">5</option>
   </select>
 </div>
