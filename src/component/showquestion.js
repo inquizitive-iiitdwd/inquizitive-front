@@ -311,10 +311,7 @@ const QuizBank = () => {
 
                 {/* Repeat similar blocks for other options */}
               </ul>
-
-              
-            </div>)}
-                <div className="buttons">
+  <div className="buttons">
                 <button id='prev-question' onClick={previousQuestion}>
                   {"<"}
                 </button>
@@ -322,6 +319,9 @@ const QuizBank = () => {
                   {">"}
                 </button>
               </div>
+              
+            </div>)}
+              
                 
           </div>
         </div>
