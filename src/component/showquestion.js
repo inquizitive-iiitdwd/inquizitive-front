@@ -105,12 +105,7 @@ const QuizBank = () => {
     }));
   };
 
-  const handleFillInTheBlankChange = (e) => {
-    const answer = e.target.value;
-    setAnswers((prev) => ({
-      ...prev,
-      [currentQuestion]: answer,
-    }));
+  
 
     let n = document.getElementsByClassName('qno')[currentQuestion];
     if (answer.trim() !== '') {
@@ -119,6 +114,7 @@ const QuizBank = () => {
       n.style.background = '';
     }
   };
+  
  const evaluate = async () => {
     let marks = 0;
     const now = new Date();
