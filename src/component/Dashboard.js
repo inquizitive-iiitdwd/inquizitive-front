@@ -16,7 +16,7 @@ const Dashboard = () => {
   const [quizTime, setQuizTime] = useState('');
   const [saveTimerquizname, setTimerqizname] = useState('');
   const [blockedusergmail, setblockedusergmail] = useState('');
-
+  const [quizDuration, setQuizDuration] = useState(''); 
   // State for new member details
   const [memberDetails, setMemberDetails] = useState({
     image: '',
@@ -57,7 +57,8 @@ const Dashboard = () => {
   const handleQuizTimeChange = (e) => {
     setQuizTime(e.target.value);
   };
-
+ const handleQuizDurationChange = (e) => setQuizDuration(e.target.value);
+  
   const QuizBank =async (hello) => {
     const data = { name: hello };
       try {
@@ -80,7 +81,7 @@ const Dashboard = () => {
   const sendQuizName = async () => {
     if (quizName) {
       toast.success('Quiz saved successfully');
-      setQuizzes([...quizzes, { name: quizName, date: '', time: '' }]);
+      setQuizzes([...quizzes, { name: quizName, date: '', time: '',duration:'' }]);
       setTimerqizname(quizName);
       setQuizName('');
       const data = { name: quizName };
@@ -120,21 +121,23 @@ const Dashboard = () => {
     setTimerqizname(quizsetname)
     setQuizDate(quizzes[index].date);
     setQuizTime(quizzes[index].time );
+    setQuizDuration(quizzes[index].duration);
     console.log("after update",quizDate,quizTime)
   };
 
   const handleSave_Timer = async () => {
-    const data = { saveTimerquizname, quizDate, quizTime };
+    const data = { saveTimerquizname, quizDate, quizTime,quizDuration };
     console.log("data",data);
     try{
     const response = await axios.post('https://inquizitive-web.onrender.com/quizsetup/addSaveTimer', data);
     const updatedQuizzes = quizzes.map((quiz, index) =>
-      index === editingQuizIndex ? { ...quiz, date: quizDate, time: quizTime } : quiz
+      index === editingQuizIndex ? { ...quiz, date: quizDate, time: quizTime,duration:quizDuration } : quiz
     );
     setQuizzes(updatedQuizzes);
     setEditingQuizIndex(null);
     setQuizDate('');
     setQuizTime('');
+    setQuizDuration('');
   }catch(err)
   {console.log(err)}
   };
@@ -181,6 +184,7 @@ const Dashboard = () => {
                   <h3 className="text-xl font-bold mb-4">{quiz.name}</h3>
                   <p>Date: {quiz.date}</p>
                   <p>Time: {quiz.time}</p>
+                  <p>Duration(sec): {quiz.duration}</p>
                   {editingQuizIndex === index ? (
                     <div>
                       <div className="mb-4">
@@ -191,14 +195,18 @@ const Dashboard = () => {
                         <label className="block text-sm font-medium mb-2" htmlFor="QuizTime">Quiz Time</label>
                         <input className="w-full px-4 py-2 bg-gray-700 rounded" type="time" id="QuizTime" value={quizTime} onChange={handleQuizTimeChange} />
                       </div>
+                    <div className="mb-4"> 
+                        <label className="block text-sm font-medium mb-2" htmlFor="QuizDuration">Quiz Duration (minutes)</label>
+                        <input className="w-full px-4 py-2 bg-gray-700 rounded" type="number" id="QuizDuration" value={quizDuration} onChange={handleQuizDurationChange} />
+                      </div>
                       <button className="w-full py-2 bg-green-600 rounded hover:bg-green-700 transition-colors" onClick={handleSave_Timer}>Save Timer</button>
                     </div>
                   ) : (
                     <div>
-                      {!quiz.date && !quiz.time && (
+                      {!quiz.date && !quiz.time&& !quiz.duration && (
                         <button className="mt-4 w-full py-2 bg-blue-600 rounded hover:bg-blue-700 transition-colors" onClick={() => handleSetQuiz(index,quiz.name)}>Set Timer</button>
                       )}
-                      {quiz.date && quiz.time && (
+                      {quiz.date && quiz.time  &&quiz.duration&& (
                         <>
                           <button className="mt-4 w-full py-2 bg-blue-600 rounded hover:bg-blue-700 transition-colors" onClick={() => QuizBank(quiz.name)}>Go to Quiz bank</button>
                           <button className="mt-4 w-full py-2 bg-yellow-600 rounded hover:bg-yellow-700 transition-colors" onClick={() => handleSetQuiz(index,quiz.name)}>Update</button>
