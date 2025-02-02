@@ -151,7 +151,7 @@ const QuizBank = () => {
     try {
       const data = { marks, roomKey ,quizName,timestamp };
       console.log(data);
-      const response = await axios.post("http://localhost:5000/quiz/addMarks", { data }, { withCredentials: true });
+      const response = await axios.post("https://inquizitive-web.onrender.com/quiz/addMarks", { data }, { withCredentials: true });
       toast.success(response.data.remarks);
       if (response.data.ok) {
         navigate('/');
