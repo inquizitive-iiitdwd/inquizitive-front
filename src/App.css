@@ -45,11 +45,12 @@ h2{
 
 .question-card{
  
-  width: 70%;
+  max-width: 70%;
   /* background-color: rgba(0, 0, 0, 0.5); */
   color:white;
   margin:40px 15rem 10px;
   padding:50px;
+  padding-bottom:27px;
   display: flex;
   gap:1.5rem;
   flex-direction: row;
@@ -96,6 +97,18 @@ h2{
 
 }
 
+.fill-in-the-blank{
+  background-color: #282828;
+  color:white;
+  padding:30px;
+  /* margin:30px 50rem 20px; */
+  width:800px;
+  height:10px;
+  padding-top: 30px;
+  padding-bottom:40px;
+  border-radius:10px;
+}
+
 .option{
  
   background-color: #282828;
@@ -117,7 +130,7 @@ h2{
 .options{
   width:500px;
   height:450px;
-  font-size: 1.5em;
+  font-size: 1.25em;
   display: flex;
   margin-top:30px;
   flex-direction: column;
@@ -140,12 +153,15 @@ h2{
 } */
 .question-numbers{
   
-  max-width:200px;
+  max-width:100%;
   display: flex;
   flex-direction: row;
+  /* flex-flow:row wrap; */
+  justify-content: center;
+  flex-wrap: wrap;
   gap:0.65rem;
   height:100px;
-  margin:-40px 30rem 5px 5px;
+  margin:10px 5em 80px 3em;
   /* margin-left:30rem; */
 }
 
@@ -154,7 +170,7 @@ h2{
   padding: 30px;
   padding-right:35px;
   height: 70px;
-  width:70px;
+  width:20px;
   border-radius: 10%;
   margin-top:0;
   font-size: large;
@@ -178,7 +194,7 @@ h2{
   font-size: 1.5rem;
 }
 .question-text{
-  font-size: 2em;
+  font-size: 1.25em;
 }
 
 
