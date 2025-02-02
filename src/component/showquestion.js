@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import Footer from './footer.js';
 import Timerforshowquestion from "./Timerforshowquestion.js";
+
 const QuizBank = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedOptions, setSelectedOptions] = useState({});
@@ -17,15 +18,15 @@ const QuizBank = () => {
   const [counter,setCounter]=useState(0);
   const location = useLocation();
   const navigate = useNavigate();
-   
   const { roomKey } = location.state || {};
-
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get("https://inquizitive-web.onrender.com/quiz/getQuestion");
         setQuestions(response.data.questions);
-        // console.log(questions[0]);
+        console.log(response.data.questions);
+        console.log(questions[0]);
         setQuizName(response.data.quizName); // Set questions directly
       } catch (err) {
         console.log("Error fetching questions", err);
@@ -34,7 +35,7 @@ const QuizBank = () => {
 
     fetchData();
 
-        const handleVisibilityChange = () => {
+    const handleVisibilityChange = () => {
       if (document.hidden) {
         console.log('User switched to another tab or window.', counter);
        
@@ -49,7 +50,6 @@ const QuizBank = () => {
         console.log('User switched back to this tab.');
       }
     };
-
 
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
@@ -97,15 +97,12 @@ const QuizBank = () => {
     }));
   };
 
-    const handleFillInTheBlankChange = (e) => {
+  const handleFillInTheBlankChange = (e) => {
     const answer = e.target.value;
     setAnswers((prev) => ({
       ...prev,
       [currentQuestion]: answer,
     }));
-  };
-
-  
 
     let n = document.getElementsByClassName('qno')[currentQuestion];
     if (answer.trim() !== '') {
@@ -114,8 +111,9 @@ const QuizBank = () => {
       n.style.background = '';
     }
   };
-  
- const evaluate = async () => {
+
+  const evaluate = async () => {
+    try {
     let marks = 0;
     const now = new Date();
     const istTime = new Date(now.toLocaleString("en-GB", { timeZone: "Asia/Kolkata" }));
@@ -158,7 +156,7 @@ const QuizBank = () => {
       console.log(marks);
     }
 
-    try {
+ 
       const data = { marks, roomKey ,quizName,timestamp };
       console.log(data);
       const response = await axios.post("https://inquizitive-web.onrender.com/quiz/addMarks", { data }, { withCredentials: true });
@@ -169,7 +167,8 @@ const QuizBank = () => {
       else{
         toast.error(response.data.marks);
       }
-    } catch (error) {
+    } 
+    catch (error) {
       toast.error("Invalid Submission");
     }
   };
@@ -181,9 +180,9 @@ const QuizBank = () => {
   return (
     <>
       <div className="body-showQuestion">
-        <h2 className="text-8xl font-extrabold text-center bg-clip-text text-transparent pt-10"
+        <h2 className="text-9xl font-extrabold text-center bg-clip-text text-transparent pt-10"
           style={{ backgroundImage: "url('/images/Trivia NIGHTS (1).png')" }}>{quizName}</h2>
-          <Timerforshowquestion  onTimerEnd={evaluate}/> 
+            <Timerforshowquestion  onTimerEnd={evaluate}/>
         <div className="quiz">
           <div className="question-card">
 
@@ -230,8 +229,9 @@ const QuizBank = () => {
                 </button>
               )}
             </div>
-
-               {questions[currentQuestion]?.questiontype === "fill-in-the-blank" && (
+          
+         {/* < div className="input-container"> */}
+            {questions[currentQuestion]?.questiontype === "fill-in-the-blank" && (
               <input
                 type="text"
                 value={answers[currentQuestion] || ''}
@@ -239,10 +239,14 @@ const QuizBank = () => {
                 className="fill-in-the-blank"
                 placeholder="Type your answer here"
               />
+
+              
+              
             )}
 
-   { questions[currentQuestion]?.questiontype=='multiple-choice' && ( 
-            <div className="options">
+
+
+        { questions[currentQuestion]?.questiontype=='multiple-choice' && ( <div className="options">
               <ul className="list-options">
                 {questions[currentQuestion]?.options1 && (
                   <div className="option-container">
@@ -321,7 +325,8 @@ const QuizBank = () => {
 
                 {/* Repeat similar blocks for other options */}
               </ul>
-  <div className="buttons">
+
+              <div className="buttons">
                 <button id='prev-question' onClick={previousQuestion}>
                   {"<"}
                 </button>
@@ -329,10 +334,9 @@ const QuizBank = () => {
                   {">"}
                 </button>
               </div>
-              
-            </div>)}
-              
-                
+            </div> )}
+          
+              {/* </div> */}
           </div>
         </div>
 
