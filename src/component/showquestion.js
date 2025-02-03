@@ -102,6 +102,8 @@ const QuizBank = () => {
       ...prev,
       [currentQuestion]: alphabetID,
     }));
+
+   console.log(answers);
   };
 
 
