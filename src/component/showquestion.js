@@ -132,6 +132,7 @@ const QuizBank = () => {
 
   const evaluate = async () => {
     try {
+    console.log(answers);
     let marks = 0;
     const now = new Date();
     const istTime = new Date(now.toLocaleString("en-GB", { timeZone: "Asia/Kolkata" }));
