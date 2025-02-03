@@ -179,10 +179,10 @@ const QuizBank = () => {
       const data = { marks, roomKey ,quizName,timestamp };
       console.log(data);
       const response = await axios.post("https://inquizitive-web.onrender.com/quiz/addMarks", { data }, { withCredentials: true });
-      toast.success(response.data.remarks);
+      console.log(response);
       if (response.data.ok) {
         navigate('/');
-        toast.success(response.data.remarks);
+        toast.success(response.data.marks);
       }
       else{
         toast.error(response.data.marks);
