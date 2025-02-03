@@ -143,7 +143,7 @@ const QuizBank = () => {
       .getSeconds()
       .toString()
       .padStart(2, "0")}`;
-
+   conole.log(timestamp);
     for (let i = 0; i < questions.length; i++) {
       if(questions[i].questiontype=='Multiple Choice'){
         if(answers[i]===''){
