@@ -25,7 +25,7 @@ const QuizBank = () => {
       try {
         const response = await axios.get("https://inquizitive-web.onrender.com/quiz/getQuestion");
         setQuestions(response.data.questions);
-        console.log(response.data.questions);
+       
         console.log(questions[0]);
         setQuizName(response.data.quizName); // Set questions directly
       } catch (err) {
@@ -103,7 +103,7 @@ const QuizBank = () => {
       [currentQuestion]: alphabetID,
     }));
 
-   console.log(answers);
+  
   };
 
 
