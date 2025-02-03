@@ -145,7 +145,7 @@ const QuizBank = () => {
       .padStart(2, "0")}`;
    console.log(timestamp);
     for (let i = 0; i < questions.length; i++) {
-      if(questions[i].questiontype=='Multiple Choice'){
+      if(questions[i].questiontype=='multiple-choice'){
         if(answers[i]===''){
           marks-=0;
           console.log("QUestion not answered",questions[i].question);
