@@ -74,21 +74,36 @@ const QuizBank = () => {
     setCurrentQuestion(i);
   };
 
-  const questionOptClicked = (optionID, ans, alphabetID) => {
-    setSelectedOptions((prev) => ({
-      ...prev,
-      [currentQuestion]: optionID,
-    }));
+ const questionOptClicked = (optionID, ans, alphabetID) => {
+    setSelectedOptions((prev) => {
+      const newSelectedOptions = { ...prev };
+      if (newSelectedOptions[currentQuestion] === optionID) {
+        delete newSelectedOptions[currentQuestion]; // Deselect the option if it's already selected
+        setAnswers((prev) => {
+          const newAnswers = { ...prev };
+          delete newAnswers[currentQuestion]; // Remove the answer from the answers array
+          return newAnswers;
+        });
+        let n = document.getElementsByClassName('qno')[currentQuestion];
+        n.style.background = ''; // Reset the bottom span color to normal
+      } else {
+        newSelectedOptions[currentQuestion] = optionID; // Select the new option
+        setAnswers((prev) => ({
+          ...prev,
+          [currentQuestion]: ans,
+        }));
+        let n = document.getElementsByClassName('qno')[currentQuestion];
+        n.style.background = 'linear-gradient(180deg,#87ff00,#0b1e07)'; // Set the bottom span color to green
+      }
+      return newSelectedOptions;
+    });
 
     setOptions((prev) => ({
       ...prev,
       [currentQuestion]: alphabetID,
     }));
-
-    let n = document.getElementsByClassName('qno')[currentQuestion];
-    answersArray(ans);
-    n.style.background = 'linear-gradient(180deg,#87ff00,#0b1e07)';
   };
+
 
   const answersArray = (answer) => {
     setAnswers((prev) => ({
