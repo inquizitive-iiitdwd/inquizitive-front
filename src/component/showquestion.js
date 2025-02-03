@@ -110,6 +110,7 @@ const QuizBank = () => {
       ...prev,
       [currentQuestion]: answer,
     }));
+    console.log(answers);
   };
 
   const handleFillInTheBlankChange = (e) => {
