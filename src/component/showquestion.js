@@ -147,7 +147,7 @@ const QuizBank = () => {
    console.log(timestamp);
     for (let i = 0; i < questions.length; i++) {
       if(questions[i].questiontype=='multiple-choice'){
-        if(answers[i]===''){
+        if(!answers[i]){
           marks-=0;
           console.log("QUestion not answered",questions[i].question);
         }
@@ -160,7 +160,7 @@ const QuizBank = () => {
         marks-=questions[i].negativemarks;
       }}
       else{
-        if(answers[i]===' '){
+        if(!answers[i]){
           console.log("QUestion not answered",questions[i].question);
           marks-=0;
         }
