@@ -182,6 +182,7 @@ const QuizBank = () => {
       toast.success(response.data.remarks);
       if (response.data.ok) {
         navigate('/');
+        toast.success(response.data.remarks);
       }
       else{
         toast.error(response.data.marks);
