@@ -159,7 +159,7 @@ const QuizBank = () => {
         marks-=questions[i].negativemarks;
       }}
       else{
-        if(answers[i]===''){
+        if(answers[i]===' '){
           console.log("QUestion not answered",questions[i].question);
           marks-=0;
         }
