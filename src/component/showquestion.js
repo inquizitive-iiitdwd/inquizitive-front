@@ -187,7 +187,8 @@ const QuizBank = () => {
       }
     } 
     catch (error) {
-      toast.error("Invalid Submission");
+      console.log(error);
+      toast.error("Invalid Submission",error);
     }
   };
 
