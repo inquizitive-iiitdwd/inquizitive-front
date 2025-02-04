@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useCallback, useRef } from "react";
 import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -18,6 +18,7 @@ const QuizBank = () => {
   const [counter,setCounter]=useState(0);
   const location = useLocation();
   const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { roomKey } = location.state || {};
   
   useEffect(() => {
