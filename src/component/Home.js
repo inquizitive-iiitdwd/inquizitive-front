@@ -35,19 +35,19 @@ const Home = () => {
   };
 
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const response = await axios.get('https://inquizitive-web.onrender.com/user/readtoken', { withCredentials: true });
-        if (response.data.success) {
-          setUser(response.data.user);
-        }
-      } catch (error) {
-        console.error('Error checking auth:', error);
-      }
-    };
-    checkAuth();
-  }, []);
+  // useEffect(() => {
+  //   const checkAuth = async () => {
+  //     try {
+  //       const response = await axios.get('https://inquizitive-web.onrender.com/user/readtoken', { withCredentials: true });
+  //       if (response.data.success) {
+  //         setUser(response.data.user);
+  //       }
+  //     } catch (error) {
+  //       console.error('Error checking auth:', error);
+  //     }
+  //   };
+  //   checkAuth();
+  // }, []);
 
   const handleNavigation = (path) => {
     navigate(path);
