@@ -11,20 +11,20 @@ const NavBar = () => {
   const [teamleademailid, setTeamleademailid] = useState('');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [quizAttempts, setQuizAttempts] = useState(0);
-
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const { data } = await axios.get('https://inquizitive-web.onrender.com/users/readtoken', { withCredentials: true });
-        if (data.success) {
-          setUser(data.success);
-        }
-      } catch (error) {
-        console.error('Error checking authentication:', error);
-      }
-    };
-    checkAuth();
-  }, []);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  // useEffect(() => {
+  //   const checkAuth = async () => {
+  //     try {
+  //       const { data } = await axios.get('https://inquizitive-web.onrender.com/users/readtoken', { withCredentials: true });
+  //       if (data.success) {
+  //         setUser(data.success);
+  //       }
+  //     } catch (error) {
+  //       console.error('Error checking authentication:', error);
+  //     }
+  //   };
+  //   checkAuth();
+  // }, []);
 
   const handleNavigation = (path) => {
     navigate(path);
@@ -56,33 +56,55 @@ const NavBar = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const debounce = (func, wait) => {
+    let timeout;
+    return (...args) => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+  };
+
   const accessingQuizRoom = async (e) => {
     e.preventDefault();
+    console.log("Accessing room")
+    setIsSubmitting(true);
     setQuizAttempts((prev) => prev + 1);
 
     const data = { teamname, teamleademailid, attempts: quizAttempts };
-
+    console.log(data);
     try {
       const response = await axios.post(
-        'https://inquizitive-web.onrender.com/events/accessingquizroom',
+        'http://localhost:5000/events/accessingquizroom',
         { data },
         { withCredentials: true }
       );
 
       if (response.status === 200) {
+
+        if(response.data.ok)
         toast.success("Success: " + response.data.message);
+        else
+        toast.success("You already have the code")
+
         navigate(`/Timer?token=${teamleademailid}`);
       } else {
         toast.error("There was an issue with your request.");
+        setIsSubmitting(false);
       }
     } catch (error) {
       toast.error("An unexpected error occurred: " + error.message);
+      setIsSubmitting(false);
     }
+  };
+
+  const debouncedAccessingQuizRoom = (e) => {
+    e.preventDefault(); // Prevent default immediately
+    debounce(() => accessingQuizRoom(e), 350)();
   };
 
   return (
     <nav className="bg-transparent container mx-auto p-6 flex justify-between items-center">
-      <div onclick={()=>handleNavigation('/')} className="flex items-center space-x-4 text-white">
+      <div onClick={()=>handleNavigation('/')} className="flex items-center space-x-4 text-white">
         <div className="relative w-16 h-16 rounded-full overflow-hidden">
           <img src='/images/Club_logo.JPG.png' alt="InQuizitive Logo" className="w-full h-full object-cover" />
         </div>
@@ -140,7 +162,7 @@ const NavBar = () => {
               &times;
             </button>
             <h2 className="text-4xl text-white font-bold mb-4 text-center">Quiz Room</h2>
-            <form className="space-y-4" onSubmit={accessingQuizRoom}>
+            <form className="space-y-4" onSubmit={debouncedAccessingQuizRoom}>
               <div>
                 <label className="text-white text-xl block font-semibold mb-2">Team Name</label>
                 <input
@@ -163,8 +185,8 @@ const NavBar = () => {
                   required
                 />
               </div>
-              <button type="submit" className="w-full bg-black text-gray-300 px-4 py-2 rounded-md hover:text-white">
-                Submit
+              <button type="submit" className="w-full bg-black text-gray-300 px-4 py-2 rounded-md hover:text-white" disabled={isSubmitting}>
+                {isSubmitting ? 'Submitting...' : 'Submit'}
               </button>
             </form>
             <Toaster position="top-right" />
