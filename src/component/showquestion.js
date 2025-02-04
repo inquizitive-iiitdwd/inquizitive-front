@@ -130,7 +130,33 @@ const QuizBank = () => {
     }
   };
 
+    const useDebouncedCallback = (callback, delay) => {
+    const callbackRef = useRef(callback);
+    callbackRef.current = callback; // always updated
+    const timeoutRef = useRef(null);
+  
+    const debouncedFunction = useCallback((...args) => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => {
+        callbackRef.current(...args);
+      }, delay);
+    }, [delay]);
+  
+    // Clear the timeout if the component unmounts
+    useEffect(() => {
+      return () => {
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      };
+    }, []);
+  
+    return debouncedFunction;
+  };
+
   const evaluate = async () => {
+    console.log("Evaluation will go on");
+    setIsSubmitting(true);
     try {
     console.log(answers);
     let marks = 0;
@@ -149,19 +175,19 @@ const QuizBank = () => {
       if(questions[i].questiontype=='multiple-choice'){
         if(!answers[i]){
           marks-=0;
-          console.log("QUestion not answered",questions[i].question);
+          // console.log("QUestion not answered",questions[i].question);
         }
      else if (answers[i] === questions[i].answer) {
        marks+=questions[i].marks;
-       console.log("QUestion  answered",questions[i].question);
+       // console.log("QUestion  answered",questions[i].question);
       }
       else{
-        console.log("QUestion  answered wrong ",questions[i].question);
+        // console.log("QUestion  answered wrong ",questions[i].question);
         marks-=questions[i].negativemarks;
       }}
       else{
         if(!answers[i]){
-          console.log("QUestion not answered",questions[i].question);
+          // console.log("QUestion not answered",questions[i].question);
           marks-=0;
         }
        else if (answers[i].toLowerCase() === questions[i].answer.toLowerCase()) {
@@ -184,16 +210,21 @@ const QuizBank = () => {
         navigate('/');
         toast.success(response.data.marks);
       }
-      else{
+      else if(response.status!=200){
         toast.error(response.data.marks);
+        
+        setIsSubmitting(false);
       }
     } 
     catch (error) {
-      console.log(error);
-      toast.error("Invalid Submission",error);
+       console.log(error.response.data);
+      toast.error("Invalid Submission: " + error.response.data.message);
+      setIsSubmitting(false);
     }
   };
 
+  const debouncedEvaluate =useDebouncedCallback(evaluate, 300);
+  
   const spans = questions.map((_, index) => (
     <span className="qno" key={index + 1} onClick={() => numberClicked(index)}></span>
   ));
@@ -367,10 +398,10 @@ const QuizBank = () => {
 
         <div className="flex justify-center my-5">
           <button
-            onClick={evaluate}
+            onClick={debouncedEvaluate} disabled={isSubmitting}
             className="px-6 py-3 bg-gray-800 text-white font-semibold rounded-lg shadow-md hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
           >
-            Submit
+            {isSubmitting ? 'Submitting...' : 'Submit'}
           </button>
         </div>
 
