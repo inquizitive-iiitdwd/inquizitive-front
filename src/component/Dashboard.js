@@ -108,12 +108,12 @@ const Dashboard = () => {
     }
   };
 
-  // const handleUpdateQuiz=async (index, quizname)=>{
-  //   setEditingQuizIndex(index);
-  //   const data={quizTime,quizDate,quizName}
-  //   const response = await axios.post('https://quiz-t7o5.onrender.com/quizsetup/updateTimer', data);
+  const handleUpdateQuiz=async (index, quizname)=>{
+    setEditingQuizIndex(index);
+    const data={quizTime,quizDate,quizName,quizDuration}
+    const response = await axios.post('https://quiz-t7o5.onrender.com/quizsetup/updateTimer', data);
 
-  // }
+  }
 
   const handleSetQuiz = async (index,quizsetname) => {
     setEditingQuizIndex(index);
