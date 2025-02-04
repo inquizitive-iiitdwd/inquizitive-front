@@ -176,14 +176,14 @@ const QuizBank = () => {
       if(questions[i].questiontype=='multiple-choice'){
         if(!answers[i]){
           marks-=0;
-          // console.log("QUestion not answered",questions[i].question);
+          console.log("QUestion not answered",questions[i].question);
         }
      else if (answers[i] === questions[i].answer) {
        marks+=questions[i].marks;
-       // console.log("QUestion  answered",questions[i].question);
+       console.log("QUestion  answered",questions[i].question);
       }
       else{
-        // console.log("QUestion  answered wrong ",questions[i].question);
+        console.log("QUestion  answered wrong ",questions[i].question);
         marks-=questions[i].negativemarks;
       }}
       else{
