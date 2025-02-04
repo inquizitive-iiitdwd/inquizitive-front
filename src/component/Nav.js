@@ -74,7 +74,7 @@ const NavBar = () => {
     console.log(data);
     try {
       const response = await axios.post(
-        'http://localhost:5000/events/accessingquizroom',
+        'https://inquizitive-web.onrender.com/events/accessingquizroom',
         { data },
         { withCredentials: true }
       );
