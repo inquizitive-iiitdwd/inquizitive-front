@@ -12,8 +12,8 @@ const AppContext = React.createContext();
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const Api1 = "https://inquizitive-web.onrender.com/quiz/getQuestion";
-  const Api2 = "https://inquizitive-web.onrender.com/admine/membersDetail";
+ // const Api1 = "https://inquizitive-web.onrender.com/quiz/getQuestion";
+  //const Api2 = "https://inquizitive-web.onrender.com/admine/membersDetail";
   const Api3 = "https://inquizitive-web.onrender.com/quizsetup/getSaveTimer";
 
   const fetchApiData = async (url, type) => {
