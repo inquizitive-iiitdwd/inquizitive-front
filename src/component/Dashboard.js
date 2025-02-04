@@ -130,6 +130,7 @@ const Dashboard = () => {
     console.log("data",data);
     try{
     const response = await axios.post('https://inquizitive-web.onrender.com/quizsetup/addSaveTimer', data);
+      console.log(response);
     const updatedQuizzes = quizzes.map((quiz, index) =>
       index === editingQuizIndex ? { ...quiz, date: quizDate, time: quizTime,duration:quizDuration } : quiz
     );
