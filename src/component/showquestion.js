@@ -184,7 +184,7 @@ const QuizBank = () => {
       }
       else{
         console.log("QUestion  answered wrong ",questions[i].question);
-        marks-=questions[i].negativemarks;
+        marks+=questions[i].negativemarks;
       }}
       else{
         if(!answers[i]){
@@ -196,7 +196,7 @@ const QuizBank = () => {
         }
         
         else{
-          marks-=questions[i].negativemarks;
+          marks+=questions[i].negativemarks;
         }
       }
       console.log(marks);
