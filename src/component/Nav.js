@@ -15,7 +15,7 @@ const NavBar = () => {
   // useEffect(() => {
   //   const checkAuth = async () => {
   //     try {
-  //       const { data } = await axios.get('https://inquizitive-web.onrender.com/users/readtoken', { withCredentials: true });
+  //       const { data } = await axios.get('http://localhost:5000/users/readtoken', { withCredentials: true });
   //       if (data.success) {
   //         setUser(data.success);
   //       }
@@ -36,7 +36,7 @@ const NavBar = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.get('https://inquizitive-web.onrender.com/users/logout', { withCredentials: true });
+      await axios.get('http://localhost:5000/users/logout', { withCredentials: true });
       setUser(null);
       navigate('/');
     } catch (error) {
@@ -74,7 +74,7 @@ const NavBar = () => {
     console.log(data);
     try {
       const response = await axios.post(
-        'https://inquizitive-web.onrender.com/events/accessingquizroom',
+        'http://localhost:5000/events/accessingquizroom',
         { data },
         { withCredentials: true }
       );

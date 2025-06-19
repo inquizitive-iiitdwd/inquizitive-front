@@ -7,7 +7,7 @@ const Timerforshowquestion = ({ onTimerEnd }) => {
    useEffect(() => {
     async function fetchTimer() {
       try {
-        const response = await axios.get("https://inquizitive-web.onrender.com/QuizSetUp/getSaveTimer");
+        const response = await axios.get("http://localhost:5000/QuizSetUp/getSaveTimer");
         console.log("response", response.data[0].duration);
         setTime(response.data[0].duration); // Set the timer duration
       } catch (error) {

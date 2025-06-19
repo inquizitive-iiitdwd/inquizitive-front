@@ -24,7 +24,7 @@ const QuizBank = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("https://inquizitive-web.onrender.com/quiz/getQuestion");
+        const response = await axios.get("http://localhost:5000/quiz/getQuestion");
         setQuestions(response.data.questions);
        
         console.log(questions[0]);
@@ -205,7 +205,7 @@ const QuizBank = () => {
  
       const data = { marks, roomKey ,quizName,timestamp };
       console.log(data);
-      const response = await axios.post("https://inquizitive-web.onrender.com/quiz/addMarks", { data }, { withCredentials: true });
+      const response = await axios.post("http://localhost:5000/quiz/addMarks", { data }, { withCredentials: true });
       console.log(response);
       if (response.data.ok) {
         navigate('/');

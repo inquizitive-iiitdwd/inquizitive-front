@@ -45,7 +45,7 @@ const QuestionDemo = () => {
 
     const data = { questionId, question, options, description, imgSrc, answer,quizname,marks, negativeMarks,questionType};
     try {
-      const response = await axios.post("https://inquizitive-web.onrender.com/quizsetup/addquestion_to_quiz", { data });
+      const response = await axios.post("http://localhost:5000/quizsetup/addquestion_to_quiz", { data });
       if (response.status === 200) {
         setQuestions([...questions, data]);
         resetForm();
@@ -86,7 +86,7 @@ const QuestionDemo = () => {
     formData.append('questionId', questionId);
 
     try {
-      const response = await axios.post("https://inquizitive-web.onrender.com/quiz/uploadMediaQuestion", formData, {
+      const response = await axios.post("http://localhost:5000/quiz/uploadMediaQuestion", formData, {
         headers: { "Content-Type": "multipart/form-data" }
       });
 

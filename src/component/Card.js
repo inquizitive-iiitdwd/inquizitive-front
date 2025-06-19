@@ -6,7 +6,7 @@ const Card = () => {
   useEffect(()=>{
     const set = async () => {
         try {
-            const result=await axios.get("https://inquizitive-web.onrender.com/admine/membersDetail")
+            const result=await axios.get("http://localhost:5000/admine/membersDetail")
             setmember(result.data)
             console.log(result.data)
             // if (response.data.success) {
@@ -47,7 +47,7 @@ export default Card;
 //     useEffect(() => {
 //         const set = async () => {
 //             try {
-//                 const result=await axios.get("https://inquizitive-web.onrender.com/getSaveTimer")
+//                 const result=await axios.get("http://localhost:5000/getSaveTimer")
 //                 setmembers(result.data)
 //                 console.log(result.data)
 //                 // if (response.data.success) {

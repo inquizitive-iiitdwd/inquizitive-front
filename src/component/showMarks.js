@@ -15,7 +15,7 @@ const ShowMarks = () => {
                 if(quizName==' '){
                      toast.error("Failed to get marks");
                 }
-                const response = await axios.get(`https://inquizitive-web.onrender.com/quiz/getMarks?quizName=${quizName}`);
+                const response = await axios.get(`http://localhost:5000/quiz/getMarks?quizName=${quizName}`);
                 console.log(response.data);
                      if(response.data.ok === false){
                     toast.error("Failed to get marks");

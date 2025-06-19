@@ -14,7 +14,7 @@ function Timer() {
   useEffect(() => {
     async function fetchTimer() {
       try {
-        const response = await axios.get("https://inquizitive-web.onrender.com/QuizSetUp/getSaveTimer");
+        const response = await axios.get("http://localhost:5000/QuizSetUp/getSaveTimer");
         console.log("response", response.data[0]);
         setTimer(response.data[0]); // Set the first timer data
       } catch (error) {
@@ -80,7 +80,7 @@ function Timer() {
   const handleKeySubmit = async () => {
     try {
       // Show loading or disable the button to prevent multiple submissions
-      const response = await axios.post('https://inquizitive-web.onrender.com/events/accessingquizroombykey', { key: roomKey });
+      const response = await axios.post('http://localhost:5000/events/accessingquizroombykey', { key: roomKey });
       
       if (response.status === 200 && timeLeft<=0) {
         toast.success('just give me one minute')

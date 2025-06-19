@@ -26,7 +26,7 @@ const Clientlogin = () => {
       try {
         const data = { email: email, password: password };
         console.log(data);
-        const response = await axios.post("https://inquizitive-web.onrender.com/users/login", { data }, { withCredentials: true });
+        const response = await axios.post("http://localhost:5000/users/login", { data }, { withCredentials: true });
         console.log(response.data);
         if (response.data) {
           toast.success("Signed in successfully!");

@@ -147,7 +147,7 @@ const Sign = () => {
     console.log("Signing in with data:", data);
 
     try {
-     const response= await axios.post("https://inquizitive-web.onrender.com/users/signin", { data }, { withCredentials: true });
+     const response= await axios.post("http://localhost:5000/users/signin", { data }, { withCredentials: true });
       toast.success(response.error)
       setVerificationSent(true); // Set this to true to indicate that the verification email has been sent
     } catch (error) {
