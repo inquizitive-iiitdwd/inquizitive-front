@@ -1,6 +1,6 @@
-import Aboutfirstpart from './Aboutfirstpart.js';
-import Footer from './Footer.js';
-import NavBar from './NavBar.js';
+import Aboutfirstpart from '../component/Aboutfirstpart.js';
+import Footer from '../component/Footer.js';
+import NavBar from '../component/NavBar.js';
 
 
 

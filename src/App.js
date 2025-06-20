@@ -1,24 +1,25 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import './App.css';
-import Clientlogin from "./component/clientlogin.js"; 
+import ClientLoginPage from "./features/auth/ClientLoginPage.js"; 
 import Questiondemo from "./component/Questiondemo.js";
-import Adminlogin from "./component/adminloginpage.jsx";
-import Home from "./component/Home.js";
-import Timer from "./component/Timer.js";
-import Showqestion from "./component/showquestion.js";
+import Adminlogin from "./features/auth/AdminLoginPage.js";
+import Home from "./pages/Home.js";
+import Timer from "./features/quiz/components/Timer.js";
+import Showqestion from "./features/quiz/ShowQuestions.js";
 import Sign from "./component/sign.js"
-import Buzzer from "./component/buzzer.js"
+import Buzzer from "./pages/BuzzerRoom.js"
 import Adminebuzzer from "./component/adminebuzzer.js";
 import Notlogin from "./component/notlogin.js";
-import Createquizquestion from "./component/createquizquestion.js"
-import Dashboard from './component/Dashboard.js'
-import AboutUs from "./component/About_us.js";
-import EventRegistration from "./component/event.js"
-import VerifyEmail from './component/verifymail.js'
-import Resetpassword from './component/Resetpassword.js'
-import Enternewpassword from "./component/enternewpassword.js";
-import Event from './component/event.js'
-import ShowMarks from "./component/showMarks.js";
+import CreateQuiz from "./features/quiz/CreateQuiz.js"
+import AdminDashboard from './pages/AdminDashboard.js'
+import AboutUs from "./pages/AboutUs.js";
+import EventRegistration from "./pages/Events.js"
+import VerifyEmail from './features/auth/VerifyMail.js'
+import Resetpassword from './features/auth/ResetPassword.js'
+import Enternewpassword from "./features/auth/EnterNewPassword.js";
+import Event from './pages/Events.js'
+import ShowMarks from "./features/quiz/ShowMarks.js";
+import ClientloginPage from "./features/auth/ClientLoginPage.js";
 
 function App() {
   
@@ -47,9 +48,9 @@ function App() {
           </Route>
           <Route  path="/EventRegistration" element={<EventRegistration/>}>
           </Route>
-          <Route  path="/Clientlogin" element={<Clientlogin/>}>
+          <Route  path="/clientlogin" element={<ClientLoginPage/>}>
           </Route>
-          <Route  path="/Timer" element={<Timer/>}>
+          <Route  path="/timer" element={<Timer/>}>
           </Route>
           <Route  path="/sign" element={<Sign/>}>
           </Route>
@@ -59,22 +60,22 @@ function App() {
           </Route>
           <Route  path="/adminebuzzer" element={<Adminebuzzer/>}>
           </Route>
-          <Route  path="/About_us" element={<AboutUs/>}>
+          <Route  path="/aboutus" element={<AboutUs/>}>
           </Route>
           <Route  path="/verifyemail" element={<VerifyEmail/>}>
           </Route>
 
-          <Route  path="/ShowMarks" element={<ShowMarks/>}>
+          <Route  path="/showmarks" element={<ShowMarks/>}>
           </Route>
           
           <Route 
          path="/notlogin" element={<Notlogin/>}
         ></Route>
         <Route 
-         path="/CreatequizQuestiondemo" element={<Createquizquestion/>}
+         path="/CreateQuiz" element={<CreateQuiz/>}
         ></Route>
         <Route 
-         path="/Dashboard" element={<Dashboard/>}
+         path="/AdminDashboard" element={<AdminDashboard/>}
         ></Route>
         </Routes>
       </BrowserRouter>

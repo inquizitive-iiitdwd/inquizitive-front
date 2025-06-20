@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useGlobalcontext } from './contex.js';
+import { useGlobalcontext } from '../../context/QuizContext.js';
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 // import ShowMarks from './showMarks';
 
-const Createquizquestion = ({ onQuestionsChange }) => {
+const CreateQuiz = ({ onQuestionsChange }) => {
   const { questions } = useGlobalcontext();
   const [myArray, setMyArray] = useState([]);
   const [questionList, setQuestionList] = useState(questions);
@@ -180,4 +180,4 @@ const Createquizquestion = ({ onQuestionsChange }) => {
   );
 };
 
-export default Createquizquestion;
+export default CreateQuiz;

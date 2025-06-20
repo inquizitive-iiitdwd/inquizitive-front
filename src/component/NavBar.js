@@ -3,13 +3,13 @@ import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { toast, Toaster } from 'react-hot-toast';
 import { HiMenu, HiX } from 'react-icons/hi';
-import QuizAccessModal from './QuizAccessModal.js'; // This modal component is still used
+import QuizAccessModal from '../features/quiz/components/QuizAccessModal.js'; // This modal component is still used
 
 // Define nav links in an array for cleaner code
 const navLinks = [
   { label: 'Home', path: '/' },
   { label: 'Events', path: '/event' },
-  { label: 'About Us', path: '/About_us' },
+  { label: 'About Us', path: '/AboutUs' },
 ];
 
 const NavBar = () => {

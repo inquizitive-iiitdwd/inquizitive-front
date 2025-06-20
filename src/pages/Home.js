@@ -193,10 +193,10 @@
 import React, { useState } from 'react';
 import { FaExternalLinkAlt, FaBolt, FaQuestionCircle } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import NavBar from './NavBar.js';
-import Footer from './Footer.js';
-import Eventregistration from './eventRegistration.js';
-import ClubGallery from './ClubGallery.js';
+import NavBar from '../component/NavBar.js';
+import Footer from '../component/Footer.js';
+import Eventregistration from '../component/eventRegistration.js';
+import ClubGallery from '../component/ClubGallery.js';
 
 // Your existing image array
 const images = [

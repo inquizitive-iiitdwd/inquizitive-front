@@ -1,11 +1,11 @@
-// src/component/Dashboard.js
+// src/component/AdminAdminDashboard
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import { getQuizzes, createQuiz, deleteQuiz, addMember } from '../services/quizService.js';
-import QuizCard from './QuizCard.js'; // Assuming you created this component
+import QuizCard from '../features/quiz/components/QuizCard.js'; // Assuming you created this component
 
-// A generic card for other dashboard actions
+// A generic card for other AdminDashboard actions
 const SectionCard = ({ title, children }) => (
   <div className="bg-gray-800 p-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
     <h2 className="text-xl font-bold mb-4">{title}</h2>
@@ -56,8 +56,8 @@ const CreateQuizForm = ({ onQuizCreated }) => {
   );
 };
 
-// Main Dashboard Component
-const Dashboard = () => {
+// Main AdminDashboard Component
+const AdminDashboard = () => {
   const navigate = useNavigate();
   const [quizzes, setQuizzes] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -109,7 +109,7 @@ const Dashboard = () => {
   return (
     <div className="bg-gradient-to-r from-[#2e1a47] to-[#624a82] min-h-screen text-white p-8">
       <div className="container mx-auto">
-        <h1 className="text-4xl font-bold mb-8 text-center">Admin Dashboard</h1>
+        <h1 className="text-4xl font-bold mb-8 text-center">Admin AdminDashboard</h1>
 
         {isLoading ? (
           <p className="text-center">Loading Quizzes...</p>
@@ -159,4 +159,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default AdminDashboard;

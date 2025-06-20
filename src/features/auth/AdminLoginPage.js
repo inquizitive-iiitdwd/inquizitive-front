@@ -2,7 +2,7 @@ import { v4 } from 'uuid';
 import React, { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
-import NavBar from './NavBar.js';
+import NavBar from '../../component/NavBar.js';
 
 const Adminlogin = () => {
   const [roomId, setRoomId] = useState('');
@@ -22,7 +22,7 @@ const Adminlogin = () => {
       toast.error("Please enter username and room key");
     } else if (roomId && Username) {
       if (Username === 'mahesh' && roomId === '91990') {
-        navigate(`/Dashboard`, {
+        navigate(`/AdminDashboard`, {
           state: {
             Username
           },

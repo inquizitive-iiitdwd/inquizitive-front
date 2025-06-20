@@ -3,8 +3,8 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
-import Footer from './Footer.js';
-import Timerforshowquestion from "./Timerforshowquestion.js";
+import Footer from '../../component/Footer.js';
+import Timerforshowquestion from "../../component/Timerforshowquestion.js";
 
 const QuizBank = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);

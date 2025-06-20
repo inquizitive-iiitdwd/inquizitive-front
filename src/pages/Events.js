@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Nav from './NavBar.js';
-import Footer from './Footer.js'
+import Nav from '../component/NavBar.js';
+import Footer from '../component/Footer.js'
 
 
 const images = [

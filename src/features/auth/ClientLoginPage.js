@@ -3,10 +3,10 @@ import React, { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
-import Nav from './NavBar.js';
+import Nav from '../../component/NavBar.js';
 //import backgroundvideo from '../image/video1.mp4';
 
-const Clientlogin = () => {
+const ClientLoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -104,4 +104,4 @@ const Clientlogin = () => {
   );
 };
 
-export default Clientlogin;
+export default ClientLoginPage;

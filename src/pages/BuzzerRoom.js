@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import io from 'socket.io-client';
 import toast, { Toaster } from 'react-hot-toast';
-import NavBar from './NavBar.js';
+import NavBar from '../component/NavBar.js';
 
 
 const socket = io('http://localhost:8000');

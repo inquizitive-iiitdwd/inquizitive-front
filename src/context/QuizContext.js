@@ -1,5 +1,5 @@
 import React, { useContext, useReducer, useEffect } from "react";
-import reducer from "./reducer.js";
+import reducer from "../component/reducer.js";
 
 const initialState = {
   questions: [],
