@@ -2,7 +2,7 @@ import { v4 } from 'uuid';
 import React, { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
-import NavBar from './Nav.js';
+import NavBar from './NavBar.js';
 
 const Adminlogin = () => {
   const [roomId, setRoomId] = useState('');

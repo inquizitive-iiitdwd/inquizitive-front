@@ -1,6 +1,6 @@
 import Aboutfirstpart from './Aboutfirstpart.js';
-import Footer from './footer.js';
-import NavBar from './Nav.js';
+import Footer from './Footer.js';
+import NavBar from './NavBar.js';
 
 
 

@@ -121,7 +121,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
-import Nav from './Nav.js'
+import Nav from './NavBar.js'
 
 
 const Sign = () => {

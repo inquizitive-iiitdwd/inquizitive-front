@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
-import Nav from './Nav.js';
+import Nav from './NavBar.js';
 //import backgroundvideo from '../image/video1.mp4';
 
 const Clientlogin = () => {

@@ -3,7 +3,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
-import Footer from './footer.js';
+import Footer from './Footer.js';
 import Timerforshowquestion from "./Timerforshowquestion.js";
 
 const QuizBank = () => {

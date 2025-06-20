@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { IoMdAddCircle, IoMdAdd } from "react-icons/io";
 import { FaTrashAlt } from "react-icons/fa";
 import axios from "axios";
-import Nav from './Nav.js';
+import Nav from './NavBar.js';
 import toast, { Toaster } from 'react-hot-toast';
 import CreateQuizQuestion from "./createquizquestion.js";
 import { useLocation } from 'react-router-dom';

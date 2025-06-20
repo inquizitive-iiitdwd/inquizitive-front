@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
-import NavBar from './Nav.js'
+import NavBar from './NavBar.js'
 
 
 // Initialize the socket outside of the component to avoid re-creating on each render
