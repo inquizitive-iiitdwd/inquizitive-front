@@ -1,387 +1,151 @@
-import React, { useState, useEffect } from 'react';
-import Nav from '../component/NavBar.js';
-import Footer from '../component/Footer.js'
+import React from 'react';
+import Masonry from 'react-masonry-css';
 
+import NavBar from '../component/NavBar.js'; // Adjust path if needed
+import Footer from '../component/Footer.js'; // Adjust path if needed
+import EventCard from '../component/EventCard.js'; // Import our new card component
 
-const images = [
-  '/images/DSC_1.JPG',
-  '/images/DSC_2.JPG',
-  '/images/DSC_3.JPG',
-  '/images/DSC_4.JPG',
-  '/images/DSC_5.JPG',
-  '/images/DSC_6.JPG',
-  '/images/DSC_7.JPG',
-  '/images/DSC_8.JPG',
-  '/images/DSC_9.JPG',
-  '/images/DSC_10.JPG',
-  '/images/DSC_11.JPG',
-
-  
+// --- A proper data structure for your events ---
+// This is much better than a simple image array. It gives context!
+const eventsData = [
+  {
+    id: 1,
+    title: "Intra-IIITD QuizFest '23",
+    category: "Annual Event",
+    imageUrl: "/images/DSC_1.JPG",
+    description: "Our flagship internal quizzing competition."
+  },
+  {
+    id: 2,
+    title: "Freshers' Welcome",
+    category: "Community",
+    imageUrl: "/images/DSC_9.JPG",
+    description: "Introducing new students to the world of trivia."
+  },
+  {
+    id: 3,
+    title: "Tech-Quiz Finals",
+    category: "Competition",
+    imageUrl: "/images/DSC_3.JPG",
+    description: "The intense final round of our tech-themed quiz."
+  },
+  {
+    id: 4,
+    title: "Strategy Session",
+    category: "Workshop",
+    imageUrl: "/images/DSC_2.JPG",
+    description: "Preparing our teams for national competitions."
+  },
+  {
+    id: 5,
+    title: "Award Ceremony",
+    category: "Celebration",
+    imageUrl: "/images/DSC_8.JPG",
+    description: "Celebrating the winners and participants."
+  },
+  {
+    id: 6,
+    title: "A Lively Debate",
+    category: "Discussion",
+    imageUrl: "/images/DSC_5.JPG",
+    description: "Knowledge sharing and spirited discussions."
+  },
+  {
+    id: 7,
+    title: "Audience Participation",
+    category: "Interactive",
+    imageUrl: "/images/DSC_7.JPG",
+    description: "Engaging the crowd with fun mini-quizzes."
+  },
+   {
+    id: 8,
+    title: "Group Collaborations",
+    category: "Team Building",
+    imageUrl: "/images/DSC_11.jpg",
+    description: "Fostering teamwork through collaborative challenges."
+  },
+   {
+    id: 8,
+    title: "Group Collaborations",
+    category: "Team Building",
+    imageUrl: "/images/DSC_11.jpg",
+    description: "Fostering teamwork through collaborative challenges."
+  },
+   {
+    id: 8,
+    title: "Group Collaborations",
+    category: "Team Building",
+    imageUrl: "/images/DSC_11.jpg",
+    description: "Fostering teamwork through collaborative challenges."
+  },
+   {
+    id: 8,
+    title: "Group Collaborations",
+    category: "Team Building",
+    imageUrl: "/images/DSC_11.jpg",
+    description: "Fostering teamwork through collaborative challenges."
+  },
 ];
 
-const RandomGridComponent = () => {
-  const [shuffledImages, setShuffledImages] = useState([]);
+// This configures how many columns the masonry grid has at different screen sizes
+const breakpointColumnsObj = {
+  default: 3,   // Was 4
+  1100: 2,      // Was 3
+  700: 2,       // Stays the same
+  500: 1        // Stays the same
+};
 
-  useEffect(() => {
-    setShuffledImages(images); // No need to shuffle for this specific layout
-  }, []);
-
+const EventsPage = () => {
   return (
-    <div className='bg-black'>
-      <Nav />
-      <div className=" flex flex-wrap justify-center gap-6 p-4">
-        {/* Image 1 */}
-        <div
-  className="relative bg-gray-100 rounded-2xl shadow-lg overflow-hidden group"
-  style={{ width: '450px', height: '500px', marginTop: '190px', borderRadius: '40px' }}
->
-  <div
-    className="absolute inset-0 bg-cover bg-center"
-    style={{ backgroundImage: `url(${images[2]})` }}
-  />
-  <div className="absolute inset-0 bg-black bg-opacity-50 group-hover:bg-opacity-20 transition-all duration-500 flex flex-col justify-center items-center">
-    <h2 className="text-3xl font-semibold text-white mb-2">
-    {/* CREAM */}
-    </h2>
-    <p className="text-lg text-white mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-      {/* [PRO] SMART OBJECT LAYERS PHOTOSHOP */}
-    </p>
-    <p className="text-md text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-      {/* LINE */}
-    </p>
-  </div>
-</div>
+    <div className="bg-[#1a0e2e] text-white">
+      <NavBar />
 
-
-        {/* Image 2 */}
-        <div
-          className="relative bg-gray-100 rounded-3xl shadow-lg overflow-hidden group"
-          style={{ width: '450px', height: '500px',borderRadius: '40px' }}
+      <main>
+        {/* Section 1: Hero */}
+        <section 
+            className="relative py-28 md:py-40 flex items-center justify-center text-center bg-cover bg-center" 
+            style={{ backgroundImage: `url('/images/Trivia NIGHTS (1).png')` }}
         >
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${images[0]})` }}
-          />
-          <div className="absolute inset-0 bg-black bg-opacity-50 group-hover:bg-opacity-20 transition-all duration-500 flex flex-col justify-center items-center">
-            <h2 className="text-3xl font-semibold text-white mb-2">
-            {/* CREAM */}
-            </h2>
-            <p className="text-lg text-white mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-              {/* [PRO] SMART OBJECT LAYERS PHOTOSHOP */}
-            </p>
-            <p className="text-md text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-              {/* LINE */}
-            </p>
+            <div className="absolute inset-0 bg-[#1a0e2e]/70 backdrop-blur-sm"></div>
+            <div className="relative z-10 px-4">
+                <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight">Our Event Gallery</h1>
+                <p className="mt-4 text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">
+                    A look back at the moments that define the InQuizitive Club.
+                </p>
+            </div>
+        </section>
+
+        {/* Section 2: Masonry Photo Gallery */}
+        <section className="py-24">
+          <div className="container mx-auto px-4">
+            <Masonry
+              breakpointCols={breakpointColumnsObj}
+              className="my-masonry-grid"
+              columnClassName="my-masonry-grid_column"
+            >
+              {/* Map over the structured data and render a card for each event */}
+              {eventsData.map(event => (
+                <EventCard key={event.id} event={event} />
+              ))}
+            </Masonry>
           </div>
-        </div>
+        </section>
 
-        {/* Image 3 */}
-        <div
-          className="relative bg-gray-100 rounded-2xl shadow-lg overflow-hidden group"
-          style={{ width: '450px', height: '500px', marginTop: '100px',borderRadius: '40px' }}
-        >
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${images[1]})` }}
-          />
-          <div className="absolute inset-0 bg-black bg-opacity-50 group-hover:bg-opacity-20 transition-all duration-500 flex flex-col justify-center items-center">
-            <h2 className="text-3xl font-semibold text-white mb-2">
-            {/* CREAM */}
-            </h2>
-            <p className="text-lg text-white mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-              {/* [PRO] SMART OBJECT LAYERS PHOTOSHOP */}
-            </p>
-            <p className="text-md text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-              {/* LINE */}
-            </p>
-          </div>
-        </div>
-
-
-       
-      </div>
-      <div className="flex flex-wrap justify-center gap-6 p-4">
-        {/* Image 4 */}
-        <div
-          className="relative bg-gray-100 rounded-2xl shadow-lg overflow-hidden group"
-          style={{ width: '450px', height: '500px', marginTop: '-6px',borderRadius: '40px' }}
-        >
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${shuffledImages[5]})` }}
-          />
-          <div className="absolute inset-0 bg-black bg-opacity-50 group-hover:bg-opacity-20 transition-all duration-500 flex flex-col justify-center items-center">
-            <h2 className="text-3xl font-semibold text-white mb-2">
-            {/* CREAM */}
-            </h2>
-            <p className="text-lg text-white mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-              {/* [PRO] SMART OBJECT LAYERS PHOTOSHOP */}
-            </p>
-            <p className="text-md text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-              {/* LINE */}
-            </p>
-          </div>
-        </div>
-
-        {/* Image 5 */}
-        <div
-          className="relative bg-gray-100 rounded-3xl shadow-lg overflow-hidden group"
-          style={{ width: '450px', height: '500px', marginTop: '-200px',borderRadius: '40px' }}
-        >
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${shuffledImages[3]})` }}
-          />
-          <div className="absolute inset-0 bg-black bg-opacity-50 group-hover:bg-opacity-20 transition-all duration-500 flex flex-col justify-center items-center">
-            <h2 className="text-3xl font-semibold text-white mb-2">
-            {/* CREAM */}
-            </h2>
-            <p className="text-lg text-white mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-              {/* [PRO] SMART OBJECT LAYERS PHOTOSHOP */}
-            </p>
-            <p className="text-md text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-              {/* LINE */}
-            </p>
-          </div>
-        </div>
-
-        {/* Image 6 */}
-        <div
-          className="relative bg-gray-100 rounded-2xl shadow-lg overflow-hidden group"
-          style={{ width: '450px', height: '500px', marginTop: '-100px',borderRadius: '40px' }}
-        >
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${shuffledImages[4]})` }}
-          />
-          <div className="absolute inset-0 bg-black bg-opacity-50 group-hover:bg-opacity-20 transition-all duration-500 flex flex-col justify-center items-center">
-            <h2 className="text-3xl font-semibold text-white mb-2">
-            {/* CREAM */}
-            </h2>
-            <p className="text-lg text-white mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-              {/* [PRO] SMART OBJECT LAYERS PHOTOSHOP */}
-            </p>
-            <p className="text-md text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-              {/* LINE */}
-            </p>
-          </div>
-        </div>
-
-
-       
-      </div>
-      <div className="flex flex-wrap justify-center gap-6 p-4">
-        {/* Image 7 */}
-        <div
-  className="relative bg-gray-100 shadow-lg overflow-hidden group"
-  style={{ 
-    width: '450px', 
-    height: '305px', 
-    marginTop: '-6px', 
-    borderTopRightRadius: '35px',
-    borderTopLeftRadius: '35px',
-    overflow: 'hidden' // Ensure the content stays within the rounded corners
-  }}
->
-  <div 
-    style={{ 
-      width: '100%', 
-      height: '100%', 
-      backgroundImage: `url(${shuffledImages[5]})`, 
-      backgroundSize: 'cover', 
-      backgroundPosition: 'center' 
-    }} 
-  />
-
-  <div 
-    style={{ 
-      position: 'absolute', 
-      bottom: 0, 
-      left: 0, 
-      right: 0, 
-      height: '100%', 
-      background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0), black)' 
-    }} 
-  />
-
-  <div className="absolute inset-0 bg-black bg-opacity-50 group-hover:bg-opacity-20 transition-all duration-500 flex flex-col justify-center items-center">
-    <h2 className="text-3xl font-semibold text-white mb-2">
-    {/* CREAM */}
-    </h2>
-    <p className="text-lg text-white mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-      {/* [PRO] SMART OBJECT LAYERS PHOTOSHOP */}
-    </p>
-    <p className="text-md text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-      {/* LINE */}
-    </p>
-  </div>
-</div>
-
-
-        {/* Image 8 */}
-        <div
-  className="relative bg-gray-100 shadow-lg overflow-hidden group"
-  style={{ 
-    width: '450px', 
-    height: '500px', 
-    marginTop: '-200px', 
-    borderTopRightRadius: '35px',
-    borderTopLeftRadius: '35px',
-    overflow: 'hidden' // Ensure the content stays within the rounded corners
-  }}
->
-  <div 
-    style={{ 
-      width: '100%', 
-      height: '100%', 
-      backgroundImage: `url(${shuffledImages[6]})`, 
-      backgroundSize: 'cover', 
-      backgroundPosition: 'center' 
-    }} 
-  />
-
-  <div 
-    style={{ 
-      position: 'absolute', 
-      bottom: 0, 
-      left: 0, 
-      right: 0, 
-      height: '100%', 
-      background: 'linear-gradient(to bottom,transparent, black)' 
-    }} 
-  />
-
-  <div className="absolute inset-0 bg-black bg-opacity-50 group-hover:bg-opacity-20 transition-all duration-500 flex flex-col justify-center items-center">
-    <h2 className="text-3xl font-semibold text-white mb-2">
-    {/* CREAM */}
-    </h2>
-    <p className="text-lg text-white mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-      {/* [PRO] SMART OBJECT LAYERS PHOTOSHOP */}
-    </p>
-    <p className="text-md text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-      {/* LINE */}
-    </p>
-  </div>
-</div>
-
-
-        {/* Image 9 */}
-        <div
-  className="relative bg-gray-100 shadow-lg overflow-hidden group"
-  style={{ 
-        width: '450px', 
-        height: '400px', 
-        marginTop: '-100px', 
-        borderTopRightRadius: '35px',
-        borderTopLeftRadius: '35px',
-        overflow: 'hidden' // Ensure the content stays within the rounded corners
-      }}
->
-  <div 
-    style={{ 
-      width: '100%', 
-      height: '100%', 
-      backgroundImage: `url(${shuffledImages[7]})`, 
-      backgroundSize: 'cover', 
-      backgroundPosition: 'center' 
-    }} 
-  />
-
-  <div 
-    style={{ 
-      position: 'absolute', 
-      bottom: 0, 
-      left: 0, 
-      right: 0, 
-      height: '100%', 
-      background: 'linear-gradient(to bottom,transparent, black)' 
-    }} 
-  />
-
-  <div className="absolute inset-0 bg-black bg-opacity-50 group-hover:bg-opacity-20 transition-all duration-500 flex flex-col justify-center items-center">
-    <h2 className="text-3xl font-semibold text-white mb-2">
-    {/* CREAM */}
-    </h2>
-    <p className="text-lg text-white mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-      {/* [PRO] SMART OBJECT LAYERS PHOTOSHOP */}
-    </p>
-    <p className="text-md text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-      {/* LINE */}
-    </p>
-  </div>
-</div>
-       
-      </div>
-      <h1 className='text-white text-center text-6xl my-20'>Winners</h1>
-      <div className='flex flex-row'>
-  <div className='flex flex-col'>  
-     <div
-  className="relative bg-gray-100 rounded-2xl mt-20 mx-20 shadow-lg overflow-hidden group"
-  style={{ width: '800px', height: '500px', borderRadius: '40px' }}
->
-  <div
-    className="absolute inset-0 bg-cover bg-center"
-    style={{ backgroundImage: `url(${shuffledImages[8]})` }}
-  />
-  <div className="absolute inset-0 bg-black bg-opacity-50 group-hover:bg-opacity-20 transition-all duration-500 flex flex-col justify-center items-center">
-    <h2 className="text-3xl font-semibold text-white mb-2">
-    {/* CREAM */}
-    </h2>
-    <p className="text-lg text-white mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-      {/* [PRO] SMART OBJECT LAYERS PHOTOSHOP */}
-    </p>
-    <p className="text-md text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-      {/* LINE */}
-    </p>
-  </div>
-  
-  </div>
-  <div
-  className="relative bg-gray-100 rounded-2xl  ml-20 mt-10 mb-10 shadow-lg overflow-hidden group"
-  style={{ width: '800px', height: '500px', borderRadius: '40px' }}
->
-  <div
-    className="absolute inset-0 bg-cover bg-center"
-    style={{ backgroundImage: `url(${shuffledImages[10]})` }}
-  />
-  <div className="absolute inset-0 bg-black bg-opacity-50 group-hover:bg-opacity-20 transition-all duration-500 flex flex-col justify-center items-center">
-    <h2 className="text-3xl font-semibold text-white mb-2">
-    {/* CREAM */}
-    </h2>
-    <p className="text-lg text-white mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-      {/* [PRO] SMART OBJECT LAYERS PHOTOSHOP */}
-    </p>
-    <p className="text-md text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-      {/* LINE */}
-    </p>
-  </div>
-  
-  </div></div>
-  <div
-          className="relative bg-gray-100 rounded-2xl shadow-lg overflow-hidden group"
-          style={{ width: '514px', height: '1020px', marginTop: '100px',borderRadius: '40px' }}
-        >
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${shuffledImages[9]})` }}
-          />
-          <div className="absolute inset-0 bg-black bg-opacity-50 group-hover:bg-opacity-20 transition-all duration-500 flex flex-col justify-center items-center">
-            <h2 className="text-3xl font-semibold text-white mb-2">
-            {/* CREAM */}
-            </h2>
-            <p className="text-lg text-white mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-              {/* [PRO] SMART OBJECT LAYERS PHOTOSHOP */}
-            </p>
-            <p className="text-md text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-              {/* LINE */}
-            </p>
-          </div>
-        </div>
-      </div>
+        {/* Section 3: Call to Action */}
+         <section className="py-24 bg-gradient-to-t from-[#1a0e2e] to-[#2e1a47] text-center">
+             <div className="container mx-auto px-6">
+                 <h2 className="text-4xl font-bold mb-4">Want to be in our next photo?</h2>
+                 <p className="text-gray-400 text-lg mb-8 max-w-2xl mx-auto">Don't miss out on our upcoming events. Register now and become a part of our growing story!</p>
+                  <a href="/about-us" className="bg-yellow-400 text-black font-bold px-8 py-4 rounded-full transition-transform duration-300 hover:scale-105 shadow-lg shadow-yellow-500/20">
+                    Meet the Team
+                </a>
+             </div>
+        </section>
+      </main>
+      
       <Footer />
     </div>
-    
   );
 };
 
-export default RandomGridComponent;
+export default EventsPage;

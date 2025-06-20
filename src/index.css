@@ -30,3 +30,18 @@
 .swiper-button-prev::after {
     display: none;
 }
+
+/* In src/index.css */
+
+.my-masonry-grid {
+    display: flex;
+    margin-left: -40px;
+    /* gutter size offset - WAS 30px */
+    width: auto;
+}
+
+.my-masonry-grid_column {
+    padding-left: 40px;
+    /* gutter size - WAS 30px */
+    background-clip: padding-box;
+}

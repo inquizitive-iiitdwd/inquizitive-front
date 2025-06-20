@@ -19,7 +19,6 @@ import Resetpassword from './features/auth/ResetPassword.js'
 import Enternewpassword from "./features/auth/EnterNewPassword.js";
 import Event from './pages/Events.js'
 import ShowMarks from "./features/quiz/ShowMarks.js";
-import ClientloginPage from "./features/auth/ClientLoginPage.js";
 
 function App() {
   
