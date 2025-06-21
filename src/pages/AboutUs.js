@@ -1,13 +1,12 @@
 import React from 'react';
-import Footer from '../component/Footer.js'; // Assuming new folder structure
+import Footer from '../component/Footer.js'; 
 import NavBar from '../component/NavBar.js';
 import { FaLinkedin } from 'react-icons/fa';
 import { BsBinocularsFill, BsTrophyFill, BsPeopleFill } from 'react-icons/bs';
 
-// --- Team Member Data ---
-// Cleaned up, with correct image paths and removed duplicates.
+// Members Data
 const members = [
-  { name: "Aditya Raj", position: "Ex-President", imageUrl: "/images/ClubMembers/AdityaRaj.jpg", linkedinUrl: "#" }, // Replace '#' with actual URLs
+  { name: "Aditya Raj", position: "Ex-President", imageUrl: "/images/ClubMembers/AdityaRaj.jpg", linkedinUrl: "#" },
   { name: "Aditya Vikram Singh", position: "Ex-VicePresident", imageUrl: "/images/ClubMembers/AdityaVikramSingh.jpg", linkedinUrl: "#" },
   { name: "Niharika", position: "Core-Quiz-Team Lead", imageUrl: "/images/ClubMembers/Niharika.jpg", linkedinUrl: "#" },
   { name: "Sai", position: "Quiz Team", imageUrl: "/images/question-numbers3.jpg", linkedinUrl: "#" },
@@ -17,7 +16,7 @@ const members = [
   { name: "Modak", position: "Quiz Team", imageUrl: "/images/question-numbers9.jpg", linkedinUrl: "#" },
 ];
 
-// --- Sub-component for Team Member Cards for cleaner code ---
+// Team Member Card Component.
 const TeamMemberCard = ({ member }) => (
   <div className="group relative aspect-[4/5] w-full overflow-hidden rounded-2xl shadow-lg transform transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-yellow-400/20">
     <img src={member.imageUrl} alt={member.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />

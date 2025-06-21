@@ -6,7 +6,7 @@ import Adminlogin from "./features/auth/AdminLoginPage.js";
 import Home from "./pages/Home.js";
 import Timer from "./features/quiz/components/Timer.js";
 import Showqestion from "./features/quiz/ShowQuestions.js";
-import Sign from "./component/sign.js"
+import RegisterPage from "./pages/RegisterPage.js"
 import Buzzer from "./pages/BuzzerRoom.js"
 import Adminebuzzer from "./component/adminebuzzer.js";
 import Notlogin from "./component/notlogin.js";
@@ -51,7 +51,7 @@ function App() {
           </Route>
           <Route  path="/timer" element={<Timer/>}>
           </Route>
-          <Route  path="/sign" element={<Sign/>}>
+          <Route  path="/registerpage" element={<RegisterPage/>}>
           </Route>
           <Route  path="/showquestion" element={<Showqestion/>}>
           </Route>

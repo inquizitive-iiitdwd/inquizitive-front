@@ -1,9 +1,9 @@
 import React from 'react';
 import Masonry from 'react-masonry-css';
 
-import NavBar from '../component/NavBar.js'; // Adjust path if needed
-import Footer from '../component/Footer.js'; // Adjust path if needed
-import EventCard from '../component/EventCard.js'; // Import our new card component
+import NavBar from '../component/NavBar.js'; 
+import Footer from '../component/Footer.js'; 
+import EventCard from '../component/EventCard.js';
 
 // --- A proper data structure for your events ---
 // This is much better than a simple image array. It gives context!
@@ -87,12 +87,11 @@ const eventsData = [
   },
 ];
 
-// This configures how many columns the masonry grid has at different screen sizes
 const breakpointColumnsObj = {
-  default: 3,   // Was 4
-  1100: 2,      // Was 3
-  700: 2,       // Stays the same
-  500: 1        // Stays the same
+  default: 3,   
+  1100: 2,      
+  700: 2,       
+  500: 1        
 };
 
 const EventsPage = () => {
