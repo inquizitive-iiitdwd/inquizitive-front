@@ -4,6 +4,7 @@ import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import Nav from '../../component/NavBar.js';
 
+const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:5000';
 // SVG Icons for a cleaner look without extra dependencies
 const MailIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -54,7 +55,7 @@ const ClientLoginPage = () => {
     try {
       // **CHANGED**: The payload is now a flat object, not nested under `data`.
       const credentials = { email, password };
-      const response = await axios.post("http://localhost:5000/users/login", credentials, { withCredentials: true });
+      const response = await axios.post(`${BACKEND_URL}/users/login`, credentials, { withCredentials: true });
 
       if (response.status === 200) {
         toast.success("Signed in successfully!");
@@ -137,7 +138,7 @@ const ClientLoginPage = () => {
             <div className="text-center text-gray-300 text-sm space-y-2 pt-4">
               <p>
                 Don't have an account?{' '}
-                <a href="/sign" className="text-green-400 font-bold hover:underline" onClick={(e) => handleNavigate(e, '/sign')}>
+                <a href="/sign" className="text-green-400 font-bold hover:underline" onClick={(e) => handleNavigate(e, '/register')}>
                   Sign up
                 </a>
               </p>

@@ -51,7 +51,7 @@ function App() {
           </Route>
           <Route  path="/timer" element={<Timer/>}>
           </Route>
-          <Route  path="/registerpage" element={<RegisterPage/>}>
+          <Route  path="/register" element={<RegisterPage/>}>
           </Route>
           <Route  path="/showquestion" element={<Showqestion/>}>
           </Route>

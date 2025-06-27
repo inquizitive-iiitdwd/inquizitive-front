@@ -7,7 +7,7 @@ const FlipCard = () => {
         <div className="flip-card-inner">
           <div className="flip-card-front flex justify-center items-center bg-purple-500 text-white rounded-lg">
             <h1 className="text-2xl">Hey</h1>
-          </div>
+          </div>  
           <div className="flip-card-back flex justify-center items-center bg-green-500 text-white rounded-lg">
             <p className="text-xl">Did you know?</p>
           </div>
