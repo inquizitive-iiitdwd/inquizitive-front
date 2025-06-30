@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from 'axios';
+import api from '../services/api.js';
 
 const Timerforshowquestion = ({ onTimerEnd }) => {
   const [time, setTime] = useState(100);
@@ -7,7 +7,7 @@ const Timerforshowquestion = ({ onTimerEnd }) => {
    useEffect(() => {
     async function fetchTimer() {
       try {
-        const response = await axios.get("http://localhost:5000/QuizSetUp/getSaveTimer");
+        const response = await api.get("/QuizSetUp/getSaveTimer");
         console.log("response", response.data[0].duration);
         setTime(response.data[0].duration); // Set the timer duration
       } catch (error) {

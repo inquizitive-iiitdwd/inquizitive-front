@@ -1,12 +1,12 @@
 import React, { useState,useEffect } from 'react';
-import axios from 'axios';
+import api from '../../services/api';
 
 const Card = () => {
   const [mem,setmember]=useState()
   useEffect(()=>{
     const set = async () => {
         try {
-            const result=await axios.get("http://localhost:5000/admine/membersDetail")
+            const result=await api.get("/admine/membersDetail")
             setmember(result.data)
             console.log(result.data)
             // if (response.data.success) {
@@ -43,22 +43,3 @@ const Card = () => {
 };
 
 export default Card;
-// const [members,setmembers]=useState()
-//     useEffect(() => {
-//         const set = async () => {
-//             try {
-//                 const result=await axios.get("http://localhost:5000/getSaveTimer")
-//                 setmembers(result.data)
-//                 console.log(result.data)
-//                 // if (response.data.success) {
-//                 // }
-//             } catch (error) {
-//                 console.error("Error checking auth:", error);
-//             }
-//         };
-//         set()
-//         window.addEventListener('scroll', handleScroll);
-//         return () => {
-//             window.removeEventListener('scroll', handleScroll);
-//         };
-//     }, []);

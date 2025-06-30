@@ -1,10 +1,11 @@
 import React, { useContext, useReducer, useEffect } from "react";
+import api from "../services/api.js";
 import reducer from "../component/reducer.js";
 
 const initialState = {
   questions: [],
   members: [],
-  timer: null
+  timer: null,
 };
 
 const AppContext = React.createContext();
@@ -12,40 +13,27 @@ const AppContext = React.createContext();
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
- const Api1 = "http://localhost:5000/quiz/getQuestion";
-  const Api2 = "http://localhost:5000/admine/membersDetail";
-  const Api3 = "http://localhost:5000/quizsetup/getSaveTimer";
-
-  const fetchApiData = async (url, type) => {
+  const fetchApiData = async (endpoint, type) => {
     try {
-      const response = await fetch(url, {
-        method: 'GET',
-        credentials: 'include', // This enables cookies to be sent with the request
-      });
-      const data = await response.json();
-      //console.log("data",data)
+      const response = await api.get(endpoint, { withCredentials: true });
       dispatch({
-        type: type,
-        payload: data
+        type,
+        payload: response.data,
       });
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 
   useEffect(() => {
-    // fetchApiData(Api1, "GET_QUESTION");
-    // fetchApiData(Api2, "GET_MEMBERS");
-    fetchApiData(Api3, "GET_TIMER");
+    // fetchApiData('/quiz/getQuestion', "GET_QUESTION");
+    // fetchApiData('/admine/membersDetail', "GET_MEMBERS");
+    fetchApiData('/quizsetup/getSaveTimer', "GET_TIMER");
   }, []);
-console.log("state->",state)
+
   return <AppContext.Provider value={{ ...state }}>{children}</AppContext.Provider>;
 };
 
-const useGlobalcontext = () => {
-  return useContext(AppContext);
-};
+const useGlobalcontext = () => useContext(AppContext);
 
 export { AppContext, AppProvider, useGlobalcontext };
-
-// reducer.js

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import axios from 'axios';
+import api from '../../services/api.js';
 import { useLocation } from 'react-router-dom';
 
 const ShowMarks = () => {
@@ -12,10 +12,10 @@ const ShowMarks = () => {
     useEffect(()=>{
         const fetchData = async ()=>{
             try{
-                if(quizName==' '){
+                if(quizName===' '){
                      toast.error("Failed to get marks");
                 }
-                const response = await axios.get(`http://localhost:5000/quiz/getMarks?quizName=${quizName}`);
+                const response = await api.get(`/quiz/getMarks?quizName=${quizName}`);
                 console.log(response.data);
                      if(response.data.ok === false){
                     toast.error("Failed to get marks");

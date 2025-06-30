@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../../services/api.js';
 import toast, { Toaster } from 'react-hot-toast';
 
 // --- Reusable SVG Icons ---
@@ -21,7 +21,7 @@ const QuizTimerPage = () => {
   useEffect(() => {
     const fetchTimer = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/QuizSetUp/getSaveTimer");
+        const response = await api.get("/QuizSetUp/getSaveTimer");
         if (response.data && response.data.length > 0) {
           setQuizData(response.data[0]);
         } else {
@@ -76,7 +76,7 @@ const QuizTimerPage = () => {
 
     setIsSubmitting(true);
     try {
-      const response = await axios.post('http://localhost:5000/events/accessingquizroombykey', { key: roomKey });
+      const response = await api.post('/events/accessingquizroombykey', { key: roomKey });
       
       if (response.status === 200) {
         toast.success('Key accepted! Entering quiz...');

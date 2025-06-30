@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
+import api from '../services/api.js';
 import toast, { Toaster } from 'react-hot-toast';
 import Nav from '../component/NavBar.js';
 
@@ -44,7 +44,7 @@ const RegisterPage = () => {
       const payload = { email, password, phone_number: phoneNumber, name };
       
       // **CHANGED**: Use the correct endpoint `/register`
-      const response = await axios.post("http://localhost:5000/users/register", payload, { withCredentials: true });
+      const response = await api.post("/users/register", payload, { withCredentials: true });
 
       // **CHANGED**: Use the success message from the backend
       if (response.status === 201) {

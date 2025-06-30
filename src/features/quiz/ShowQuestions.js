@@ -1,7 +1,7 @@
 import React, { useState, useEffect,useCallback, useRef } from "react";
 import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from "../../services/api.js";
 import { useLocation } from 'react-router-dom';
 import Footer from '../../component/Footer.js';
 import Timerforshowquestion from "../../component/Timerforshowquestion.js";
@@ -24,7 +24,7 @@ const QuizBank = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/quiz/getQuestion");
+        const response = await api.get("/quiz/getQuestion");
         setQuestions(response.data.questions);
        
         console.log(questions[0]);
@@ -108,13 +108,13 @@ const QuizBank = () => {
   };
 
 
-  const answersArray = (answer) => {
-    setAnswers((prev) => ({
-      ...prev,
-      [currentQuestion]: answer,
-    }));
-    console.log(answers);
-  };
+  // const answersArray = (answer) => {
+  //   setAnswers((prev) => ({
+  //     ...prev,
+  //     [currentQuestion]: answer,
+  //   }));
+  //   console.log(answers);
+  // };
 
   const handleFillInTheBlankChange = (e) => {
     const answer = e.target.value;
@@ -173,7 +173,7 @@ const QuizBank = () => {
       .padStart(2, "0")}`;
    console.log(timestamp);
     for (let i = 0; i < questions.length; i++) {
-      if(questions[i].questiontype=='multiple-choice'){
+      if(questions[i].questiontype==='multiple-choice'){
         if(!answers[i]){
           marks-=0;
           console.log("QUestion not answered",questions[i].question);
@@ -205,13 +205,13 @@ const QuizBank = () => {
  
       const data = { marks, roomKey ,quizName,timestamp };
       console.log(data);
-      const response = await axios.post("http://localhost:5000/quiz/addMarks", { data }, { withCredentials: true });
+      const response = await api.post("/quiz/addMarks", { data }, { withCredentials: true });
       console.log(response);
       if (response.data.ok) {
         navigate('/');
         toast.success(response.data.marks);
       }
-      else if(response.status!=200){
+      else if(response.status!==200){
         toast.error(response.data.marks);
         
         setIsSubmitting(false);
@@ -299,7 +299,7 @@ const QuizBank = () => {
 
 
 
-        { questions[currentQuestion]?.questiontype=='multiple-choice' && ( <div className="options">
+        { questions[currentQuestion]?.questiontype==='multiple-choice' && ( <div className="options">
               <ul className="list-options">
                 {questions[currentQuestion]?.options1 && (
                   <div className="option-container">

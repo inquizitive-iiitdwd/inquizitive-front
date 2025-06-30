@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { IoMdAddCircle, IoMdAdd } from "react-icons/io";
 import { FaTrashAlt } from "react-icons/fa";
-import axios from "axios";
+import api from '../services/api.js';
 import Nav from './NavBar.js';
 import toast, { Toaster } from 'react-hot-toast';
 import CreateQuizQuestion from "../features/quiz/CreateQuiz.js";
@@ -45,7 +45,7 @@ const QuestionDemo = () => {
 
     const data = { questionId, question, options, description, imgSrc, answer,quizname,marks, negativeMarks,questionType};
     try {
-      const response = await axios.post("http://localhost:5000/quizsetup/addquestion_to_quiz", { data });
+      const response = await api.post("/quizsetup/addquestion_to_quiz", { data });
       if (response.status === 200) {
         setQuestions([...questions, data]);
         resetForm();
@@ -86,7 +86,7 @@ const QuestionDemo = () => {
     formData.append('questionId', questionId);
 
     try {
-      const response = await axios.post("http://localhost:5000/quiz/uploadMediaQuestion", formData, {
+      const response = await api.post("/quiz/uploadMediaQuestion", formData, {
         headers: { "Content-Type": "multipart/form-data" }
       });
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useGlobalcontext } from '../../context/QuizContext.js';
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import toast, { Toaster } from 'react-hot-toast';
-import axios from 'axios';
+import api from '../../services/api.js';
 import { useNavigate } from 'react-router-dom';
 // import ShowMarks from './showMarks';
 
@@ -20,7 +20,7 @@ const CreateQuiz = ({ onQuestionsChange }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/quizsetup/questionForonequiz");
+        const response = await api.get("/quizsetup/questionForonequiz");
         setQuestionList(response.data);
         if(response.data.length>0){
           setQuizName(response.data[0].quizname);
@@ -47,7 +47,7 @@ const CreateQuiz = ({ onQuestionsChange }) => {
 
   const handleDelete = async (question_id) => {
     try {
-      await axios.post("http://localhost:5000/quiz/deletequestion", { question_id });
+      await api.post("/quiz/deletequestion", { question_id });
       setQuestionList(questionList.filter(q => q.question_id !== question_id));
       onQuestionsChange();
     } catch (error) {
@@ -63,7 +63,7 @@ const CreateQuiz = ({ onQuestionsChange }) => {
   const setQuizForExam = async () => {
     try {
       const name = quiznameforconformation;
-      const response=await axios.post("http://localhost:5000/quiz/setQuizNameToFile", { name });
+      const response=await api.post("/quiz/setQuizNameToFile", { name });
       console.log("Quiz name set for the exam:", response.status);
       if(response.status===200){
         setQuizNameForConformation('')

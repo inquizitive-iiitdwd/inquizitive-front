@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import axios from 'axios';
+import api from '../services/api.js';
 import 'tailwindcss/tailwind.css'; // Import Tailwind CSS
 
 const EventRegistration = () => {
@@ -84,9 +84,8 @@ const EventRegistration = () => {
         MemberIIid: members[mem2idx]
       };
 
-      console.log(data);
-      const response = await axios.post("http://localhost:5000/events/eventRegistration", { data }, { withCredentials: true });
-      console.log(response);
+      // console.log(data);
+      const response = await api.post('/events/eventRegistration', { data }, { withCredentials: true });
 
       if (response.data.ok) {
         setIsRegistered(true); // Set registration status to true

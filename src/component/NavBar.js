@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import api from '../services/api.js';
 import { toast, Toaster } from 'react-hot-toast';
 import { HiMenu, HiX } from 'react-icons/hi';
 import QuizAccessModal from '../features/quiz/components/QuizAccessModal.js'; // This modal component is still used
@@ -11,6 +11,8 @@ const navLinks = [
   { label: 'Events', path: '/event' },
   { label: 'About Us', path: '/AboutUs' },
 ];
+
+
 
 const NavBar = () => {
   const navigate = useNavigate();
@@ -24,7 +26,7 @@ const NavBar = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.get('http://localhost:5000/users/logout', { withCredentials: true });
+      await api.get('/users/logout', { withCredentials: true });
       setUser(null);
       navigate('/');
       toast.success('Logged out successfully!');
@@ -38,8 +40,8 @@ const NavBar = () => {
     setQuizAttempts((prev) => prev + 1);
     const data = { teamname, teamleademailid, attempts: quizAttempts + 1 };
     try {
-      const response = await axios.post(
-        'http://localhost:5000/events/accessingquizroom',
+      const response = await api.post(
+        '/events/accessingquizroom',
         { data },
         { withCredentials: true }
       );
