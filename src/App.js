@@ -1,85 +1,57 @@
+import React, { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import './App.css';
-import ClientLoginPage from "./features/auth/ClientLoginPage.js"; 
-import Questiondemo from "./component/Questiondemo.js";
-import Adminlogin from "./features/auth/AdminLoginPage.js";
-import Home from "./pages/Home.js";
-import Timer from "./features/quiz/components/Timer.js";
-import Showqestion from "./features/quiz/ShowQuestions.js";
-import RegisterPage from "./pages/RegisterPage.js"
-import Buzzer from "./pages/BuzzerRoom.js"
-import Adminebuzzer from "./component/adminebuzzer.js";
-import Notlogin from "./component/notlogin.js";
-import CreateQuiz from "./features/quiz/CreateQuiz.js"
-import AdminDashboard from './pages/AdminDashboard.js'
-import AboutUs from "./pages/AboutUs.js";
-import EventRegistration from "./pages/Events.js"
-import VerifyEmail from './features/auth/VerifyMail.js'
-import Resetpassword from './features/auth/ResetPassword.js'
-import Enternewpassword from "./features/auth/EnterNewPassword.js";
-import Event from './pages/Events.js'
-import ShowMarks from "./features/quiz/ShowMarks.js";
+import "./App.css";
 
-function App() {
-  
+const Home = lazy(() => import("./pages/Home.js"));
+const QuestionForm = lazy(() => import("./component/QuestionForm.js"));
+const Event = lazy(() => import("./pages/Events.js"));
+const ResetPassword = lazy(() => import("./features/auth/ResetPassword.js"));
+const EnterNewPassword = lazy(() =>
+  import("./features/auth/EnterNewPassword.js")
+);
+const AdminLogin = lazy(() => import("./pages/AdminLoginPage.js"));
+const ClientLoginPage = lazy(() => import("./pages/ClientLoginPage.js"));
+const QuizTimer = lazy(() => import("./features/quiz/components/QuizTimer.js"));
+const RegisterPage = lazy(() => import("./pages/RegisterPage.js"));
+const ShowQestion = lazy(() => import("./features/quiz/ShowQuestions.js"));
+const NotLogin = lazy(() => import("./component/NotLogin.js"));
+const CreateQuiz = lazy(() => import("./features/quiz/CreateQuiz.js"));
+const AdminDashboard = lazy(() => import("./pages/AdminDashboard.js"));
+const AboutUs = lazy(() => import("./pages/AboutUs.js"));
+const VerifyEmail = lazy(() => import("./pages/VerifyEmailPage.js"));
+const ShowMarks = lazy(() => import("./features/quiz/ShowMarks.js"));
+
+const routes = [
+  { path: "/", element: <Home /> },
+  { path: "/question-form", element: <QuestionForm /> },
+  { path: "/event", element: <Event /> },
+  { path: "/reset-password", element: <ResetPassword /> },
+  { path: "/enter-new-password", element: <EnterNewPassword /> },
+  { path: "/admin-login", element: <AdminLogin /> },
+  { path: "/client-login", element: <ClientLoginPage /> },
+  { path: "/quiz-timer", element: <QuizTimer /> },
+  { path: "/register", element: <RegisterPage /> },
+  { path: "/show-question", element: <ShowQestion /> },
+  { path: "/aboutus", element: <AboutUs /> },
+  { path: "/verify-email/:token", element: <VerifyEmail /> },
+  { path: "/show-marks", element: <ShowMarks /> },
+  { path: "/notlogin", element: <NotLogin /> },
+  { path: "/create-quiz", element: <CreateQuiz /> },
+  { path: "/admin-dashboard", element: <AdminDashboard /> },
+];
+
+export default function App() {
   return (
     <div className="App">
-      
       <BrowserRouter>
-        <Routes>
-        <Route 
-         path="/" element={<Home/>}
-        ></Route>
-        {/* <Route 
-         path="/home" element={<Home/>}
-        ></Route> */}
-        
-          <Route  path="/Questiondemo" element={<Questiondemo/>}>
-          </Route>
-          <Route  path="/Event" element={<Event/>}>
-          </Route>
-          <Route  path="/Resetpassword" element={<Resetpassword/>}>
-          </Route>
-          <Route  path="/enternewpassword" element={<Enternewpassword/>}>
-          </Route>
-          
-          <Route  path="/Adminlogin" element={<Adminlogin/>}>
-          </Route>
-          <Route  path="/EventRegistration" element={<EventRegistration/>}>
-          </Route>
-          <Route  path="/clientlogin" element={<ClientLoginPage/>}>
-          </Route>
-          <Route  path="/timer" element={<Timer/>}>
-          </Route>
-          <Route  path="/register" element={<RegisterPage/>}>
-          </Route>
-          <Route  path="/showquestion" element={<Showqestion/>}>
-          </Route>
-          <Route  path="/buzzer" element={<Buzzer/>}>
-          </Route>
-          <Route  path="/adminebuzzer" element={<Adminebuzzer/>}>
-          </Route>
-          <Route  path="/aboutus" element={<AboutUs/>}>
-          </Route>
-          <Route  path="/verifyemail" element={<VerifyEmail/>}>
-          </Route>
-
-          <Route  path="/showmarks" element={<ShowMarks/>}>
-          </Route>
-          
-          <Route 
-         path="/notlogin" element={<Notlogin/>}
-        ></Route>
-        <Route 
-         path="/CreateQuiz" element={<CreateQuiz/>}
-        ></Route>
-        <Route 
-         path="/AdminDashboard" element={<AdminDashboard/>}
-        ></Route>
-        </Routes>
+        <Suspense fallback={null}>
+          <Routes>
+            {routes.map(({ path, element }) => (
+              <Route key={path} path={path} element={element} />
+            ))}
+          </Routes>
+        </Suspense>
       </BrowserRouter>
     </div>
   );
 }
-//:roomid dynamic generated
-export default App;

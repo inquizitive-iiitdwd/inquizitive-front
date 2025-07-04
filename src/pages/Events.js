@@ -135,7 +135,7 @@ const EventsPage = () => {
              <div className="container mx-auto px-6">
                  <h2 className="text-4xl font-bold mb-4">Want to be in our next photo?</h2>
                  <p className="text-gray-400 text-lg mb-8 max-w-2xl mx-auto">Don't miss out on our upcoming events. Register now and become a part of our growing story!</p>
-                  <a href="/about-us" className="bg-yellow-400 text-black font-bold px-8 py-4 rounded-full transition-transform duration-300 hover:scale-105 shadow-lg shadow-yellow-500/20">
+                  <a href="/" className="bg-yellow-400 text-black font-bold px-8 py-4 rounded-full transition-transform duration-300 hover:scale-105 shadow-lg shadow-yellow-500/20">
                     Meet the Team
                 </a>
              </div>
