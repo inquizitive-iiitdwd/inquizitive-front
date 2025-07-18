@@ -3,7 +3,7 @@ import { FaExternalLinkAlt, FaBolt, FaQuestionCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../component/NavBar.js";
 import Footer from "../component/Footer.js";
-import Eventregistration from "../component/EventRegistration.js";
+import EventRegistration from "../component/EventRegistration.js";
 import ClubGallery from "../component/ClubGallery.js";
 
 const Home = () => {
@@ -12,9 +12,6 @@ const Home = () => {
 
   const togglePopup = () => setIsOpen(!isOpen);
   const handleNavigation = (path) => navigate(path);
-
-  // Note: The commented-out useEffect for auth is kept as is.
-  // useEffect(() => { ... });
 
   return (
     <div className="bg-gradient-to-br from-[#2e1a47] to-[#624a82] text-white min-h-screen flex flex-col">
@@ -102,22 +99,7 @@ const Home = () => {
       </main>
 
       {/* Registration Popup Modal */}
-      {isOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white text-black p-6 rounded-lg w-full max-w-md relative shadow-2xl">
-            <button
-              className="absolute top-2 right-2 text-2xl text-gray-500 hover:text-gray-800"
-              onClick={togglePopup}
-            >
-              ×
-            </button>
-            <h2 className="text-2xl font-bold mb-4 text-center">
-              Register for an Event
-            </h2>
-            <Eventregistration />
-          </div>
-        </div>
-      )}
+      <EventRegistration isOpen={isOpen} onClose={togglePopup} />
 
       <Footer />
     </div>

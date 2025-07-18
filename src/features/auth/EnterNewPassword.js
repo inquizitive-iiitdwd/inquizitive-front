@@ -23,7 +23,7 @@ function Enternewpassword() {
        const respond= await axios.post("https://quiz-t7o5.onrender.com/users/reset_password", { data }, { withCredentials: true });
        console.log(respond)
           toast.success("Signed in successfully!");
-          navigate("/Clientlogin");
+          navigate("/client-login");
         } catch (error) {
           console.error("Error signing in:", error);
           toast.error("Failed to sign in. Please try again.");

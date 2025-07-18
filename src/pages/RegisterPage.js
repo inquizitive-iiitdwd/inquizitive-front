@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api.js";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import Nav from "../component/NavBar.js";
 
 // --- Reusable SVG Icons ---
@@ -70,7 +70,6 @@ const PhoneIcon = () => (
   </svg>
 );
 
-// Component renamed to be more descriptive
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -81,10 +80,18 @@ const RegisterPage = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [verificationSent, setVerificationSent] = useState(false);
+  const [toastShown, setToastShown] = useState(false); // Prevent multiple toasts
+  const [resendDisabled, setResendDisabled] = useState(false); // Cooldown for resend
+  const [resendCooldown, setResendCooldown] = useState(0); // Countdown timer
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const validatePassword = (password) => {
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return passwordRegex.test(password);
   };
 
   const handleRegister = async (e) => {
@@ -97,32 +104,63 @@ const RegisterPage = () => {
     if (password !== confirmPassword) {
       return toast.error("Passwords do not match.");
     }
+    if (!validatePassword(password)) {
+      return toast.error("Password must be at least 8 characters long with uppercase, lowercase, number, and special character.");
+    }
 
     setIsLoading(true);
     try {
-      // **CHANGED**: Prepare the correct payload (flat object)
       const payload = { email, password, phone_number: phoneNumber, name };
-
-      // **CHANGED**: Use the correct endpoint `/register`
       const response = await api.post("/users/register", payload, {
         withCredentials: true,
       });
 
-      // **CHANGED**: Use the success message from the backend
       if (response.status === 201) {
-        toast.success(response.data.message);
-        setVerificationSent(true); // Show the success message UI
+        if (!toastShown) {
+          toast.success(response.data.message);
+          setToastShown(true);
+        }
+        setVerificationSent(true);
       }
     } catch (error) {
-      // **CHANGED**: Use the specific error message from the backend
       const errorMessage =
         error.response?.data?.error || "Registration failed. Please try again.";
       toast.error(errorMessage);
-      console.error("Error signing up:", error);
     } finally {
       setIsLoading(false);
     }
   };
+
+  const handleResendVerification = async () => {
+    if (resendDisabled || !formData.email) {
+      toast.error("Please enter your email or wait before resending.");
+      return;
+    }
+    setResendDisabled(true);
+    setResendCooldown(20); // Set 20-second cooldown
+    try {
+      await api.post("/users/resend-verification", { email: formData.email });
+      if (!toastShown) {
+        toast.success("Verification email has been resent. Please check your inbox.");
+        setToastShown(true);
+      }
+    } catch (error) {
+      toast.error("Failed to resend verification email. Please try again.");
+    }
+  };
+
+  useEffect(() => {
+    let timer;
+    if (resendCooldown > 0) {
+      timer = setInterval(() => {
+        setResendCooldown((prev) => prev - 1);
+      }, 1000);
+    } else if (resendCooldown === 0) {
+      setResendDisabled(false);
+      setToastShown(false); // Reset toast flag after cooldown
+    }
+    return () => clearInterval(timer);
+  }, [resendCooldown]);
 
   const renderInput = (name, type, placeholder, icon, autoComplete) => (
     <div className="relative">
@@ -146,8 +184,6 @@ const RegisterPage = () => {
     <>
       <Nav />
       <div className="relative min-h-screen bg-gradient-to-r from-[#2e1a47] to-[#624a82] font-sans flex items-center justify-center p-4">
-        <Toaster position="top-center" reverseOrder={false} />
-
         <div className="relative bg-[#2e1a47] bg-opacity-40 p-8 rounded-xl shadow-2xl w-full max-w-md border border-purple-400/30">
           {verificationSent ? (
             <div className="text-center text-white">
@@ -177,16 +213,23 @@ const RegisterPage = () => {
               >
                 Proceed to Login
               </button>
+              <p className="mt-4 text-gray-300">
+                Didn’t receive the email?{" "}
+                <button
+                  onClick={handleResendVerification}
+                  className="text-green-400 font-bold hover:underline"
+                  disabled={resendDisabled}
+                >
+                  Resend Verification {resendCooldown > 0 && `(${resendCooldown}s)`}
+                </button>
+              </p>
             </div>
           ) : (
             <>
               <h2 className="text-4xl font-bold text-white mb-8 text-center">
                 Create Account
               </h2>
-              <form
-                onSubmit={handleRegister}
-                className="flex flex-col space-y-5"
-              >
+              <form onSubmit={handleRegister} className="flex flex-col space-y-5">
                 {renderInput(
                   "email",
                   "email",

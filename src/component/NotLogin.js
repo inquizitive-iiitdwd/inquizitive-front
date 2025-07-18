@@ -43,7 +43,7 @@ const NotLoggedInPage = () => {
         {/* Clear, actionable buttons to guide the user */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <button
-            onClick={() => navigate('/Clientlogin')}
+            onClick={() => navigate('/client-login')}
             className="w-full sm:w-auto px-8 py-3 bg-green-600 text-white rounded-lg font-bold transition duration-300 ease-in-out hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
           >
             Login

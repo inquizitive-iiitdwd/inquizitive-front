@@ -1,161 +1,267 @@
-import { useState } from 'react';
-import axios from 'axios';
-import toast, { Toaster } from 'react-hot-toast';
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
+import toast from "react-hot-toast";
+import Nav from "../../component/NavBar.js";
+
+// SVG Icons
+const MailIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="h-5 w-5 text-gray-400"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
+    />
+  </svg>
+);
+
+const LockIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="h-5 w-5 text-gray-400"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+    />
+  </svg>
+);
 
 const ResetPassword = () => {
-  const [email, setEmail] = useState('');
-  const [sendingmailverification, setsending] = useState(false);
-  const [successMessage, setSuccessMessage] = useState('');
-  const [canResend, setCanResend] = useState(false);
-  const [isEditingEmail, setIsEditingEmail] = useState(true);
-  const [showEnterNewPassword, setShowEnterNewPassword] = useState(false); 
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [token, setToken] = useState('');
+  const { token } = useParams();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [sendingMailVerification, setSendingMailVerification] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [isRequestingReset, setIsRequestingReset] = useState(!token);
   const navigate = useNavigate();
 
-  const verify = async () => {
+  useEffect(() => {
+    if (token) {
+      setIsRequestingReset(false);
+    }
+  }, [token]);
+
+  const validatePassword = (password) => {
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return passwordRegex.test(password);
+  };
+
+  const requestPasswordReset = async () => {
     if (!email) {
       toast.error("Please enter your email");
-    } else {
-      try {
-        setsending(true);
-        const data = { email };
-        const response = await axios.post("https://quiz-t7o5.onrender.com/users/forgot_password", { data }, { withCredentials: true });
-        console.log("response", response.data.result);
-        if (response.data.result === 'TRUE') {
-          toast.success("Verification email sent successfully!");
-          setSuccessMessage(`We have sent you a token to your ${email}, please enter the token.`);
-          setCanResend(true);
-          setIsEditingEmail(false); 
-          setShowEnterNewPassword(true); 
-        } else {
-          setEmail('');
-          toast.error("Failed to verify. Please enter the correct email.");
-        }
-      } catch (error) {
-        console.error("Error verifying:", error);
-        toast.error("Failed to verify. Please try again.");
-      } finally {
-        setsending(false);
+      return;
+    }
+    try {
+      setSendingMailVerification(true);
+      const backendUrl = process.env.BACKEND_URL || "http://localhost:5000";
+      console.log("Using BACKEND_URL:", backendUrl);
+      const data = { email };
+      const response = await axios.post(
+        `${backendUrl}/users/request-password-reset`,
+        data,
+        { withCredentials: false }
+      );
+      if (response.data.message.includes("exists")) {
+        toast.success("If an account exists, a reset link has been sent to your email!");
+        setSuccessMessage(`We have sent a reset link to ${email}. Please check your inbox.`);
+      } else {
+        toast.error("Failed to request reset. Please try again.");
       }
+    } catch (error) {
+      console.error("Error requesting reset:", {
+        status: error.response?.status,
+        data: error.response?.data,
+        message: error.message,
+        config: error.config,
+      });
+      toast.error("Failed to request reset. Please try again.");
+    } finally {
+      setSendingMailVerification(false);
     }
   };
 
-  const handleSetPassword = async () => {
+  const handleResetPassword = async (e) => {
+    e.preventDefault(); // Prevent default form behavior if within a form
+    console.log("Set Password button clicked");
+    if (!token) {
+      toast.error("No reset token found. Please use the link from your email.");
+      return;
+    }
     if (password !== confirmPassword) {
       toast.error("Passwords do not match");
       return;
     }
-
-    const data = { token, password };
-    console.log("Setting new password with data:", data);
+    if (!validatePassword(password)) {
+      toast.error("Password must be at least 8 characters with uppercase, lowercase, number, and special character.");
+      return;
+    }
 
     try {
-      const response = await axios.post("https://quiz-t7o5.onrender.com/users/reset_password", { data }, { withCredentials: true,headers:token });
-      console.log('response2',response);
-      if (response.data.result === 'TRUE'){
-      toast.success("Password reset successfully!");
-      navigate("/clientlogin");
+      const backendUrl = process.env.BACKEND_URL || "http://localhost:5000";
+      console.log("Reset Password URL:", `${backendUrl}/users/reset-password`);
+      const data = { token, password };
+      const response = await axios.post(
+        `${backendUrl}/users/reset-password`,
+        data,
+        { withCredentials: false }
+      );
+      if (response.data.message) {
+        toast.success("Password reset successfully!");
+        navigate("/client-login");
       }
     } catch (error) {
-      console.error("Error resetting password:", error);
-      toast.error("Failed to reset password. Please try again.");
+      console.error("Error resetting password:", {
+        status: error.response?.status,
+        data: error.response?.data,
+        message: error.message,
+        config: error.config,
+      });
+      toast.error(`Failed to reset password. ${error.response?.data?.error || "Invalid or expired token."}`);
     }
   };
 
   return (
-    <>
-      <video autoPlay muted loop className="fixed top-0 left-0 w-full h-full object-cover z-0">
-        <source src="https://firebasestorage.googleapis.com/v0/b/quizmaster-b0faf.appspot.com/o/video%2F5453622-uhd_3840_2160_24fps.mp4?alt=media&token=c71e9ee2-8b59-4e79-bf9c-050c88a49032" type="video/mp4" />
-      </video>
+    <div className="relative min-h-screen bg-gradient-to-r from-[#2e1a47] to-[#624a82] font-sans">
+      <Nav />
+      <div className="flex items-center justify-center min-h-screen p-4">
+        <div className="relative bg-[#2e1a47] bg-opacity-40 p-8 rounded-xl shadow-2xl w-full max-w-md border border-purple-400/30">
+          <h2 className="text-4xl font-bold text-white mb-8 text-center">
+            {isRequestingReset ? "Reset Password" : "Set New Password"}
+          </h2>
 
-      <div className="bg-gradient-to-r from-[#2e1a47] to-[#624a82] flex items-center justify-center h-screen text-white z-10 relative">
-        <div className="bg-transparent p-8 rounded-lg shadow-lg w-96 max-w-full">
-          {showEnterNewPassword ? (
-            <>
-              <h3 className="text-2xl font-bold mb-6 text-center">Enter New Password</h3>
-              <input
-                type="text"
-                className="w-full px-4 py-2 rounded-lg text-black font-bold mb-4"
-                placeholder="Token"
-                value={token}
-                onChange={(e) => setToken(e.target.value)}
-              />
-              <input
-                type="password"
-                className="w-full px-4 py-2 rounded-lg text-black font-bold mb-4"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <input
-                type="password"
-                className="w-full px-4 py-2 rounded-lg text-black font-bold mb-4"
-                placeholder="Confirm Password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-              />
+          {isRequestingReset ? (
+            <form className="flex flex-col space-y-6">
+              <div className="relative">
+                <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+                  <MailIcon />
+                </span>
+                <input
+                  type="email"
+                  className="w-full pl-10 pr-4 py-3 bg-gray-900/50 text-white rounded-lg border border-transparent focus:outline-none focus:ring-2 focus:ring-green-500 placeholder-gray-400"
+                  placeholder="Enter your Email ID"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  disabled={sendingMailVerification}
+                />
+              </div>
               <button
-                className="w-full px-4 py-2 bg-green-500 text-white rounded-lg font-bold transition duration-300 ease-in-out hover:bg-green-600"
-                onClick={handleSetPassword}
+                className={`w-full px-4 py-3 bg-green-600 text-white rounded-lg font-bold transition duration-300 ease-in-out hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 flex items-center justify-center ${
+                  sendingMailVerification ? "cursor-not-allowed opacity-75" : ""
+                }`}
+                onClick={requestPasswordReset}
+                disabled={sendingMailVerification}
+              >
+                {sendingMailVerification ? (
+                  <>
+                    <svg
+                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    Sending...
+                  </>
+                ) : (
+                  "Verify"
+                )}
+              </button>
+              {successMessage && (
+                <p className="mt-4 text-center text-green-400 font-bold">
+                  {successMessage}
+                </p>
+              )}
+            </form>
+          ) : (
+            <form className="flex flex-col space-y-6" onSubmit={handleResetPassword}>
+              <div className="relative">
+                <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+                  <LockIcon />
+                </span>
+                <input
+                  type="password"
+                  className="w-full pl-10 pr-4 py-3 bg-gray-900/50 text-white rounded-lg border border-transparent focus:outline-none focus:ring-2 focus:ring-green-500 placeholder-gray-400"
+                  placeholder="New Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+              <div className="relative">
+                <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+                  <LockIcon />
+                </span>
+                <input
+                  type="password"
+                  className="w-full pl-10 pr-4 py-3 bg-gray-900/50 text-white rounded-lg border border-transparent focus:outline-none focus:ring-2 focus:ring-green-500 placeholder-gray-400"
+                  placeholder="Confirm Password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+              </div>
+              <button
+                type="submit" // Changed to submit to work with form
+                className="w-full px-4 py-3 bg-green-600 text-white rounded-lg font-bold transition duration-300 ease-in-out hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                onClick={handleResetPassword}
               >
                 Set Password
               </button>
-
-              {canResend && (
-                <button
-                  className={`w-full px-4 py-2 mt-4 text-white rounded-lg font-bold transition duration-300 ease-in-out ${sendingmailverification ? 'bg-gray-500' : 'bg-yellow-500 hover:bg-yellow-600'}`}
-                  onClick={verify}
-                  disabled={sendingmailverification}
-                >
-                  {sendingmailverification ? 'Resending...' : 'Resend Email'}
-                </button>
-              )}
-
-              {successMessage && <p className="mt-4 text-center text-green-400 font-bold">{successMessage}</p>}
-            </>
-          ) : (
-            <>
-              <h3 className="text-2xl font-bold mb-6 text-center">Reset Password</h3>
-              <h4 className="text-lg mb-4 text-center">Enter your email id</h4>
-              <div className="flex flex-col space-y-4">
-                {isEditingEmail ? (
-                  <input
-                    type="email"
-                    className="w-full px-4 py-2 rounded-lg text-black font-bold"
-                    placeholder="Enter your Email ID"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    disabled={sendingmailverification}
-                  />
-                ) : (
-                  <button
-                    className="w-full px-4 py-2 text-white rounded-lg font-bold bg-blue-500 hover:bg-blue-600 transition duration-300 ease-in-out"
-                    onClick={() => setIsEditingEmail(true)}
-                  >
-                    Edit Email
-                  </button>
-                )}
-                <button
-                  className={`w-full px-4 py-2 text-white rounded-lg font-bold transition duration-300 ease-in-out ${sendingmailverification ? 'bg-gray-500' : 'bg-green-500 hover:bg-green-600'}`}
-                  onClick={verify}
-                  disabled={sendingmailverification}
-                >
-                  {sendingmailverification ? 'Sending...' : 'Verify'}
-                </button>
-                {successMessage && <p className="mt-4 text-center text-green-400 font-bold">{successMessage}</p>}
-              </div>
-            </>
+            </form>
           )}
-          <Toaster />
+
+          <div className="text-center text-gray-300 text-sm space-y-2 pt-6">
+            <p>
+              Back to{" "}
+              <a
+                href="/client-login"
+                className="text-green-400 font-bold hover:underline"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigate("/client-login");
+                }}
+              >
+                Login
+              </a>
+            </p>
+          </div>
         </div>
-        <footer className="fixed bottom-0 w-full text-center mt-4 z-10">
-          Created with <a href="https://github.com/maheshkatyayan" className="text-green-400 font-bold">codecraftmen</a>
+        <footer className="absolute bottom-4 w-full text-center text-white/60 z-10 text-sm">
+          Created by{" "}
+          <a
+            href="https://github.com/maheshkatyayan"
+            className="text-green-400 font-semibold hover:underline"
+          >
+            codecraftmen
+          </a>
         </footer>
       </div>
-    </>
+    </div>
   );
 };
 

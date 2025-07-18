@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Toaster } from "react-hot-toast";
 import { FaTimes, FaKey } from "react-icons/fa";
 
 /**

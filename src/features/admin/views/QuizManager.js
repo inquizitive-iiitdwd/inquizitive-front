@@ -1,33 +1,22 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
-import {
-  FiPlus,
-  FiEdit,
-  FiTrash2,
-  FiDatabase,
-  FiPlayCircle,
-} from "react-icons/fi";
-import {
-  getQuizzes,
-  createQuiz,
-  deleteQuiz,
-  updateQuizTimer,
-} from "../../../services/quizService.js";
-import QuizFormModal from "../components/QuizFormModal.js";
+import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import { FiPlus, FiEdit, FiTrash2, FiDatabase, FiPlayCircle } from 'react-icons/fi';
+// FIX: Removed createQuiz and updateQuizTimer as they are no longer used by this component
+import { getQuizzes, deleteQuiz } from '../../../services/quizService.js';
+// REMOVED: import QuizFormModal from '../components/QuizFormModal.js';
 
 const QuizManager = () => {
   const navigate = useNavigate();
   const [quizzes, setQuizzes] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingQuiz, setEditingQuiz] = useState(null);
+  // REMOVED: isModalOpen and editingQuiz state variables
 
   const fetchQuizzes = useCallback(async () => {
     try {
       const response = await getQuizzes();
-      setQuizzes(response.data);
+      setQuizzes(response);
     } catch (error) {
-      toast.error("Failed to fetch quizzes.");
+      toast.error('Failed to fetch quizzes.');
     }
   }, []);
 
@@ -35,48 +24,22 @@ const QuizManager = () => {
     fetchQuizzes();
   }, [fetchQuizzes]);
 
-  const handleOpenCreateModal = () => {
-    setEditingQuiz(null);
-    setIsModalOpen(true);
-  };
-
-  const handleOpenEditModal = (quiz) => {
-    setEditingQuiz(quiz);
-    setIsModalOpen(true);
-  };
+  // REMOVED: handleOpenCreateModal and handleOpenEditModal functions
 
   const handleDelete = async (quizName) => {
-    if (!window.confirm(`Are you sure you want to delete "${quizName}"?`))
-      return;
+    if (!window.confirm(`Are you sure you want to delete "${quizName}"?`)) return;
     try {
       await deleteQuiz(quizName);
       toast.success(`Quiz "${quizName}" deleted successfully.`);
       fetchQuizzes();
     } catch (error) {
-      toast.error("Failed to delete quiz.");
+      toast.error('Failed to delete quiz.');
     }
   };
 
-  const handleFormSubmit = async (formData) => {
-    try {
-      if (editingQuiz) {
-        const quizData = {
-          quizDate: formData.date,
-          quizTime: formData.time,
-          quizDuration: formData.duration,
-        };
-        await updateQuizTimer(formData.name, quizData);
-        toast.success(`Timer for "${formData.name}" has been updated.`);
-      } else {
-        await createQuiz(formData.name);
-        toast.success(`Quiz "${formData.name}" was created successfully.`);
-      }
-      fetchQuizzes();
-      setIsModalOpen(false);
-    } catch (error) {
-      toast.error("An error occurred while saving.");
-    }
-  };
+  // REMOVED: handleFormSubmit function as it is no longer used.
+  // If you re-introduce quiz creation/editing functionality, you'll need to re-implement
+  // how those actions are handled and what functions are called.
 
   return (
     <>
@@ -84,7 +47,13 @@ const QuizManager = () => {
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-white">Quiz Management</h1>
           <button
-            onClick={handleOpenCreateModal}
+            // FIX: Updated onClick to provide actual functionality or clear placeholder
+            onClick={() => {
+              // You can navigate to a creation page, or show an inline form here
+              // For now, it's a toast message as the functionality is removed.
+              navigate('/create-quiz')
+              toast.info("Create Quiz functionality needs to be re-implemented.");
+            }}
             className="flex items-center gap-2 bg-yellow-400 text-black font-bold px-5 py-3 rounded-lg hover:bg-yellow-300"
           >
             <FiPlus />
@@ -103,41 +72,35 @@ const QuizManager = () => {
             </thead>
             <tbody>
               {quizzes.map((quiz) => (
-                <tr
-                  key={quiz._id || quiz.name}
-                  className="border-t border-slate-700"
-                >
+                <tr key={quiz._id} className="border-t border-slate-700">
                   <td className="p-4 font-semibold text-white">{quiz.name}</td>
                   <td className="p-4">
                     {quiz.date
-                      ? `${new Date(quiz.date).toLocaleDateString()} at ${
-                          quiz.time
-                        }`
-                      : "Not Set"}
+                      ? `${new Date(quiz.date).toLocaleDateString()} at ${quiz.time || 'N/A'}`
+                      : 'Not Set'}
                   </td>
                   <td className="p-4">
-                    {quiz.duration ? `${quiz.duration} mins` : "Not Set"}
+                    {quiz.duration ? `${quiz.duration} mins` : 'Not Set'}
                   </td>
                   <td className="p-4">
                     <div className="flex justify-center items-center gap-3">
                       <button
-                        onClick={() => navigate("/adminebuzzer")}
+                        onClick={() => navigate('/adminebuzzer')}
                         title="Admin Buzzer"
                       >
                         <FiPlayCircle className="text-green-400" size={20} />
                       </button>
                       <button
                         onClick={() =>
-                          navigate("/question-form", {
-                            state: { quizname: quiz.name },
-                          })
+                          navigate('/question-form', { state: { quizname: quiz.name } })
                         }
                         title="Edit Questions"
                       >
                         <FiDatabase className="text-blue-400" size={20} />
                       </button>
                       <button
-                        onClick={() => handleOpenEditModal(quiz)}
+                        // FIX: Updated onClick to provide actual functionality or clear placeholder
+                        onClick={() => toast.info("Set/Edit Timer functionality needs to be re-implemented.")} // Placeholder action
                         title="Set/Edit Timer"
                       >
                         <FiEdit className="text-yellow-400" size={20} />
@@ -156,12 +119,7 @@ const QuizManager = () => {
           </table>
         </div>
       </div>
-      <QuizFormModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSubmit={handleFormSubmit}
-        initialData={editingQuiz}
-      />
+      {/* QuizFormModal component instance was here, now removed */}
     </>
   );
 };

@@ -15,20 +15,25 @@ const AppProvider = ({ children }) => {
 
   const fetchApiData = async (endpoint, type) => {
     try {
-      const response = await api.get(endpoint, { withCredentials: true });
+      const backendUrl = process.env.BACKEND_URL || "http://localhost:5000";
+      const response = await api.get(`${backendUrl}${endpoint}`, { withCredentials: true });
       dispatch({
         type,
         payload: response.data,
       });
     } catch (e) {
-      console.error(e);
+      console.error(`Error fetching ${endpoint}:`, e);
     }
   };
 
   useEffect(() => {
-    // fetchApiData('/quiz/getQuestion', "GET_QUESTION");
-    // fetchApiData('/admine/membersDetail', "GET_MEMBERS");
-    fetchApiData('/quizsetup/getSaveTimer', "GET_TIMER");
+    // Only fetch data on quiz-related pages
+    const isQuizPage = window.location.pathname.includes("/quiz") || window.location.pathname.includes("/Timer");
+    if (isQuizPage) {
+      // fetchApiData('/quiz/getQuestion', "GET_QUESTION");
+      // fetchApiData('/admine/membersDetail', "GET_MEMBERS");
+      fetchApiData('/quizsetup/getSaveTimer', "GET_TIMER");
+    }
   }, []);
 
   return <AppContext.Provider value={{ ...state }}>{children}</AppContext.Provider>;

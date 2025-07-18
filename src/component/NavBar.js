@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../services/api.js";
 import { toast, Toaster } from "react-hot-toast";
@@ -19,19 +19,40 @@ const NavBar = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   // --- STATE MANAGEMENT FOR THE NEW 2-STEP FLOW ---
   const [isAccessModalOpen, setIsAccessModalOpen] = useState(false);
   const [isOtpModalOpen, setIsOtpModalOpen] = useState(false);
-  const [emailForOtp, setEmailForOtp] = useState(""); // To pass the email to the OTP modal
+  const [emailForOtp, setEmailForOtp] = useState("");
 
-  // The auth-checking useEffect can be added here if needed
-  // useEffect(() => { ... });
+  // Fetch user data using the token
+  useEffect(() => {
+    console.log("NavBar useEffect triggered");
+    const checkAuth = async () => {
+      try {
+        console.log("Checking auth...");
+        // Skip auth check on reset password pages
+        if (window.location.pathname.includes("/reset-password")) {
+          console.log("Skipping auth check on reset password page");
+          return;
+        }
+        const response = await api.get("/users/me", { withCredentials: true });
+        console.log("User data received:", response.data);
+        setUser(response.data);
+      } catch (error) {
+        console.error("Auth check failed:", error.response?.data || error.message);
+        setUser(null);
+      }
+    };
+    checkAuth();
+  }, []);
 
   const handleLogout = async () => {
     try {
-      await api.get("/users/logout", { withCredentials: true });
+      await api.post("/users/logout", {}, { withCredentials: true });
       setUser(null);
+      setIsProfileOpen(false);
       navigate("/");
       toast.success("Logged out successfully!");
     } catch (error) {
@@ -44,22 +65,21 @@ const NavBar = () => {
     try {
       const response = await api.post(
         "/events/accessingquizroom",
-        { data: { teamleademailid } }, // Only send the email, as per new backend
+        { data: { teamleademailid } },
         { withCredentials: true }
       );
       toast.success(response.data.message || "Access code sent!");
 
-      // On success, close the first modal and open the second
       setIsAccessModalOpen(false);
-      setEmailForOtp(teamleademailid); // Store the email for the next step
+      setEmailForOtp(teamleademailid);
       setIsOtpModalOpen(true);
 
-      return true; // Signal success back to the child modal
+      return true;
     } catch (error) {
       toast.error(
         error.response?.data?.message || "Failed to get access code."
       );
-      throw error; // Propagate the error to allow the modal's 'finally' block to run
+      throw error;
     }
   };
 
@@ -73,7 +93,6 @@ const NavBar = () => {
       toast.success("Access Granted! Entering quiz...");
       setIsOtpModalOpen(false);
 
-      // Navigate to the timer/quiz page, passing team data securely in the state
       navigate("/Timer", { state: { teamData: response.data.teamData } });
     } catch (error) {
       toast.error(error.response?.data?.message || "Invalid or expired code.");
@@ -118,24 +137,67 @@ const NavBar = () => {
               </NavItem>
             ))}
             <button
-              onClick={() => setIsAccessModalOpen(true)} // Opens the FIRST modal
+              onClick={() => setIsAccessModalOpen(true)}
               className="text-gray-300 text-lg hover:text-yellow-300 transition-colors duration-300"
             >
               Quiz Room
             </button>
           </div>
 
-          {/* Right: Auth Button */}
-          <div className="hidden md:flex items-center">
+          {/* Right: Auth Section */}
+          <div className="hidden md:flex items-center relative">
             {user ? (
-              <div className="flex items-center gap-4">
-                <span className="text-white text-sm">{user.email}</span>
+              <div className="relative">
                 <button
-                  onClick={handleLogout}
-                  className="bg-purple-800/50 text-white px-5 py-2 rounded-lg hover:bg-purple-700/70 transition-colors"
+                  onClick={() => setIsProfileOpen(!isProfileOpen)}
+                  className="flex items-center gap-2 bg-purple-800/50 text-white p-2 rounded-full hover:text-yellow-300 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-yellow-500"
                 >
-                  Logout
+                  {user.avatar ? (
+                    <img
+                      src={user.avatar}
+                      alt="User Avatar"
+                      className="w-8 h-8 rounded-full border border-gray-300"
+                    />
+                  ) : (
+                    <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-sm font-medium text-gray-700">
+                      {user.user_name ? user.user_name.charAt(0).toUpperCase() : "U"}
+                    </div>
+                  )}
+                  <span className="text-sm font-medium">
+                    {user.email || user.user_name || "User"}
+                  </span>
                 </button>
+                {isProfileOpen && (
+                  <div
+                    className="absolute right-0 mt-2 w-48 rounded-md shadow-lg z-50"
+                    style={{
+                      background:
+                        "linear-gradient(to bottom, #2e1a47, #624a82)",
+                    }}
+                  >
+                    <div
+                      className="py-1"
+                      role="menu"
+                      aria-orientation="vertical"
+                    >
+                      <Link
+                        to="/manage-account"
+                        onClick={() => setIsProfileOpen(false)}
+                        className="block px-4 py-2 text-sm text-white hover:text-yellow-300 transition-colors duration-300"
+                        role="menuitem"
+                      >
+                        Manage Account
+                      </Link>
+                      <button
+                        onClick={handleLogout}
+                        className="w-full text-left px-4 py-2 text-sm text-white hover:text-yellow-300 transition-colors duration-300"
+                        role="menuitem"
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             ) : (
               <Link
@@ -176,7 +238,7 @@ const NavBar = () => {
             ))}
             <button
               onClick={() => {
-                setIsAccessModalOpen(true); // Opens the FIRST modal
+                setIsAccessModalOpen(true);
                 setIsMenuOpen(false);
               }}
               className="text-gray-300 text-lg hover:text-yellow-300 transition-colors duration-300"
@@ -185,12 +247,44 @@ const NavBar = () => {
             </button>
             <div className="mt-4">
               {user ? (
-                <button
-                  onClick={handleLogout}
-                  className="bg-purple-800/50 text-white px-6 py-2 rounded-lg"
-                >
-                  Logout
-                </button>
+                <div className="flex flex-col items-center gap-2">
+                  <button
+                    onClick={() => setIsProfileOpen(!isProfileOpen)}
+                    className="flex items-center gap-2 text-white"
+                  >
+                    {user.avatar ? (
+                      <img
+                        src={user.avatar}
+                        alt="User Avatar"
+                        className="w-8 h-8 rounded-full border border-gray-300"
+                      />
+                    ) : (
+                      <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-sm font-medium text-gray-700">
+                        {user.user_name ? user.user_name.charAt(0).toUpperCase() : "U"}
+                      </div>
+                    )}
+                    <span className="text-sm font-medium">
+                      {user.email || user.user_name || "User"}
+                    </span>
+                  </button>
+                  {isProfileOpen && (
+                    <div className="w-full flex flex-col items-center">
+                      <Link
+                        to="/manage-account"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="w-3/4 text-center px-4 py-2 text-sm text-white hover:text-yellow-300 transition-colors duration-300 rounded-lg"
+                      >
+                        Manage Account
+                      </Link>
+                      <button
+                        onClick={handleLogout}
+                        className="w-3/4 mt-2 bg-purple-800/50 text-white px-4 py-2 rounded-lg"
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  )}
+                </div>
               ) : (
                 <NavItem
                   to="/client-login"

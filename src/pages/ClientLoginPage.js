@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import api from "../services/api.js";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import Nav from "../component/NavBar.js";
 
-// SVG Icons for a cleaner look without extra dependencies
+// SVG Icons
 const MailIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -43,21 +43,22 @@ const ClientLoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const toastShown = useRef(false); // Use ref to avoid re-render trigger
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
-  // **NEW**: Check for messages from other pages (e.g., email verification)
   useEffect(() => {
     const message = searchParams.get("message");
-    if (message === "success") {
-      toast.success("Email verified successfully! Please log in.");
-      // Clean the URL
-      navigate("/Clientlogin", { replace: true });
-    } else if (message === "already-verified") {
-      toast.info("Your email was already verified. Please log in.");
-      navigate("/Clientlogin", { replace: true });
+    if (message && !toastShown.current) {
+      const toastId = `verify-${Date.now()}`; // Unique ID based on timestamp
+      if (message === "success") {
+        toast.success("Email verified successfully! Please log in.", { id: toastId });
+      } else if (message === "already-verified") {
+        toast.info("Your email was already verified. Please log in.", { id: toastId });
+      }
+      toastShown.current = true; // Update ref without triggering re-render
     }
-  }, [searchParams, navigate]);
+  }, [searchParams]); // Only depends on searchParams
 
   const handleNavigate = (e, path) => {
     e.preventDefault();
@@ -73,7 +74,6 @@ const ClientLoginPage = () => {
 
     setIsLoading(true);
     try {
-      // **CHANGED**: The payload is now a flat object, not nested under `data`.
       const credentials = { email, password };
       const response = await api.post(`/users/login`, credentials, {
         withCredentials: true,
@@ -81,18 +81,44 @@ const ClientLoginPage = () => {
 
       if (response.status === 200) {
         toast.success("Signed in successfully!");
-        // The secure httpOnly cookie is set by the browser automatically.
-        // We just need to navigate to the main page.
         navigate("/");
       }
     } catch (error) {
-      // **CHANGED**: Display the specific error message from the backend.
       const errorMessage =
         error.response?.data?.error || "Login failed. Please try again.";
       toast.error(errorMessage);
-      console.error("Error logging in:", error);
+      if (error.response?.status === 403) {
+        return (
+          <div className="text-center mt-4 text-gray-300">
+            <p>Please check your email to verify your account.</p>
+            <button
+              onClick={handleResendVerification}
+              className="mt-2 text-green-400 font-bold hover:underline"
+            >
+              Resend Verification Email
+            </button>
+          </div>
+        );
+      }
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleResendVerification = async () => {
+    if (!email) {
+      toast.error("Please enter your email to resend verification.");
+      return;
+    }
+    try {
+      await api.post("/users/resend-verification", { email });
+      toast.success("Verification email has been resent. Please check your inbox.", {
+        id: "resend-verification", // Unique ID to prevent duplicates
+      });
+    } catch (error) {
+      toast.error("Failed to resend verification email. Please try again.", {
+        id: "resend-verification-error", // Unique ID to prevent duplicates
+      });
     }
   };
 
@@ -101,14 +127,11 @@ const ClientLoginPage = () => {
       <Nav />
       <div className="flex items-center justify-center min-h-screen p-4">
         <div className="relative bg-[#2e1a47] bg-opacity-40 p-8 rounded-xl shadow-2xl w-full max-w-md border border-purple-400/30">
-          <Toaster position="top-center" reverseOrder={false} />
-
           <h2 className="text-4xl font-bold text-white mb-8 text-center">
             Welcome Back
           </h2>
 
           <form onSubmit={handleLogin} className="flex flex-col space-y-6">
-            {/* Email Input */}
             <div className="relative">
               <span className="absolute inset-y-0 left-0 flex items-center pl-3">
                 <MailIcon />
@@ -124,7 +147,6 @@ const ClientLoginPage = () => {
               />
             </div>
 
-            {/* Password Input */}
             <div className="relative">
               <span className="absolute inset-y-0 left-0 flex items-center pl-3">
                 <LockIcon />
