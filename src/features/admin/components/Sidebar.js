@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 import { FiGrid, FiList, FiLogOut, FiUsers } from 'react-icons/fi';
 
 const Sidebar = ({ activeView, setActiveView, handleLogout }) => {
@@ -11,7 +12,8 @@ const Sidebar = ({ activeView, setActiveView, handleLogout }) => {
   return (
     <aside className="w-64 bg-slate-900/80 p-6 flex flex-col h-screen text-white border-r border-slate-700/50 flex-shrink-0">
       <div className="flex items-center gap-3 mb-10">
-        <img src="/images/Club_logo.JPG.png" alt="Logo" className="w-12 h-12 rounded-full" />
+        <img src="/images/Club_logo.JPG.png" alt="Logo" className="w-12 h-12 rounded-full" href="" />
+        <Link to="/" className="flex items-center space-x-4"></Link>
         <h1 className="text-xl font-bold">Admin Panel</h1>
       </div>
       <nav className="flex-grow">

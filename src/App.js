@@ -39,6 +39,32 @@ const publicRoutes = [
   { path: "/organizer-login", element: <OrganizerLogin /> },
 ];
 
+// Define routes that require organizer authentication
+const organizerProtectedRoutes = [
+  { path: "/create-quiz", element: <CreateQuiz /> },
+  { path: "/question-form", element: <QuestionForm /> },
+  { path: "/show-marks", element: <ShowMarks /> },
+  // REMOVED /manage-account from here
+];
+
+const clientProtectedRoutes = [
+  { path: "/quiz-timer", element: <QuizTimer /> },
+  { path: "/show-question", element: <ShowQestion /> },
+  // REMOVED /manage-account from here
+];
+
+const adminProtectedRoutes = [
+  { path: "/admin-dashboard", element: <AdminDashboard /> },
+  // REMOVED /manage-account from here
+];
+
+// NEW: Routes accessible by any logged-in user
+const sharedProtectedRoutes = [
+  { path: "/manage-account", element: <ManageAccountPage /> },
+  // Add any other routes here that all authenticated users can access
+];
+
+
 export default function App() {
   return (
     <div className="App">
@@ -52,25 +78,31 @@ export default function App() {
             ))}
 
             {/* Organizer Protected Routes */}
-            <Route element={<ProtectedRoute allowedRoles={['organizer']} loginPath="/organizer-login" />}> {/* ADDED loginPath */}
-              <Route path="/create-quiz" element={<CreateQuiz />} />
-              <Route path="/question-form" element={<QuestionForm />} />
-              <Route path="/show-marks" element={<ShowMarks />} />
-              {/* Add other organizer-specific routes here */}
+            <Route element={<ProtectedRoute allowedRoles={['organizer']} loginPath="/organizer-login" />}>
+              {organizerProtectedRoutes.map(({ path, element }) => (
+                <Route key={path} path={path} element={element} />
+              ))}
             </Route>
 
             {/* Client Protected Routes */}
-            <Route element={<ProtectedRoute allowedRoles={['client']} loginPath="/client-login" />}> {/* ADDED loginPath */}
-              <Route path="/quiz-timer" element={<QuizTimer />} />
-              <Route path="/show-question" element={<ShowQestion />} />
-              <Route path="/manage-account" element={<ManageAccountPage />} />
-              {/* Add other client-specific routes here */}
+            <Route element={<ProtectedRoute allowedRoles={['user']} loginPath="/client-login" />}>
+              {clientProtectedRoutes.map(({ path, element }) => (
+                <Route key={path} path={path} element={element} />
+              ))}
             </Route>
 
             {/* Admin Protected Routes */}
-            <Route element={<ProtectedRoute allowedRoles={['admin']} loginPath="/admin-login" />}> {/* ADDED loginPath */}
-              <Route path="/admin-dashboard" element={<AdminDashboard />} />
-              {/* Add other admin-specific routes here */}
+            <Route element={<ProtectedRoute allowedRoles={['admin']} loginPath="/admin-login" />}>
+              {adminProtectedRoutes.map(({ path, element }) => (
+                <Route key={path} path={path} element={element} />
+              ))}
+            </Route>
+
+            {/* NEW: Shared Protected Routes (Accessible by any of the specified roles) */}
+            <Route element={<ProtectedRoute allowedRoles={['organizer', 'user', 'admin']} loginPath="/client-login" />}> {/* Default to client login if unauthenticated for shared routes */}
+              {sharedProtectedRoutes.map(({ path, element }) => (
+                <Route key={path} path={path} element={element} />
+              ))}
             </Route>
 
             {/* Fallback for unmatched routes */}

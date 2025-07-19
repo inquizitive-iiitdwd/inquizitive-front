@@ -43,7 +43,7 @@ const AdminDashboard = () => {
     try {
       await api.post("/users/logout", {}, { withCredentials: true });
       toast.success("Logged out successfully");
-      navigate("/admin-login");
+      navigate("/");
     } catch (error) {
       toast.error("Logout failed");
     }
