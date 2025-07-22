@@ -1,0 +1,124 @@
+Folder PATH listing for volume OS
+Volume serial number is 08AB-0714
+C:.
+¦   .env
+¦   .gitignore
+¦   package-lock.json
+¦   package.json
+¦   structure.txt
+¦   tailwind.config.js
+¦   
++---.vscode
+¦       settings.json
+¦       
++---public
+¦   ¦   Club_logo.JPG.png
+¦   ¦   index.html
+¦   ¦   manifest.json
+¦   ¦   robots.txt
+¦   ¦   
+¦   +---images
+¦       ¦   bk.mp4
+¦       ¦   buzzer-4-183895.mp3
+¦       ¦   Club_logo.JPG.png
+¦       ¦   DSC_1.JPG
+¦       ¦   DSC_10.JPG
+¦       ¦   DSC_11.jpg
+¦       ¦   DSC_2.JPG
+¦       ¦   DSC_3.JPG
+¦       ¦   DSC_4.JPG
+¦       ¦   DSC_5.JPG
+¦       ¦   DSC_6.JPG
+¦       ¦   DSC_7.JPG
+¦       ¦   DSC_8.JPG
+¦       ¦   DSC_9.JPG
+¦       ¦   DSC_9b.JPG
+¦       ¦   DSC_groupphoto.JPG
+¦       ¦   mahesh.jpg
+¦       ¦   question-numbers3.jpg
+¦       ¦   question-numbers6.heic
+¦       ¦   question-numbers8.jpg
+¦       ¦   question-numbers9.jpg
+¦       ¦   quiz-bulb.png
+¦       ¦   sarthark.jpg
+¦       ¦   st.png
+¦       ¦   th-removebg-preview.png
+¦       ¦   tickingbuzzer-75859.mp3
+¦       ¦   Trivia NIGHTS (1).png
+¦       ¦   
+¦       +---ClubMembers
+¦               Abhilash.jpg
+¦               AdityaRaj.jpg
+¦               AdityaVikramSingh.jpg
+¦               Niharika.jpg
+¦               
++---src
+    ¦   App.css
+    ¦   App.js
+    ¦   App.test.js
+    ¦   index.css
+    ¦   index.js
+    ¦   reportWebVitals.js
+    ¦   setupTests.js
+    ¦   
+    +---component
+    ¦   ¦   Aboutfirstpart.js
+    ¦   ¦   adminebuzzer.js
+    ¦   ¦   ClubGallery.js
+    ¦   ¦   EventCard.js
+    ¦   ¦   EventRegistration.js
+    ¦   ¦   flipcard.js
+    ¦   ¦   Footer.js
+    ¦   ¦   NavBar.js
+    ¦   ¦   NotLogin.js
+    ¦   ¦   QuestionForm.js
+    ¦   ¦   reducer.js
+    ¦   ¦   text.txt
+    ¦   ¦   Timerforshowquestion.js
+    ¦   ¦   
+    ¦   +---ui
+    ¦           Card.js
+    ¦           
+    +---context
+    ¦       QuizContext.js
+    ¦       
+    +---features
+    ¦   +---admin
+    ¦   ¦   +---components
+    ¦   ¦   ¦       QuizFormModal.js
+    ¦   ¦   ¦       Sidebar.js
+    ¦   ¦   ¦       
+    ¦   ¦   +---views
+    ¦   ¦           QuizManager.js
+    ¦   ¦           
+    ¦   +---auth
+    ¦   ¦       EnterNewPassword.js
+    ¦   ¦       ResetPassword.js
+    ¦   ¦       
+    ¦   +---quiz
+    ¦       ¦   CreateQuiz.js
+    ¦       ¦   ShowMarks.js
+    ¦       ¦   ShowQuestions.js
+    ¦       ¦   
+    ¦       +---components
+    ¦               OtpEntryModal.js
+    ¦               QuizAccessModal.js
+    ¦               QuizCard.js
+    ¦               QuizTimer.js
+    ¦               
+    +---pages
+    ¦       AboutUs.js
+    ¦       AdminDashboard.js
+    ¦       AdminLoginPage.js
+    ¦       BuzzerRoom.js
+    ¦       ClientLoginPage.js
+    ¦       Events.js
+    ¦       Home.js
+    ¦       ManageAccountPage.js
+    ¦       RegisterPage.js
+    ¦       VerifyEmailPage.js
+    ¦       
+    +---services
+            api.js
+            quizService.js
+            

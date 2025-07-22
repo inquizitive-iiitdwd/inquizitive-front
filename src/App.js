@@ -1,85 +1,115 @@
+import React, { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import './App.css';
-import Clientlogin from "./component/clientlogin.js"; 
-import Questiondemo from "./component/Questiondemo.js";
-import Adminlogin from "./component/adminloginpage.jsx";
-import Home from "./component/Home.js";
-import Timer from "./component/Timer.js";
-import Showqestion from "./component/showquestion.js";
-import Sign from "./component/sign.js"
-import Buzzer from "./component/buzzer.js"
-import Adminebuzzer from "./component/adminebuzzer.js";
-import Notlogin from "./component/notlogin.js";
-import Createquizquestion from "./component/createquizquestion.js"
-import Dashboard from './component/Dashboard.js'
-import AboutUs from "./component/About_us.js";
-import EventRegistration from "./component/event.js"
-import VerifyEmail from './component/verifymail.js'
-import Resetpassword from './component/Resetpassword.js'
-import Enternewpassword from "./component/enternewpassword.js";
-import Event from './component/event.js'
-import ShowMarks from "./component/showMarks.js";
+import "./App.css";
+import { Toaster } from "react-hot-toast";
 
-function App() {
-  
+const ProtectedRoute = lazy(() => import("./component/ProtectedRoute.js"));
+
+// --- Import all your pages ---
+const Home = lazy(() => import("./pages/Home.js"));
+const QuestionForm = lazy(() => import("./component/QuestionForm.js"));
+const Event = lazy(() => import("./pages/Events.js"));
+const ResetPassword = lazy(() => import("./features/auth/ResetPassword.js"));
+const AdminLogin = lazy(() => import("./pages/AdminLoginPage.js"));
+const ClientLoginPage = lazy(() => import("./pages/ClientLoginPage.js"));
+const QuizTimer = lazy(() => import("./features/quiz/components/QuizTimer.js"));
+const RegisterPage = lazy(() => import("./pages/RegisterPage.js"));
+const ShowQestion = lazy(() => import("./features/quiz/ShowQuestions.js"));
+const NotLogin = lazy(() => import("./component/NotLogin.js"));
+const CreateQuiz = lazy(() => import("./features/quiz/CreateQuiz.js"));
+const AdminDashboard = lazy(() => import("./pages/AdminDashboard.js"));
+const AboutUs = lazy(() => import("./pages/AboutUs.js"));
+const VerifyEmail = lazy(() => import("./pages/VerifyEmailPage.js"));
+const ShowMarks = lazy(() => import("./features/quiz/ShowMarks.js"));
+const ManageAccountPage = lazy(() => import("./pages/ManageAccountPage.js"));
+const OrganizerLogin = lazy(() => import("./pages/OrganizerLoginPage.js"));
+
+
+const publicRoutes = [
+  { path: "/", element: <Home /> },
+  { path: "/event", element: <Event /> },
+  { path: "/reset-password", element: <ResetPassword /> },
+  { path: "/reset-password/:token", element: <ResetPassword /> },
+  { path: "/admin-login", element: <AdminLogin /> },
+  { path: "/client-login", element: <ClientLoginPage /> },
+  { path: "/register", element: <RegisterPage /> },
+  { path: "/aboutus", element: <AboutUs /> },
+  { path: "/verify-email/:token", element: <VerifyEmail /> },
+  { path: "/notlogin", element: <NotLogin /> },
+  { path: "/organizer-login", element: <OrganizerLogin /> },
+];
+
+// Define routes that require organizer authentication
+const organizerProtectedRoutes = [
+  { path: "/create-quiz", element: <CreateQuiz /> },
+  { path: "/question-form", element: <QuestionForm /> },
+  { path: "/show-marks", element: <ShowMarks /> },
+  // REMOVED /manage-account from here
+];
+
+const clientProtectedRoutes = [
+  { path: "/quiz-timer", element: <QuizTimer /> },
+  { path: "/show-question", element: <ShowQestion /> },
+  // REMOVED /manage-account from here
+];
+
+const adminProtectedRoutes = [
+  { path: "/admin-dashboard", element: <AdminDashboard /> },
+  // REMOVED /manage-account from here
+];
+
+// NEW: Routes accessible by any logged-in user
+const sharedProtectedRoutes = [
+  { path: "/manage-account", element: <ManageAccountPage /> },
+  // Add any other routes here that all authenticated users can access
+];
+
+
+export default function App() {
   return (
     <div className="App">
-      
       <BrowserRouter>
-        <Routes>
-        <Route 
-         path="/" element={<Home/>}
-        ></Route>
-        {/* <Route 
-         path="/home" element={<Home/>}
-        ></Route> */}
-        
-          <Route  path="/Questiondemo" element={<Questiondemo/>}>
-          </Route>
-          <Route  path="/Event" element={<Event/>}>
-          </Route>
-          <Route  path="/Resetpassword" element={<Resetpassword/>}>
-          </Route>
-          <Route  path="/enternewpassword" element={<Enternewpassword/>}>
-          </Route>
-          
-          <Route  path="/Adminlogin" element={<Adminlogin/>}>
-          </Route>
-          <Route  path="/EventRegistration" element={<EventRegistration/>}>
-          </Route>
-          <Route  path="/Clientlogin" element={<Clientlogin/>}>
-          </Route>
-          <Route  path="/Timer" element={<Timer/>}>
-          </Route>
-          <Route  path="/sign" element={<Sign/>}>
-          </Route>
-          <Route  path="/showquestion" element={<Showqestion/>}>
-          </Route>
-          <Route  path="/buzzer" element={<Buzzer/>}>
-          </Route>
-          <Route  path="/adminebuzzer" element={<Adminebuzzer/>}>
-          </Route>
-          <Route  path="/About_us" element={<AboutUs/>}>
-          </Route>
-          <Route  path="/verifyemail" element={<VerifyEmail/>}>
-          </Route>
+        <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
+        <Suspense fallback={<div className="flex items-center justify-center h-screen">Loading...</div>}>
+          <Routes>
+            {/* Public Routes */}
+            {publicRoutes.map(({ path, element }) => (
+              <Route key={path} path={path} element={element} />
+            ))}
 
-          <Route  path="/ShowMarks" element={<ShowMarks/>}>
-          </Route>
-          
-          <Route 
-         path="/notlogin" element={<Notlogin/>}
-        ></Route>
-        <Route 
-         path="/CreatequizQuestiondemo" element={<Createquizquestion/>}
-        ></Route>
-        <Route 
-         path="/Dashboard" element={<Dashboard/>}
-        ></Route>
-        </Routes>
+            {/* Organizer Protected Routes */}
+            <Route element={<ProtectedRoute allowedRoles={['organizer']} loginPath="/organizer-login" />}>
+              {organizerProtectedRoutes.map(({ path, element }) => (
+                <Route key={path} path={path} element={element} />
+              ))}
+            </Route>
+
+            {/* Client Protected Routes */}
+            <Route element={<ProtectedRoute allowedRoles={['user']} loginPath="/client-login" />}>
+              {clientProtectedRoutes.map(({ path, element }) => (
+                <Route key={path} path={path} element={element} />
+              ))}
+            </Route>
+
+            {/* Admin Protected Routes */}
+            <Route element={<ProtectedRoute allowedRoles={['admin']} loginPath="/admin-login" />}>
+              {adminProtectedRoutes.map(({ path, element }) => (
+                <Route key={path} path={path} element={element} />
+              ))}
+            </Route>
+
+            {/* NEW: Shared Protected Routes (Accessible by any of the specified roles) */}
+            <Route element={<ProtectedRoute allowedRoles={['organizer', 'user', 'admin']} loginPath="/client-login" />}> {/* Default to client login if unauthenticated for shared routes */}
+              {sharedProtectedRoutes.map(({ path, element }) => (
+                <Route key={path} path={path} element={element} />
+              ))}
+            </Route>
+
+            {/* Fallback for unmatched routes */}
+            <Route path="*" element={<p className="text-white text-center text-3xl h-screen flex items-center justify-center">Page Not Found (404)</p>} />
+          </Routes>
+        </Suspense>
       </BrowserRouter>
     </div>
   );
 }
-//:roomid dynamic generated
-export default App;

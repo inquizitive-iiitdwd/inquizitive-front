@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App.js';
 import reportWebVitals from './reportWebVitals.js';
-import { AppProvider } from '../src/component/contex.js';
+import { AppProvider } from '../src/context/QuizContext.js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

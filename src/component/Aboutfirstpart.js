@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useGlobalcontext } from "./contex.js";
+import { useGlobalcontext } from "../context/QuizContext.js";
 
 
 
