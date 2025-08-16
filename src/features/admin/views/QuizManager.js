@@ -8,11 +8,18 @@ import {
   FiDatabase,
   FiPlayCircle,
 } from "react-icons/fi";
-import { getQuizzes, deleteQuiz } from "../../../services/quizService.js";
+import {
+  getQuizzes,
+  deleteQuiz,
+  updateQuizDetails,
+} from "../../../services/quizService.js";
+import EditQuizModal from "../components/EditQuizModal.js";
 
 const QuizManager = () => {
   const navigate = useNavigate();
   const [quizzes, setQuizzes] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingQuiz, setEditingQuiz] = useState(null);
 
   const fetchQuizzes = useCallback(async () => {
     try {
@@ -36,6 +43,21 @@ const QuizManager = () => {
       fetchQuizzes();
     } catch (error) {
       toast.error("Failed to delete quiz.");
+    }
+  };
+  const handleOpenEditModal = (quiz) => {
+    setEditingQuiz(quiz);
+    setIsModalOpen(true);
+  };
+  const handleSaveQuizDetails = async (quizName, updateData) => {
+    try {
+      await updateQuizDetails(quizName, updateData);
+      toast.success("Quiz details updated!");
+      setIsModalOpen(false);
+      setEditingQuiz(null);
+      fetchQuizzes(); // Refresh the list
+    } catch (error) {
+      toast.error(error.message);
     }
   };
 
@@ -98,12 +120,7 @@ const QuizManager = () => {
                         <FiDatabase className="text-blue-400" size={20} />
                       </button>
                       <button
-                        // FIX: Replaced toast.info with the standard toast() function
-                        onClick={() =>
-                          toast(
-                            "Set/Edit Timer functionality needs to be re-implemented."
-                          )
-                        }
+                        onClick={() => handleOpenEditModal(quiz)}
                         title="Set/Edit Timer"
                       >
                         <FiEdit className="text-yellow-400" size={20} />
@@ -122,6 +139,14 @@ const QuizManager = () => {
           </table>
         </div>
       </div>
+
+      {isModalOpen && editingQuiz && (
+        <EditQuizModal
+          quiz={editingQuiz}
+          onClose={() => setIsModalOpen(false)}
+          onSave={handleSaveQuizDetails}
+        />
+      )}
     </>
   );
 };
