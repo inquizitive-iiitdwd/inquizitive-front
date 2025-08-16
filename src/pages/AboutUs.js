@@ -88,7 +88,7 @@ const AboutUsPage = () => {
             </div>
             <div>
               <img
-                src="/images/quiz-bulb.png"
+                src="/images/quiz_hanging-landscape.png"
                 alt="Quiz Bulb"
                 className="w-full max-w-sm mx-auto rounded-lg"
               />
@@ -131,7 +131,7 @@ const AboutUsPage = () => {
           </div>
         </section>
 
-        {/* --- MODIFIED Section 4: The Team --- */}
+        {/* --- Section 4: The Team --- */}
         <section className="py-24 bg-gradient-to-b from-[#1a0e2e] to-[#2e1a47]">
           <div className="container mx-auto px-6">
             <h2 className="text-5xl font-bold text-center mb-16">
@@ -185,7 +185,9 @@ const AboutUsPage = () => {
         {/* Section 5: Group Photo Showcase */}
         <section
           className="h-[70vh] bg-cover bg-center bg-fixed"
-          style={{ backgroundImage: `url('/images/DSC_groupphoto.JPG')` }}
+          style={{
+            backgroundImage: `url('/images/inquizitive_groupphoto.jpg')`,
+          }}
         >
           <div className="h-full w-full flex items-center justify-center bg-black/60">
             <h2 className="text-5xl font-bold text-white text-center drop-shadow-lg">

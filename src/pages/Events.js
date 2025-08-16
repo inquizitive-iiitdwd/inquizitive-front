@@ -22,7 +22,9 @@ const EventsPage = () => {
         {/* Section 1: Hero */}
         <section
           className="relative py-28 md:py-40 flex items-center justify-center text-center bg-cover bg-center"
-          style={{ backgroundImage: `url('/images/Trivia NIGHTS (1).png')` }}
+          style={{
+            backgroundImage: `url('/images/quiz_hanging-landscape.png')`,
+          }}
         >
           <div className="absolute inset-0 bg-[#1a0e2e]/70 backdrop-blur-sm"></div>
           <div className="relative z-10 px-4">
