@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import api from "../services/api.js";
 import NavBar from "./NavBar.js";
 
-const socket = io(process.env.REACT_APP_API_URL || "http://localhost:5000", {
+const socket = io(process.env.REACT_APP_API_URL, {
   withCredentials: true,
   autoConnect: false,
 });

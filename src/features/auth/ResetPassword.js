@@ -56,7 +56,8 @@ const ResetPassword = () => {
   }, [token]);
 
   const validatePassword = (password) => {
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     return passwordRegex.test(password);
   };
 
@@ -67,7 +68,7 @@ const ResetPassword = () => {
     }
     try {
       setSendingMailVerification(true);
-      const backendUrl = process.env.BACKEND_URL || "http://localhost:5000";
+      const backendUrl = process.env.REACT_APP_BACKEND_URL;
       console.log("Using BACKEND_URL:", backendUrl);
       const data = { email };
       const response = await axios.post(
@@ -76,8 +77,12 @@ const ResetPassword = () => {
         { withCredentials: false }
       );
       if (response.data.message.includes("exists")) {
-        toast.success("If an account exists, a reset link has been sent to your email!");
-        setSuccessMessage(`We have sent a reset link to ${email}. Please check your inbox.`);
+        toast.success(
+          "If an account exists, a reset link has been sent to your email!"
+        );
+        setSuccessMessage(
+          `We have sent a reset link to ${email}. Please check your inbox.`
+        );
       } else {
         toast.error("Failed to request reset. Please try again.");
       }
@@ -106,12 +111,14 @@ const ResetPassword = () => {
       return;
     }
     if (!validatePassword(password)) {
-      toast.error("Password must be at least 8 characters with uppercase, lowercase, number, and special character.");
+      toast.error(
+        "Password must be at least 8 characters with uppercase, lowercase, number, and special character."
+      );
       return;
     }
 
     try {
-      const backendUrl = process.env.BACKEND_URL || "http://localhost:5000";
+      const backendUrl = process.env.REACT_APP_BACKEND_URL;
       console.log("Reset Password URL:", `${backendUrl}/users/reset-password`);
       const data = { token, password };
       const response = await axios.post(
@@ -130,7 +137,11 @@ const ResetPassword = () => {
         message: error.message,
         config: error.config,
       });
-      toast.error(`Failed to reset password. ${error.response?.data?.error || "Invalid or expired token."}`);
+      toast.error(
+        `Failed to reset password. ${
+          error.response?.data?.error || "Invalid or expired token."
+        }`
+      );
     }
   };
 
@@ -200,7 +211,10 @@ const ResetPassword = () => {
               )}
             </form>
           ) : (
-            <form className="flex flex-col space-y-6" onSubmit={handleResetPassword}>
+            <form
+              className="flex flex-col space-y-6"
+              onSubmit={handleResetPassword}
+            >
               <div className="relative">
                 <span className="absolute inset-y-0 left-0 flex items-center pl-3">
                   <LockIcon />
