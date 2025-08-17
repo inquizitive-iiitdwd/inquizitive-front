@@ -1,22 +1,18 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import api from '../services/api.js';
-import { FaEnvelope, FaUser, FaIdCard, FaUsers, FaTimes } from 'react-icons/fa';
+import { FaEnvelope, FaUser, FaIdCard, FaUsers, FaPlus, FaTimes, FaRegTimesCircle } from 'react-icons/fa';
 
 const EventRegistration = ({ isOpen, onClose }) => {
   const [teamLeaderName, setteamLeaderName] = useState('');
   const [teamLeaderId, setteamLeaderId] = useState('');
   const [leadMailId, setleadMailId] = useState('');
   const [teamName, setteamName] = useState('');
-  const [MemberI, setMemberI] = useState('');
-  const [MemberIid, setMemberIid] = useState('');
-  const [MemberII, setMemberII] = useState('');
-  const [MemberIIid, setMemberIIid] = useState('');
+  const [members, setMembers] = useState([]);
   const [validMailmsg, setvalidMailmsg] = useState('');
   const [isRegistered, setIsRegistered] = useState(false);
   const modalRef = useRef(null);
 
-  // Handle Escape key press to close modal
   useEffect(() => {
     const handleEsc = (event) => {
       if (event.key === 'Escape' && isOpen) {
@@ -27,14 +23,12 @@ const EventRegistration = ({ isOpen, onClose }) => {
     return () => window.removeEventListener('keydown', handleEsc);
   }, [isOpen, onClose]);
 
-  // Memoize handleClickOutside to prevent unnecessary re-renders
   const handleClickOutside = useCallback((event) => {
     if (modalRef.current && !modalRef.current.contains(event.target)) {
       onClose();
     }
   }, [onClose]);
 
-  // Handle click outside modal to close
   useEffect(() => {
     if (isOpen) {
       document.addEventListener('mousedown', handleClickOutside);
@@ -42,70 +36,85 @@ const EventRegistration = ({ isOpen, onClose }) => {
     }
   }, [isOpen, handleClickOutside]);
 
-  // Return null if modal is not open
   if (!isOpen) return null;
 
   const emailVerification = (email) => {
     const mail = document.getElementById('email');
     if (email.endsWith('@iiitdwd.ac.in')) {
       setvalidMailmsg('valid');
-      mail.classList.remove('border-red-500');
-      mail.classList.add('border-green-500');
+      if (mail) {
+        mail.classList.remove('border-red-500');
+        mail.classList.add('border-green-500');
+      }
     } else {
       setvalidMailmsg('invalid');
-      mail.classList.remove('border-green-500');
-      mail.classList.add('border-red-500');
+      if (mail) {
+        mail.classList.remove('border-green-500');
+        mail.classList.add('border-red-500');
+      }
     }
+  };
+
+  const handleAddMember = () => {
+    if (members.length < 3) {
+      setMembers([...members, { name: '', id: '' }]);
+    }
+  };
+
+  const handleRemoveMember = (index) => {
+    const newMembers = [...members];
+    newMembers.splice(index, 1);
+    setMembers(newMembers);
+  };
+
+  const handleMemberChange = (index, field, value) => {
+    const newMembers = [...members];
+    newMembers[index][field] = value;
+    setMembers(newMembers);
   };
 
   const register = async () => {
     try {
-      const set = new Set([
+      const allMembers = [
         teamLeaderId.toLowerCase(),
-        MemberIid.toLowerCase(),
-        MemberIIid.toLowerCase()
-      ]);
-      const members = [...set];
+        ...members.map(m => m.id.toLowerCase())
+      ];
+      const uniqueIds = new Set(allMembers);
 
-      if (!teamLeaderName || !teamLeaderId || !leadMailId || !teamName || !MemberI || !MemberIid || !MemberII || !MemberIIid) {
-        alert("Please enter all the details");
+      if (!teamLeaderName || !teamLeaderId || !leadMailId || !teamName) {
+        toast.error("Please enter team leader details and team name.");
         return;
       }
-
-      if (teamLeaderId.length !== 8) {
-        toast.error("Invalid Team Lead ID");
+      if (members.some(m => !m.name || !m.id)) {
+        toast.error("Please fill all member details or remove empty fields.");
         return;
       }
-
-      if (MemberIid.length !== 8 || MemberIIid.length !== 8) {
-        toast.error("Invalid Team Member's ID");
+      if (teamLeaderId.length !== 8 || members.some(m => m.id.length !== 8)) {
+        toast.error("Invalid ID format (must be 8 characters).");
         return;
       }
-
       if (!leadMailId.endsWith('@iiitdwd.ac.in')) {
-        toast.error("Invalid Email-ID");
+        toast.error("Invalid Email-ID format.");
         return;
       }
-
       if ((leadMailId.slice(0, 8)).toLowerCase() !== teamLeaderId.toLowerCase()) {
         toast.error("Team Lead mail ID does not match with the team lead ID");
         return;
       }
-
-      if (members.length !== 3) {
-        toast.error("All the team members need to be different");
+      if (uniqueIds.size !== allMembers.length) {
+        toast.error("All team members must have unique IDs.");
         return;
       }
 
       const data = {
         teamLeaderName,
-        teamLeaderId: members.find(m => m === teamLeaderId.toLowerCase()),
+        teamLeaderId: allMembers[0],
         leadMailId,
         teamName,
-        MemberI,
-        MemberIid: members.find(m => m === MemberIid.toLowerCase()),
-        MemberII,
-        MemberIIid: members.find(m => m === MemberIIid.toLowerCase())
+        members: members.map((m, index) => ({
+          name: m.name,
+          id: allMembers[index + 1]
+        }))
       };
 
       const response = await api.post('/events/eventRegistration', { data }, { withCredentials: true });
@@ -114,11 +123,7 @@ const EventRegistration = ({ isOpen, onClose }) => {
         setIsRegistered(true);
         toast.success("Your team is registered successfully");
       } else {
-        if (response.data.RteamName) toast.error("Team Name already exists");
-        else if (response.data.RmailID) toast.error("Email ID is repeated");
-        else if (response.data.Rteamlead) toast.error("Team lead has registered");
-        else if (response.data.RteamMates) toast.error("Team Mates have already registered");
-        else toast.error("Failed to register");
+        toast.error(response.data.message || "Failed to register.");
       }
     } catch (error) {
       console.error("Error registering:", error);
@@ -143,108 +148,52 @@ const EventRegistration = ({ isOpen, onClose }) => {
           <FaTimes size={24} />
         </button>
         <h2 className="text-3xl text-white font-bold mb-4 text-center">Event Registration</h2>
-
         {!isRegistered ? (
-          <form className="space-y-5">
+          <div className="space-y-5 max-h-[70vh] overflow-y-auto pr-4 custom-scrollbar">
             <div className="relative">
               <FaUser className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-              <input
-                type="text"
-                value={teamLeaderName}
-                placeholder="Team Leader Name"
-                onChange={(e) => setteamLeaderName(e.target.value)}
-                className="bg-gray-900/50 text-white w-full pl-12 pr-4 py-3 border border-purple-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-              />
+              <input type="text" value={teamLeaderName} placeholder="Team Leader Name" onChange={(e) => setteamLeaderName(e.target.value)} className="bg-gray-900/50 text-white w-full pl-12 pr-4 py-3 border border-purple-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400" />
             </div>
-
             <div className="relative">
               <FaIdCard className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-              <input
-                type="text"
-                value={teamLeaderId}
-                placeholder="Team Leader ID"
-                onChange={(e) => setteamLeaderId(e.target.value)}
-                className="bg-gray-900/50 text-white w-full pl-12 pr-4 py-3 border border-purple-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-              />
+              <input type="text" value={teamLeaderId} placeholder="Team Leader ID (e.g. 23bcs067)" onChange={(e) => setteamLeaderId(e.target.value)} className="bg-gray-900/50 text-white w-full pl-12 pr-4 py-3 border border-purple-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400" />
             </div>
-
-            <div className="relative">
+            <div className="relative flex items-center gap-2">
               <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-              <input
-                id="email"
-                type="email"
-                value={leadMailId}
-                placeholder="Team Leader Email"
-                onChange={validMail}
-                className="bg-gray-900/50 text-white w-full pl-12 pr-4 py-3 border border-purple-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-              />
-              <span className={`block text-right mt-1 text-sm ${validMailmsg === 'invalid' ? 'text-red-500' : 'text-green-500'}`}>
-                {validMailmsg}
-              </span>
+              <input id="email" type="email" value={leadMailId} placeholder="Team Leader Email (e.g. 23bcs067@iiitdwd.ac.in)" onChange={validMail} className="bg-gray-900/50 text-white w-full pl-12 pr-4 py-3 border border-purple-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400" />
+              <span className={`text-right text-sm whitespace-nowrap ${validMailmsg === 'invalid' ? 'text-red-500' : 'text-green-500'}`}>{validMailmsg}</span>
             </div>
-
             <div className="relative">
               <FaUsers className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-              <input
-                type="text"
-                value={teamName}
-                placeholder="Team Name"
-                onChange={(e) => setteamName(e.target.value)}
-                className="bg-gray-900/50 text-white w-full pl-12 pr-4 py-3 border border-purple-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-              />
+              <input type="text" value={teamName} placeholder="Team Name" onChange={(e) => setteamName(e.target.value)} className="bg-gray-900/50 text-white w-full pl-12 pr-4 py-3 border border-purple-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400" />
             </div>
-
-            {[{
-              name: MemberI,
-              id: MemberIid,
-              setName: setMemberI,
-              setId: setMemberIid,
-              label: "Member I"
-            }, {
-              name: MemberII,
-              id: MemberIIid,
-              setName: setMemberII,
-              setId: setMemberIIid,
-              label: "Member II"
-            }].map((member, index) => (
-              <div key={index} className="space-y-3">
-                <input
-                  type="text"
-                  value={member.name}
-                  placeholder={`${member.label} Name`}
-                  onChange={(e) => member.setName(e.target.value)}
-                  className="bg-gray-900/50 text-white w-full pl-4 pr-4 py-3 border border-purple-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-                />
-                <input
-                  type="text"
-                  value={member.id}
-                  placeholder={`${member.label} ID`}
-                  onChange={(e) => member.setId(e.target.value)}
-                  className="bg-gray-900/50 text-white w-full pl-4 pr-4 py-3 border border-purple-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-                />
+            {members.map((member, index) => (
+              <div key={index} className="space-y-3 relative p-4 border border-purple-800 rounded-lg">
+                <h4 className="text-white font-semibold mb-2">Member {index + 1}</h4>
+                <div className="relative">
+                  <input type="text" value={member.name} placeholder={`Member ${index + 1} Name`} onChange={(e) => handleMemberChange(index, 'name', e.target.value)} className="bg-gray-900/50 text-white w-full pl-4 pr-4 py-3 border border-purple-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400" />
+                </div>
+                <div className="relative">
+                  <input type="text" value={member.id} placeholder={`Member ${index + 1} ID`} onChange={(e) => handleMemberChange(index, 'id', e.target.value)} className="bg-gray-900/50 text-white w-full pl-4 pr-4 py-3 border border-purple-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400" />
+                </div>
+                <button type="button" onClick={() => handleRemoveMember(index)} className="absolute top-2 right-2 text-gray-400 hover:text-white transition-colors"><FaRegTimesCircle size={20} /></button>
               </div>
             ))}
-
-            <button
-              type="button"
-              onClick={register}
-              className="w-full bg-yellow-400 text-black font-bold px-4 py-3 rounded-lg hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105"
-            >
+            {members.length < 3 && (
+              <button type="button" onClick={handleAddMember} className="w-full flex items-center justify-center bg-purple-600 text-white font-bold px-4 py-3 rounded-lg hover:bg-purple-500 transition-colors">
+                <FaPlus className="mr-2" /> Add Member
+              </button>
+            )}
+            <button type="button" onClick={register} className="w-full bg-yellow-400 text-black font-bold px-4 py-3 rounded-lg hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105">
               Submit
             </button>
-          </form>
+          </div>
         ) : (
           <div className="text-center text-white">
             <h2 className="text-2xl font-bold mb-4">You have been registered successfully!</h2>
           </div>
         )}
-
-        <Toaster
-          position="top-right"
-          toastOptions={{
-            className: "bg-gray-800 text-white"
-          }}
-        />
+        <Toaster position="top-right" toastOptions={{ className: "bg-gray-800 text-white" }} />
       </div>
     </div>
   );

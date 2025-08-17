@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import { FiGrid, FiList, FiLogOut, FiUsers } from 'react-icons/fi';
+import { FiGrid, FiList, FiLogOut, FiUsers, FiPause } from 'react-icons/fi';
 
 const Sidebar = ({ activeView, setActiveView, handleLogout }) => {
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: FiGrid },
     { id: 'quizzes', label: 'Quiz Management', icon: FiList },
     { id: 'members', label: 'Member Management', icon: FiUsers },
+    { id: 'events', label: 'Event Management', icon: FiPause },
   ];
 
   return (

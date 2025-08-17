@@ -39,14 +39,6 @@ const publicRoutes = [
   { path: "/organizer-login", element: <OrganizerLogin /> },
 ];
 
-// Define routes that require organizer authentication
-const organizerProtectedRoutes = [
-  { path: "/create-quiz", element: <CreateQuiz /> },
-  { path: "/question-form", element: <QuestionForm /> },
-  { path: "/show-marks", element: <ShowMarks /> },
-  // REMOVED /manage-account from here
-];
-
 const clientProtectedRoutes = [
   { path: "/quiz-timer", element: <QuizTimer /> },
   { path: "/show-question", element: <ShowQestion /> },
@@ -55,6 +47,9 @@ const clientProtectedRoutes = [
 
 const adminProtectedRoutes = [
   { path: "/admin-dashboard", element: <AdminDashboard /> },
+  { path: "/create-quiz", element: <CreateQuiz /> },
+  { path: "/question-form", element: <QuestionForm /> },
+  { path: "/show-marks", element: <ShowMarks /> },
   // REMOVED /manage-account from here
 ];
 
@@ -76,13 +71,6 @@ export default function App() {
             {publicRoutes.map(({ path, element }) => (
               <Route key={path} path={path} element={element} />
             ))}
-
-            {/* Organizer Protected Routes */}
-            <Route element={<ProtectedRoute allowedRoles={['organizer']} loginPath="/organizer-login" />}>
-              {organizerProtectedRoutes.map(({ path, element }) => (
-                <Route key={path} path={path} element={element} />
-              ))}
-            </Route>
 
             {/* Client Protected Routes */}
             <Route element={<ProtectedRoute allowedRoles={['user']} loginPath="/client-login" />}>
