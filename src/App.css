@@ -450,3 +450,23 @@ a {
   color: white;
   transform: rotateY(180deg);
 }
+
+/* For WebKit browsers (Chrome, Safari) */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px; /* Thickness of the scrollbar */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent; /* Makes the track transparent */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #4a1975; /* A dark purple that blends with the background */
+  border-radius: 4px; /* Rounded edges for the thumb */
+  border: 2px solid transparent; /* Gives a slight border effect */
+}
+
+/* On hover, make the thumb slightly lighter */
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #6a348e;
+}

@@ -2,7 +2,7 @@ import api from "./api.js";
 
 export const getQuizzes = async () => {
   try {
-    const response = await api.get('/api/quizzes', { withCredentials: true }); // New endpoint assumption
+    const response = await api.get('/api/quizzes', { withCredentials: true });
     return response.data;
   } catch (error) {
     throw new Error('Failed to fetch quizzes');
@@ -20,7 +20,7 @@ export const createQuiz = async (name) => {
 
 export const deleteQuiz = async (quizName) => {
   try {
-    await api.post('/api/creatingquiz/deleteQuiz', { name: quizName }, { withCredentials: true });
+    await api.delete(`/api/quizzes/${encodeURIComponent(quizName)}`, { withCredentials: true }); // Updated endpoint
   } catch (error) {
     throw new Error('Failed to delete quiz');
   }
@@ -28,7 +28,7 @@ export const deleteQuiz = async (quizName) => {
 
 export const updateQuizTimer = async (quizName, timerData) => {
   try {
-    await api.post('/api/quizzes/updateTimer', { name: quizName, ...timerData }, { withCredentials: true });
+    await api.put(`/api/quizzes/${encodeURIComponent(quizName)}/timer`, timerData, { withCredentials: true }); // Updated endpoint
   } catch (error) {
     throw new Error('Failed to update timer');
   }

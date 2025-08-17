@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import Sidebar from "../features/admin/components/Sidebar.js";
 import QuizManager from "../features/admin/views/QuizManager.js";
 import MemberManagement from "../features/admin/views/MemberManagement.js";
+import EventManagement from "../features/admin/views/EventManagement.js"; // Import the new component
 import api from '../services/api.js';
 
 const DashboardHome = () => (
@@ -55,6 +56,8 @@ const AdminDashboard = () => {
         return <QuizManager />;
       case "members":
         return <MemberManagement />;
+      case "events": // Add the new case for "events"
+        return <EventManagement />;
       case "dashboard":
       default:
         return <DashboardHome />;
