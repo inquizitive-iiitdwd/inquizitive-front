@@ -5,7 +5,6 @@ import { FaLinkedin } from "react-icons/fa";
 import { BsBinocularsFill, BsTrophyFill, BsPeopleFill } from "react-icons/bs";
 import members from "../data/aboutusData.js";
 
-// Team Member Card Component (No changes needed here).
 const TeamMemberCard = ({ member }) => (
   <div className="group relative aspect-[4/5] w-full overflow-hidden rounded-2xl shadow-lg transform transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-yellow-400/20">
     <img

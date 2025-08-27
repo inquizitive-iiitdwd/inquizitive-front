@@ -1,19 +1,52 @@
-// --- A proper data structure for your events ---
-// This is much better than a simple image array. It gives context!
 const eventsData = [
   {
+    id: 1,
+    title: "",
+    category: "",
+    imageUrl: "/images/events/it's_a_mess.png",
+    description: "",
+  },
+  {
+    id: 2,
+    title: "",
+    category: "",
+    imageUrl: "/images/events/error_404.png",
+    description: "",
+  },
+  {
     id: 3,
-    title: "Tech-Quiz Finals",
-    category: "Competition",
-    imageUrl: "/images/DSC_3.JPG",
-    description: "The intense final round of our tech-themed quiz.",
+    title: "",
+    category: "",
+    imageUrl: "/images/events/CUL_2.png",
+    description: "",
   },
   {
     id: 4,
-    title: "Strategy Session",
-    category: "Workshop",
-    imageUrl: "/images/DSC_2.JPG",
-    description: "Preparing our teams for national competitions.",
+    title: "",
+    category: "",
+    imageUrl: "/images/events/SPORTSMANIA.png",
+    description: "",
+  },
+  {
+    id: 5,
+    title: "",
+    category: "",
+    imageUrl: "/images/events/Stump_The_Experts.png",
+    description: "",
+  },
+  {
+    id: 6,
+    title: "",
+    category: "",
+    imageUrl: "/images/events/techburst.png",
+    description: "",
+  },
+  {
+    id: 7,
+    title: "",
+    category: "",
+    imageUrl: "/images/events/Unleash_your_inner_trivia_genius.png",
+    description: "",
   },
 ];
 

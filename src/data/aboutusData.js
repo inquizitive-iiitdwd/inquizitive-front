@@ -36,10 +36,28 @@ const members = [
     linkedinUrl: "https://www.linkedin.com/in/hardikm21/",
   },
   {
+    name: "Taran Jain",
+    position: "Team Lead (Web Developer)",
+    imageUrl: "/images/ClubMembers/taran_jain.jpg",
+    linkedinUrl: "#",
+  },
+  {
     name: "Suvan Gururaj",
     position: "Team Member (Core Quiz)",
     imageUrl: "/images/ClubMembers/suvan_gururaj.jpeg",
     linkedinUrl: "https://www.linkedin.com/in/suvan-gururaj-404bb12aa/",
+  },
+  {
+    name: "Kaushik Naik",
+    position: "Team Member (Web Developer)",
+    imageUrl: "/images/ClubMembers/kaushik_naik.jpeg",
+    linkedinUrl: "https://www.linkedin.com/in/kaushik-naik-35092631a/",
+  },
+  {
+    name: "Puneet Bansal",
+    position: "Team Member (Social Media)",
+    imageUrl: "/images/ClubMembers/puneet_bansal.jpeg",
+    linkedinUrl: "https://www.linkedin.com/in/puneet-bansal-583389310/",
   },
 ];
 
