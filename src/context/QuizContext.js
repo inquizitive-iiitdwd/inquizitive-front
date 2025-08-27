@@ -15,8 +15,10 @@ const AppProvider = ({ children }) => {
 
   const fetchApiData = async (endpoint, type) => {
     try {
-      const backendUrl = process.env.BACKEND_URL || "http://localhost:5000";
-      const response = await api.get(`${backendUrl}${endpoint}`, { withCredentials: true });
+      const backendUrl = process.env.REACT_APP_BACKEND_URL;
+      const response = await api.get(`${backendUrl}${endpoint}`, {
+        withCredentials: true,
+      });
       dispatch({
         type,
         payload: response.data,
@@ -28,15 +30,19 @@ const AppProvider = ({ children }) => {
 
   useEffect(() => {
     // Only fetch data on quiz-related pages
-    const isQuizPage = window.location.pathname.includes("/quiz") || window.location.pathname.includes("/Timer");
+    const isQuizPage =
+      window.location.pathname.includes("/quiz") ||
+      window.location.pathname.includes("/Timer");
     if (isQuizPage) {
       // fetchApiData('/quiz/getQuestion', "GET_QUESTION");
       // fetchApiData('/admine/membersDetail', "GET_MEMBERS");
-      fetchApiData('/quizsetup/getSaveTimer', "GET_TIMER");
+      fetchApiData("/quizsetup/getSaveTimer", "GET_TIMER");
     }
   }, []);
 
-  return <AppContext.Provider value={{ ...state }}>{children}</AppContext.Provider>;
+  return (
+    <AppContext.Provider value={{ ...state }}>{children}</AppContext.Provider>
+  );
 };
 
 const useGlobalcontext = () => useContext(AppContext);
